@@ -1,0 +1,41 @@
+# Core FastAPI, LangGraph, and Web Interaction
+fastapi
+uvicorn[standard]
+langchain
+langgraph
+langgraph-checkpoint-sqlite # For SQLite checkpointer persistence
+pydantic>=2.0.0
+pydantic-settings # Added for Pydantic V2 settings management
+python-dotenv>=1.0.0
+httpx
+ruff # For linting and formatting
+pytest # For running unit and integration tests
+pytest-asyncio # For running asyncio tests with pytest
+
+# LLM Interaction (e.g., OpenAI for brief analysis and initial MJML generation)
+openai>=1.12.0
+langchain-openai # For ChatOpenAI and other OpenAI integrations with LangChain
+langchain-anthropic # For ChatAnthropic and other Anthropic integrations with LangChain
+
+# -----------------------------------------------------------------------------
+# Dependencies below were present in the previous requirements.txt or are planned
+# for later sprints. They are commented out for Sprint 1 to keep the environment
+# focused on core infrastructure and initial generation path.
+# They can be uncommented or added back when their respective features are implemented.
+# -----------------------------------------------------------------------------
+sentence-transformers
+# #pydantic-ai # (was already commented out)
+# transformers
+# torch>=2.0.1
+Pillow # (For Sprint 2: Image Generation)
+google-genai # For Google Gemini image generation
+requests # For downloading images
+beautifulsoup4 # For parsing HTML
+psycopg2-binary # (For Sprint 2: Database Persistence - can be primary for Alembic sync ops)
+asyncpg # For asynchronous PostgreSQL operations with SQLAlchemy/FastAPI
+psycopg[binary,pool] # For LangGraph's AsyncPostgresSaver
+pgvector # For vector similarity search in PostgreSQL
+langgraph-checkpoint-postgres # Provides AsyncPostgresSaver
+alembic # For database migrations with SQLAlchemy
+greenlet # Required by SQLAlchemy for async operations with some drivers like asyncpg
+# umap-learn

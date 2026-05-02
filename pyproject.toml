@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=61.0"] # Specify setuptools version
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xyra"
+version = "0.1.0" # Example version
+description = "Xyra Marketing Content Agent"
+readme = "README.md" # Optional, if you have one
+# Add other metadata like authors, license, etc. as needed
+# classifiers = [
+#     "Programming Language :: Python :: 3",
+#     "License :: OSI Approved :: MIT License", # Example
+#     "Operating System :: OS Independent",
+# ]
+# dependencies = [
+#    # List your project's dependencies here, e.g.,
+#    # "fastapi>=0.100.0",
+#    # "uvicorn[standard]>=0.20.0",
+#    # "langgraph>=0.0.30",
+#    # ... other dependencies from requirements.txt
+# ]
+
+# Explicitly tell setuptools to only include the 'xyra' package
+# This avoids auto-discovery issues with 'data' and 'archive' folders.
+[tool.setuptools.packages.find]
+where = ["."]  # Look for packages in the current directory
+include = ["xyra*"] # Include only 'xyra' and its subpackages
+exclude = ["tests*", "archive*", "data*"] # Explicitly exclude others at the root
+namespaces = false
+
+[tool.ruff]
+line-length = 88 # Example: common line length, can be adjusted
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "C4", "SIM"] # Added Bugbear, Comprehensions, Simplify
+ignore = ["E501"] # Ignore line-too-long errors for now
+fixable = ["ALL"] # Allow fix for all enabled rules
+
+exclude = [
+    ".venv", # Common exclusion
+    "__pypackages__",
+    ".git",
+    "build",
+    "dist",
+    "xyra/legacy_code", # Exclude legacy_code directory
+    "xyra/templates",   # Exclude templates directory (copy of legacy)
+    # Add other common exclusions if desired, like .ruff_cache, .mypy_cache etc.
+]
+
+# You can add more global configurations here, e.g.:
+# exclude = [
+#     ".bzr",
+#     ".direnv",
+#     ".eggs",
+#     ".git",
+#     ".hg",
+#     ".mypy_cache",
+#     ".nox",
+#     ".pants.d",
+#     ".ruff_cache",
+#     ".svn",
+#     ".tox",
+#     ".venv",
+#     "__pypackages__",
+#     "_build",
+#     "buck-out",
+#     "build",
+#     "dist",
+#     "node_modules",
+#     "venv",
+# ]
+
+[tool.ruff.lint.per-file-ignores]
+# "xyra/legacy_code/*" = ["F841"] # No longer needed due to global exclude
+# "xyra/templates/*" = ["F841"]   # No longer needed due to global exclude
+
+# Example: If you wanted to ignore E402 (module import not at top of file) for __init__.py files
+# "__init__.py" = ["E402"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+# Fixtures will now use function-scoped event loops by default.
+asyncio_default_fixture_loop_scope = "function"
+# Tests will continue to use function-scoped event loops.
+asyncio_default_test_loop_scope = "function"

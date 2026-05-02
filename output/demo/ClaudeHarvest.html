@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width" name="viewport" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css" />
+    <style>
+        .bee-row,
+        .bee-row-content {
+            position: relative
+        }
+
+        .bee-form .bee-form-row .bee-field button {
+            font-size: inherit;
+            font-family: inherit
+        }
+
+        .bee-button .content,
+        .bee-row-20 .bee-col-1 .bee-block-1,
+        .bee-row-20 .bee-col-2 .bee-block-1 {
+            text-align: center
+        }
+
+        body {
+            background\-color: #2c1810;
+            color: #f4f1e8;
+            font-family: Roboto, Tahoma, Verdana, Segoe, sans-serif
+        }
+
+        a {
+            color: #d4a574
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        p {
+            margin: 0
+        }
+
+        .bee-menu .bee-hamburger-trigger {
+            display: none
+        }
+
+        .bee-row-content {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex
+        }
+
+        .bee-row-content.reverse,
+        .bee-row-content.reverse .bee-col {
+            -moz-transform: scale(1, -1);
+            -webkit-transform: scale(1, -1);
+            -o-transform: scale(1, -1);
+            -ms-transform: scale(1, -1);
+            transform: scale(1, -1)
+        }
+
+        .bee-row-content .bee-col-w3 {
+            flex-basis: 25%
+        }
+
+        .bee-row-content .bee-col-w4 {
+            flex-basis: 33%
+        }
+
+        .bee-row-content .bee-col-w5 {
+            flex-basis: 42%
+        }
+
+        .bee-row-content .bee-col-w6 {
+            flex-basis: 50%
+        }
+
+        .bee-row-content .bee-col-w7 {
+            flex-basis: 58%
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 div.label:not(.inline),
+        .bee-row-25 .bee-col-1 .bee-block-2 label:not(.inline),
+        .bee-row-content .bee-col-w12 {
+            flex-basis: 100%
+        }
+
+        .bee-button a,
+        .bee-icon .bee-icon-label-right a,
+        .bee-menu ul li a {
+            text-decoration: none
+        }
+
+        .bee-divider,
+        .bee-image {
+            overflow: auto
+        }
+
+        .bee-divider .center,
+        .bee-image .bee-center {
+            margin: 0 auto
+        }
+
+        .bee-row-10 .bee-col-1 .bee-block-1,
+        .bee-row-10 .bee-col-2 .bee-block-1,
+        .bee-row-13 .bee-col-2 .bee-block-1,
+        .bee-row-23 .bee-col-1 .bee-block-1,
+        .bee-row-23 .bee-col-2 .bee-block-1,
+        .bee-row-25 .bee-col-1 .bee-block-2 .bee-form-row:not(.bee-sidelabel) input:not([type=checkbox]):not([type=radio]),
+        .bee-row-25 .bee-col-2 .bee-block-1,
+        .bee-row-6 .bee-col-1 .bee-block-1 {
+            width: 100%
+        }
+
+        .bee-form .bee-form-row .bee-field {
+            padding: 3px;
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .bee-form .bee-form-row .bee-field.bee-inline-field {
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            display: block
+        }
+
+        .bee-form .bee-form-row .bee-field .bee-form-option-wrapper {
+            align-items: flex-start;
+            display: inline-flex
+        }
+
+        .bee-form .bee-form-row .bee-field input:not([type=checkbox]):not([type=radio]),
+        .bee-form .bee-form-row .bee-field textarea {
+            flex-grow: 1;
+            font-family: inherit;
+            font-size: inherit
+        }
+
+        .bee-form .bee-form-row .bee-field input[type=checkbox]:not(:first-of-type) {
+            margin-left: 15px
+        }
+
+        .bee-form .bee-form-row .bee-field .bee-button-container {
+            flex-grow: 1
+        }
+
+        .bee-form input[type=color] {
+            border: none;
+            height: 38px
+        }
+
+        .bee-form input[type=color]::-webkit-color-swatch-wrapper {
+            margin: 0;
+            padding: 2px
+        }
+
+        .bee-menu ul {
+            margin: 0;
+            padding: 0
+        }
+
+        .bee-form input[type=color]::-webkit-color-swatch {
+            margin: 0;
+            padding: 0
+        }
+
+        .bee-icon {
+            display: inline-block;
+            vertical-align: middle
+        }
+
+        .bee-icon .bee-content {
+            display: flex;
+            align-items: center
+        }
+
+        .bee-image img {
+            display: block;
+            width: 100%
+        }
+
+        .bee-menu .bee-hamburger-controls {
+            cursor: pointer;
+            display: inline-block;
+            position: relative
+        }
+
+        .bee-menu .bee-hamburger-controls span {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            transition: .12s ease-in-out
+        }
+
+        .bee-menu ul {
+            list-style-type: none
+        }
+
+        .bee-menu ul.bee-horizontal li {
+            display: inline-block
+        }
+
+        .bee-social .icon img {
+            max-height: 32px
+        }
+
+        .bee-text {
+            overflow-wrap: anywhere
+        }
+
+        .bee-row-1,
+        .bee-row-12,
+        .bee-row-13,
+        .bee-row-14,
+        .bee-row-15,
+        .bee-row-16,
+        .bee-row-17,
+        .bee-row-18,
+        .bee-row-19,
+        .bee-row-20,
+        .bee-row-21,
+        .bee-row-26,
+        .bee-row-27,
+        .bee-row-28,
+        .bee-row-5,
+        .bee-row-6,
+        .bee-row-7,
+        .bee-row-8 {
+            background\-color: #3d2817;
+            background-repeat: no-repeat
+        }
+
+        .bee-row-1 .bee-row-content,
+        .bee-row-16 .bee-row-content,
+        .bee-row-18 .bee-row-content {
+            background\-color: #3d2817;
+            background-repeat: no-repeat;
+            color: #f4f1e8
+        }
+
+        .bee-row-1 .bee-col-1 {
+            padding-bottom: 15px;
+            padding-top: 15px
+        }
+
+        .bee-row-1 .bee-col-1 .bee-block-1 {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+            width: 100%
+        }
+
+        .bee-row-1 .bee-col-2 {
+            padding: 15px 20px
+        }
+
+        .bee-row-1 .bee-col-2 .bee-block-1 {
+            color: #f4f1e8;
+            font-family: inherit;
+            font-size: 18px;
+            text-align: right
+        }
+
+        .bee-row-10,
+        .bee-row-11,
+        .bee-row-2,
+        .bee-row-22,
+        .bee-row-23,
+        .bee-row-24,
+        .bee-row-3,
+        .bee-row-4,
+        .bee-row-9 {
+            background-repeat: no-repeat
+        }
+
+        .bee-row-10 .bee-row-content,
+        .bee-row-11 .bee-row-content,
+        .bee-row-12 .bee-row-content,
+        .bee-row-13 .bee-row-content,
+        .bee-row-14 .bee-row-content,
+        .bee-row-2 .bee-row-content,
+        .bee-row-20 .bee-row-content,
+        .bee-row-21 .bee-row-content,
+        .bee-row-22 .bee-row-content,
+        .bee-row-23 .bee-row-content,
+        .bee-row-24 .bee-row-content,
+        .bee-row-26 .bee-row-content,
+        .bee-row-27 .bee-row-content,
+        .bee-row-28 .bee-row-content,
+        .bee-row-3 .bee-row-content,
+        .bee-row-4 .bee-row-content,
+        .bee-row-5 .bee-row-content,
+        .bee-row-6 .bee-row-content,
+        .bee-row-8 .bee-row-content,
+        .bee-row-9 .bee-row-content {
+            background-repeat: no-repeat;
+            color: #f4f1e8
+        }
+
+        .bee-row-10 .bee-col-1,
+        .bee-row-10 .bee-col-2,
+        .bee-row-13 .bee-col-1,
+        .bee-row-13 .bee-col-2,
+        .bee-row-23 .bee-col-1,
+        .bee-row-23 .bee-col-2,
+        .bee-row-3 .bee-col-1,
+        .bee-row-3 .bee-col-2,
+        .bee-row-6 .bee-col-1,
+        .bee-row-6 .bee-col-2 {
+            padding: 25px 20px
+        }
+
+        .bee-row-3 .bee-col-1 .bee-block-1 {
+            text-align: center;
+            width: 100%
+        }
+
+        .bee-row-3 .bee-col-1 .bee-block-2,
+        .bee-row-3 .bee-col-2 .bee-block-1 {
+            padding-top: 15px;
+            width: 100%
+        }
+
+        .bee-row-3 .bee-col-2 .bee-block-2 {
+            padding-top: 25px
+        }
+
+        .bee-row-3 .bee-col-2 .bee-block-3 {
+            padding-bottom: 15px;
+            padding-top: 10px
+        }
+
+        .bee-row-27 .bee-col-3 .bee-block-4,
+        .bee-row-3 .bee-col-2 .bee-block-4 {
+            padding-top: 10px;
+            text-align: left
+        }
+
+        .bee-row-3 .bee-col-2 .bee-block-5 {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 10px
+        }
+
+        .bee-row-22 .bee-col-1,
+        .bee-row-5 .bee-col-1,
+        .bee-row-9 .bee-col-1 {
+            padding-top: 50px
+        }
+
+        .bee-row-13 .bee-col-1 .bee-block-1,
+        .bee-row-22 .bee-col-1 .bee-block-1,
+        .bee-row-5 .bee-col-1 .bee-block-1,
+        .bee-row-9 .bee-col-1 .bee-block-1 {
+            padding-bottom: 10px;
+            text-align: center;
+            width: 100%
+        }
+
+        .bee-row-15 .bee-row-content,
+        .bee-row-25 .bee-row-content,
+        .bee-row-7 .bee-row-content {
+            background\-color: #8b4513;
+            background-repeat: no-repeat;
+            color: #f4f1e8
+        }
+
+        .bee-row-15 .bee-col-1,
+        .bee-row-15 .bee-col-2,
+        .bee-row-15 .bee-col-3,
+        .bee-row-16 .bee-col-1,
+        .bee-row-16 .bee-col-2,
+        .bee-row-16 .bee-col-3,
+        .bee-row-17 .bee-col-1,
+        .bee-row-17 .bee-col-2,
+        .bee-row-17 .bee-col-3,
+        .bee-row-18 .bee-col-1,
+        .bee-row-18 .bee-col-2,
+        .bee-row-18 .bee-col-3,
+        .bee-row-19 .bee-col-1,
+        .bee-row-19 .bee-col-2,
+        .bee-row-19 .bee-col-3,
+        .bee-row-27 .bee-col-1,
+        .bee-row-27 .bee-col-2,
+        .bee-row-27 .bee-col-3,
+        .bee-row-7 .bee-col-1,
+        .bee-row-7 .bee-col-2,
+        .bee-row-7 .bee-col-3,
+        .bee-row-7 .bee-col-4 {
+            padding: 20px
+        }
+
+        .bee-row-7 .bee-col-4 .bee-block-1 {
+            text-align: left
+        }
+
+        .bee-row-10 .bee-col-1 .bee-block-2,
+        .bee-row-10 .bee-col-1 .bee-block-6,
+        .bee-row-10 .bee-col-2 .bee-block-2,
+        .bee-row-10 .bee-col-2 .bee-block-6,
+        .bee-row-23 .bee-col-1 .bee-block-2,
+        .bee-row-23 .bee-col-2 .bee-block-2 {
+            padding-top: 15px;
+            text-align: center;
+            width: 100%
+        }
+
+        .bee-row-10 .bee-col-1 .bee-block-3,
+        .bee-row-10 .bee-col-1 .bee-block-7,
+        .bee-row-10 .bee-col-2 .bee-block-3,
+        .bee-row-10 .bee-col-2 .bee-block-7,
+        .bee-row-15 .bee-col-1 .bee-block-1,
+        .bee-row-27 .bee-col-1 .bee-block-2,
+        .bee-row-27 .bee-col-2 .bee-block-4 {
+            padding-top: 5px
+        }
+
+        .bee-row-10 .bee-col-1 .bee-block-4,
+        .bee-row-10 .bee-col-1 .bee-block-8,
+        .bee-row-10 .bee-col-2 .bee-block-4,
+        .bee-row-10 .bee-col-2 .bee-block-8 {
+            padding-top: 15px;
+            text-align: left
+        }
+
+        .bee-row-10 .bee-col-1 .bee-block-5,
+        .bee-row-10 .bee-col-2 .bee-block-5 {
+            padding-top: 40px;
+            width: 100%
+        }
+
+        .bee-row-13 .bee-col-1 .bee-block-2 {
+            padding-top: 20px
+        }
+
+        .bee-row-15 .bee-col-2 .bee-block-1,
+        .bee-row-15 .bee-col-3 .bee-block-1 {
+            color: #f4f1e8;
+            font-family: inherit;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-align: left
+        }
+
+        .bee-row-16 .bee-col-2 .bee-block-1,
+        .bee-row-16 .bee-col-3 .bee-block-1,
+        .bee-row-17 .bee-col-2 .bee-block-1,
+        .bee-row-17 .bee-col-3 .bee-block-1,
+        .bee-row-18 .bee-col-2 .bee-block-1,
+        .bee-row-18 .bee-col-3 .bee-block-1,
+        .bee-row-19 .bee-col-2 .bee-block-1,
+        .bee-row-19 .bee-col-3 .bee-block-1 {
+            color: #f4f1e8;
+            font-family: inherit;
+            font-size: 18px;
+            letter-spacing: normal;
+            text-align: left
+        }
+
+        .bee-row-17 .bee-row-content,
+        .bee-row-19 .bee-row-content {
+            background\-color: #4a3424;
+            background-repeat: no-repeat;
+            color: #f4f1e8
+        }
+
+        .bee-row-20 .bee-col-1,
+        .bee-row-20 .bee-col-2 {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 25px
+        }
+
+        .bee-row-25 {
+            background\-color: #8b4513;
+            background-repeat: no-repeat
+        }
+
+        .bee-row-25 .bee-col-1 {
+            padding: 60px 20px
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-1 {
+            padding-bottom: 30px;
+            text-align: center;
+            width: 100%
+        }
+
+        .bee-row-25 .bee-col-2 {
+            padding: 5px 20px
+        }
+
+        .bee-row-27 .bee-col-1 .bee-block-1 {
+            padding-bottom: 10px;
+            width: 100%
+        }
+
+        .bee-row-27 .bee-col-2 .bee-block-1,
+        .bee-row-27 .bee-col-3 .bee-block-1 {
+            padding-bottom: 15px;
+            text-align: center;
+            width: 100%
+        }
+
+        .bee-row-27 .bee-col-2 .bee-block-2,
+        .bee-row-27 .bee-col-2 .bee-block-3,
+        .bee-row-27 .bee-col-3 .bee-block-2,
+        .bee-row-27 .bee-col-3 .bee-block-3 {
+            padding-bottom: 5px;
+            padding-top: 5px
+        }
+
+        .bee-row-1 .bee-col-2 .bee-block-1 li {
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px
+        }
+
+        .bee-row-1 .bee-col-2 .bee-block-1 li a {
+            color: #f4f1e8
+        }
+
+        @media (max-width:768px) {
+            .bee-form form {
+                width: 100% !important
+            }
+
+            .bee-menu ul.with-bee-hamburger {
+                display: none;
+                padding: 5px 0;
+                position: relative;
+                top: -4px
+            }
+
+            .bee-menu ul.with-bee-hamburger li {
+                display: block;
+                text-align: center
+            }
+
+            .bee-menu ul.with-bee-hamburger li a {
+                text-decoration: none
+            }
+
+            .bee-menu ul.with-bee-hamburger span {
+                display: none
+            }
+
+            #bee-hamburger-memu-r0c1m0:checked~ul,
+            .bee-row-content:not(.no_stack) {
+                display: block
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 .bee-hamburger-controls {
+                width: 36px;
+                height: 36px;
+                background\-color: #8b4513;
+                border-radius: 50%
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 .bee-hamburger-controls span {
+                width: 18px;
+                height: 18px
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-open {
+                background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB3aWR0aD0iNjQiLz48cmVjdCBoZWlnaHQ9IjEyIiByeD0iNiIgd2lkdGg9IjY0IiB5PSI1MiIvPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB3aWR0aD0iNjQiIHk9IjI2Ii8+PC9nPjwvc3ZnPg==");
+                transform: translate(-50%, -50%) scaleY(1)
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-close {
+                background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB0cmFuc2Zvcm09Im1hdHJpeCgtLjcwNzEwNjc4IC0uNzA3MTA2NzggLjcwNzEwNjc4IC0uNzA3MTA2NzggMzEuOTkxMzc4IDc3LjIzNDAxOSkiIHdpZHRoPSI4MiIgeD0iLTkuMDA4NjIyIiB5PSIyNS45OTEzNzgiLz48cmVjdCBoZWlnaHQ9IjEyIiByeD0iNiIgdHJhbnNmb3JtPSJtYXRyaXgoLS43MDcxMDY3OCAuNzA3MTA2NzggLS43MDcxMDY3OCAtLjcwNzEwNjc4IDc3LjgxOTgwNiAzMi4yMzQwMTkpIiB3aWR0aD0iODIiIHg9Ii04Ljc2NTk4MSIgeT0iMjYuMjM0MDE5Ii8+PC9nPjwvc3ZnPg==");
+                transform: translate(-50%, -50%) scaleY(0)
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 ul.with-bee-hamburger {
+                background\-color: #8b4513
+            }
+
+            .bee-row-1 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li,
+            .bee-row-1 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li a {
+                color: #d4a574
+            }
+
+            #bee-hamburger-memu-r0c1m0:checked~.bee-hamburger-controls .bee-hamburger-open {
+                transform: translate(-50%, -50%) scaleY(0)
+            }
+
+            #bee-hamburger-memu-r0c1m0:checked~.bee-hamburger-controls .bee-hamburger-close {
+                transform: translate(-50%, -50%) scaleY(1)
+            }
+        }
+
+        .bee-row-15 .bee-col-2 .bee-block-1 .bee-icon-image,
+        .bee-row-15 .bee-col-3 .bee-block-1 .bee-icon-image,
+        .bee-row-16 .bee-col-2 .bee-block-1 .bee-icon-image,
+        .bee-row-16 .bee-col-3 .bee-block-1 .bee-icon-image,
+        .bee-row-17 .bee-col-2 .bee-block-1 .bee-icon-image,
+        .bee-row-17 .bee-col-3 .bee-block-1 .bee-icon-image,
+        .bee-row-18 .bee-col-2 .bee-block-1 .bee-icon-image,
+        .bee-row-18 .bee-col-3 .bee-block-1 .bee-icon-image,
+        .bee-row-19 .bee-col-2 .bee-block-1 .bee-icon-image,
+        .bee-row-19 .bee-col-3 .bee-block-1 .bee-icon-image {
+            padding: 0 10px 0 0
+        }
+
+        .bee-row-15 .bee-col-2 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-15 .bee-col-3 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-16 .bee-col-2 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-16 .bee-col-3 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-17 .bee-col-2 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-17 .bee-col-3 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-18 .bee-col-2 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-18 .bee-col-3 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-19 .bee-col-2 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content,
+        .bee-row-19 .bee-col-3 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content {
+            margin-left: 0
+        }
+
+        .bee-row-17 .bee-col-2 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-15 .bee-col-2 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-16 .bee-col-2 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-15 .bee-col-3 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-16 .bee-col-3 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-19 .bee-col-2 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-18 .bee-col-3 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-17 .bee-col-3 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-19 .bee-col-3 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-18 .bee-col-2 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
+            margin-right: 0
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 {
+            font-family: inherit;
+            font-size: 16px;
+            text-align: center
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 form {
+            display: inline-block;
+            width: 100%
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 div.label,
+        .bee-row-25 .bee-col-1 .bee-block-2 label {
+            color: #d4a574;
+            letter-spacing: 1px;
+            line-height: 200%;
+            text-align: left;
+            display: block
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 ::-webkit-input-placeholder {
+            color: #8b4513
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 :-moz-placeholder {
+            color: #8b4513
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 ::-moz-placeholder {
+            color: #8b4513
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 :-ms-input-placeholder {
+            color: #8b4513
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 .bee-field>label:first-child,
+        .bee-row-25 .bee-col-1 .bee-block-2 div.label {
+            padding: 3px
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 .bee-field.bee-inline-field input[type=checkbox] {
+            position: relative;
+            color: #d4a574;
+            top: 7px
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 input:not([type=checkbox]):not([type=radio]):not([type=image]),
+        .bee-row-25 .bee-col-1 .bee-block-2 textarea {
+            background-color: #d4a574;
+            border-left: 1px solid transparent;
+            border-radius: 0;
+            border-right: 1px solid transparent;
+            color: #2c1810;
+            padding: 5px;
+            min-height: 42px
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 input:not([type=checkbox]):not([type=radio]):focus,
+        .bee-row-25 .bee-col-1 .bee-block-2 textarea:focus {
+            outline-color: #2c1810
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 button {
+            background\-color: #d4a574;
+            border-bottom: 0 solid transparent;
+            border-left: 0 solid transparent;
+            border-radius: 0;
+            border-right: 0px solid transparent;
+            border-top: 0 solid transparent;
+            color: #2c1810;
+            letter-spacing: 1px;
+            line-height: 200%;
+            padding: 5px 20px;
+            width: 100%
+        }
+
+        .bee-row-25 .bee-col-1 .bee-block-2 .bee-button-container {
+            padding-top: 10px;
+            text-align: center
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bee-page-container">
+        <div class="bee-row bee-row-1">
+            <div class="bee-row-content no_stack">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><a href="http://www.example.com/"
+                            target="_self"><img alt="Logo" class="bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/1920x406/EEE/31343C?text=Image" style="max-width:215px;"/></a>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-menu">
+                        <nav class="bee-menu">
+                            <input class="bee-hamburger-trigger" id="bee-hamburger-memu-r0c1m0" type="checkbox"/><label class="bee-hamburger-controls" for="bee-hamburger-memu-r0c1m0"><span class="bee-hamburger-open"></span><span class="bee-hamburger-close"></span></label>
+                            <ul class="bee-horizontal with-bee-hamburger">
+                                <li><a href="http://www.example.com/" target="_self" title="">About</a></li>
+                                <li><a href="http://www.example.com/" target="_self" title="">Contact</a></li>
+                                <li><a href="http://www.example.com/" target="_self" title="">Make a Reservation</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-2">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-3">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h1
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 58px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            <strong>HARVEST TABLE</strong> </h1>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-image"><img alt="Tennis player" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/718x847/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Tennis player" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/943x628/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <span style="font-size: 50px; color: #f4f1e8; line-height: 60px;">NEW MENU LAUNCH</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-3 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <span style="font-size: 22px; line-height: 26px;">Autumn Seasonal Menu</span></p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-4 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 55px; padding-right: 50px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">EXPLORE MENU →</span></span></a>
+                    </div>
+                    <div class="bee-block bee-block-5 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: 2px;">
+                                <span style="font-size: 16px; line-height: 19px;">USE CODE: <span style="background-color: #8b4513; line-height: 14px;">Harvest Table</span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-4">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:40px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-5">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h2
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
+                            HARVEST TABLE AUTUMN MENU</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-6">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/711x474/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 18px; line-height: 27px;">
+                                <span style="font-size: 18px; line-height: 27px;">Welcome to Harvest Table's newest culinary journey. Our autumn seasonal menu celebrates the rich flavors and fresh ingredients of the season, bringing you dishes that capture the essence of fall. From farm-fresh produce to expertly crafted comfort foods, every plate tells a story of harvest abundance.</span>
+                            </p>
+                            <p style="font-size: 18px; line-height: 27px;"> </p>
+                            <p style="font-size: 18px; line-height: 27px;">
+                                <span style="font-size: 18px; line-height: 27px;">Our philosophy centers on connecting diners with the land through seasonal, locally-sourced ingredients that showcase autumn's finest offerings.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-7">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w3">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px; letter-spacing: 1px;">AVAILABLE:</p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px;">
+                                <span style="font-size: 20px; line-height: 30px;">October 1, 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w3">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px; letter-spacing: 1px;">THROUGH:</p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px;">
+                                <span style="font-size: 20px; line-height: 30px;">November 30, 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w3">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px; letter-spacing: 1px;">PRIX FIXE MENU:</p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 21px;">
+                                <span style="font-size: 20px; line-height: 30px;">$65 per person</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-4 bee-col-w3">
+                    <div class="bee-block bee-block-1 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 45px; padding-right: 40px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">RESERVE NOW →</span></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-8">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:40px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-9">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h2
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
+                            MENU HIGHLIGHTS</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-10">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Shoes" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/885x1160/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            BUTTERNUT SQUASH SOUP</h3>
+                    </div>
+                    <div class="bee-block bee-block-3 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px;">
+                                <span style="font-size: 24px; line-height: 28px;">$60 <span style="color: #b8956f; font-size: 18px; line-height: 21px;"><sup style=""><span style="text-decoration: line-through; line-height: 14px;">$16</span></sup></span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-4 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 45px; padding-right: 45px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">ORDER NOW</span></span></a>
+                    </div>
+                    <div class="bee-block bee-block-5 bee-image"><img alt="Tennis balls" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/749x499/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-6 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            ROASTED TURKEY BREAST</h3>
+                    </div>
+                    <div class="bee-block bee-block-7 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px;">
+                                <span style="font-size: 24px; line-height: 28px;">$15 <span style="text-decoration: line-through; font-size: 18px; color: #b8956f; line-height: 21px;"><span style="line-height: 14px;"><sup style="">$32</sup></span></span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-8 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 45px; padding-right: 45px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">ORDER NOW</span></span></a>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Tennis racket" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/657x438/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            PUMPKIN SPICE CHEESECAKE</h3>
+                    </div>
+                    <div class="bee-block bee-block-3 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px;">
+                                <span style="font-size: 24px; line-height: 28px;">$50 <span style="font-size: 18px; color: #b8956f; line-height: 21px;"><sup style=""><span style="text-decoration: line-through; line-height: 14px;">$15</span></sup></span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-4 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 45px; padding-right: 45px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">ORDER NOW</span></span></a>
+                    </div>
+                    <div class="bee-block bee-block-5 bee-image"><img alt="Bottle" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/564x848/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-6 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            APPLE CIDER SANGRIA</h3>
+                    </div>
+                    <div class="bee-block bee-block-7 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 14px; line-height: 16px;">
+                                <span style="font-size: 24px; line-height: 28px;">$10 <span style="text-decoration: line-through; color: #b8956f; line-height: 14px;"><span style="font-size: 18px; line-height: 21px;"><sup style="">$12</sup></span></span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-8 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 0px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 45px; padding-right: 45px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">ORDER NOW</span></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-11">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-12">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-13">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h2
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            FROM FARM TO TABLE</h2>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 150%; font-family: inherit; color: #d4a574;">
+                            <p style="font-size: 18px; line-height: 27px;">
+                                <span style="font-size: 18px; line-height: 27px;">We partner with local farms within 50 miles of our restaurant to bring you the freshest seasonal ingredients. Our commitment to sustainability and supporting local agriculture ensures every dish reflects the true taste of autumn.</span>
+                            </p>
+                            <p style="font-size: 18px; line-height: 27px;"> </p>
+                            <p style="font-size: 18px; line-height: 27px;">
+                                <span style="font-size: 18px; line-height: 27px;">Watch our journey from farm to table and discover the stories behind each ingredient that makes our autumn menu special.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Tennis court" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/1536x1129/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-14">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-15">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: 1px;">
+                                <span style="font-size: 16px; line-height: 19px;">DINING OPTIONS</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img height="32px" src="https://placehold.co/514x489/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">LUNCH</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img height="32px" src="https://placehold.co/512x512/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">DINNER</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-16">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <strong style=""><span style="font-size: 18px; line-height: 21px;">Service Hours</span></strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Member" height="32px" src="https://placehold.co/514x489/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">11:30am - 3pm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Non-member" height="32px" src="https://placehold.co/512x512/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">5pm - 10pm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-17">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <strong style=""><span style="font-size: 18px; line-height: 21px;">Prix Fixe</span></strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Member" height="32px" src="https://placehold.co/514x489/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">$45</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Non-member" height="32px" src="https://placehold.co/512x512/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">$65</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-18">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <strong style=""><span style="font-size: 18px; line-height: 21px;">Reservations</span></strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Member" height="32px" src="https://placehold.co/514x489/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">Recommended</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Non-member" height="32px" src="https://placehold.co/512x512/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">Required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-19">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-text">
+                        <div class="bee-text-content"
+                            style="font-size: 14px; line-height: 120%; font-family: inherit; color: #f4f1e8;">
+                            <p style="font-size: 14px; line-height: 16px; letter-spacing: normal;">
+                                <strong style=""><span style="font-size: 18px; line-height: 21px;">Party Size</span></strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Member" height="32px" src="https://placehold.co/514x489/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">Up to 8</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-icons">
+                        <div class="bee-icon bee-icon-last">
+                            <div class="bee-content">
+                                <div class="bee-icon-image"><img alt="Non-member" height="32px" src="https://placehold.co/512x512/EEE/31343C?text=Image" width="auto"/>
+                                </div>
+                                <div class="bee-icon-label bee-icon-label-right">Up to 12</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-20">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #ffffff; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-radius: 0px; border-right: 2px solid #000000; border-top: 2px solid #000000; color: #2c1810; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 15px; padding-right: 15px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">VIEW LUNCH MENU</span></span></a>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-button"><a class="bee-button-content"
+                            href="http://www.example.com/"
+                            style="font-size: 20px; background-color: #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-radius: 0px; border-right: 2px solid #000000; border-top: 2px solid #000000; color: #f4f1e8; direction: ltr; font-family: inherit; letter-spacing: 2px; max-width: 100%; padding-bottom: 5px; padding-left: 60px; padding-right: 60px; padding-top: 5px; width: auto; display: inline-block;"
+                            target="_self"><span style="word-break: break-word; font-size: 20px; line-height: 200%; letter-spacing: 2px;"><span style="font-size: 20px;">RESERVE TABLE</span></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-21">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:50px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-22">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h2
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
+                            CHEF'S WELCOME</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-23">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Boy playing tennis" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/1920x1280/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            <span style="color: #f4f1e8;"><a href="http://www.example.com/" rel="noopener" style="text-decoration: none; color: #d4a574;" target="_blank">MEET OUR HEAD CHEF</a></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w6">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Man playing tennis" class="bee-center bee-fixedwidth bee-fullwidthOnMobile" src="https://placehold.co/668x591/EEE/31343C?text=Image" style="max-width:390px;"/>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            <span style="color: #f4f1e8;"><a href="http://www.example.com/" rel="noopener" style="text-decoration: none; color: #d4a574;" target="_blank">SEASONAL MENU PHILOSOPHY</a></span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-24">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:40px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-25">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w7">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h2
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 38px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            MAKE A RESERVATION</h2>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-form">
+                        <form accept-charset="UTF-8" action="ACTION_PLACEHOLDER" autocomplete="on"
+                            enctype="multipart/form-data" method="post" target="_self">
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i1">
+                                    <label for="r24c0m1i1">FIRST NAME</label><input id="r24c0m1i1" name="firstname" required="" type="text"/>
+                                </div>
+                            </div>
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i2">
+                                    <label for="r24c0m1i2">LAST NAME</label><input id="r24c0m1i2" name="lastname" required="" type="text"/>
+                                </div>
+                            </div>
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i3"><label for="r24c0m1i3">EMAIL</label><input id="r24c0m1i3" name="email" required="" type="email"/>
+                                </div>
+                            </div>
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i7">
+                                    <label for="r24c0m1i7">SPECIAL REQUESTS</label><textarea id="r24c0m1i7" name="message"></textarea>
+                                </div>
+                            </div>
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i10 bee-inline-field">
+                                    <span class="bee-form-option-wrapper"><input id="r24c0m1i10" name="privacy_policy" type="checkbox"/><label class="inline" for="r24c0m1i10">I agree to the <a href="https://your_privacy_url">Privacy Policy</a></label></span>
+                                </div>
+                            </div>
+                            <div class="bee-form-row">
+                                <div class="bee-field bee-field-r24c0m1i11">
+                                    <div class="bee-button-container">
+                                        <button id="r24c0m1i11" name="submit" type="submit" value="SEND">RESERVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w5">
+                    <div class="bee-block bee-block-1 bee-image"><img alt="Tennis player" class="bee-center bee-fixedwidth" src="https://placehold.co/561x1337/EEE/31343C?text=Image" style="max-width:254px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-26">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-27">
+            <div class="bee-row-content reverse">
+                <div class="bee-col bee-col-1 bee-col-w4">
+                    <div class="bee-block bee-block-1 bee-image"><a href="http://www.example.com/"
+                            target="_self"><img alt="Logo" class="bee-fixedwidth" src="https://placehold.co/1920x406/EEE/31343C?text=Image" style="max-width:197px;"/></a>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 16px; line-height: 19px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;">2024 © Harvest Table. All rights reserved</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-2 bee-col-w3">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            HOURS</h3>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 14px; line-height: 16px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;"><a href="http://www.example.com/" rel="noopener" style="text-decoration: none; color: #d4a574;" target="_blank">Tuesday - Sunday</a></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-3 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 14px; line-height: 16px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;">11:30am - 10pm</span></p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-4 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 14px; line-height: 16px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;"><a href="http://www.example.com/" rel="noopener" style="text-decoration: none; color: #d4a574;" target="_blank">Closed Mondays</a></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bee-col bee-col-3 bee-col-w5">
+                    <div class="bee-block bee-block-1 bee-heading">
+                        <h3
+                            style="color: #f4f1e8; direction: ltr; font-family: 'Oswald', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 22px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
+                            CONTACT</h3>
+                    </div>
+                    <div class="bee-block bee-block-2 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 14px; line-height: 16px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;">(415) 555-FARM</span></p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-3 bee-text">
+                        <div class="bee-text-content"
+                            style="line-height: 120%; font-size: 12px; font-family: inherit; color: #b8956f;">
+                            <p style="font-size: 14px; line-height: 16px; text-align: left;">
+                                <span style="font-size: 16px; line-height: 19px;">hello@harvesttable.com</span></p>
+                        </div>
+                    </div>
+                    <div class="bee-block bee-block-4 bee-social">
+                        <div class="content">
+                            <span class="icon" style="padding:0 5px 0 5px;"><a href="https://www.facebook.com" target="_self"><img alt="Facebook" src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-dark-gray/facebook@2x.png" title="facebook"/></a></span><span class="icon" style="padding:0 5px 0 5px;"><a href="https://www.twitter.com" target="_self"><img alt="Twitter" src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-dark-gray/twitter@2x.png" title="twitter"/></a></span><span class="icon" style="padding:0 5px 0 5px;"><a href="https://www.instagram.com" target="_self"><img alt="Instagram" src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-dark-gray/instagram@2x.png" title="instagram"/></a></span><span class="icon" style="padding:0 5px 0 5px;"><a href="https://www.youtube.com" target="_self"><img alt="YouTube" src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-dark-gray/youtube@2x.png" title="YouTube"/></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bee-row bee-row-28">
+            <div class="bee-row-content">
+                <div class="bee-col bee-col-1 bee-col-w12">
+                    <div class="bee-block bee-block-1 bee-divider">
+                        <div class="spacer" style="height:30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
