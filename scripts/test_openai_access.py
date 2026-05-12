@@ -1,16 +1,16 @@
-import asyncio
+﻿import asyncio
 import sys
 import os
 
-# Add project root to sys.path to allow importing 'xyra'
+# Add project root to sys.path to allow importing 'mailwright'
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 sys.path.insert(0, PROJECT_ROOT)
 
 # All imports should be grouped at the top
 from openai import AsyncOpenAI, APIError  # noqa: E402
-from xyra.config import settings  # To get API key and model name  # noqa: E402
-from xyra.logging_config import setup_logging  # noqa: E402
+from mailwright.config import settings  # To get API key and model name  # noqa: E402
+from mailwright.logging_config import setup_logging  # noqa: E402
 import logging  # noqa: E402
 
 # Call logging setup early, after all imports
@@ -29,7 +29,7 @@ async def check_openai_access():
             "OPENAI_API_KEY is not set in your .env file or environment."
         )  # Replaced print
         logger.error(  # Replaced print
-            "Please ensure it's correctly configured in .env and loaded by xyra/config.py"
+            "Please ensure it's correctly configured in .env and loaded by mailwright/config.py"
         )
         return
 

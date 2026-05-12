@@ -1,8 +1,8 @@
-# Xyra Marketing Content Agent - Cursor Rules
+﻿# Mailwright - Agentic Marketing Email Platform - Cursor Rules
 
 ## Project Overview
 
-Xyra is an AI-powered backend service for generating responsive MJML email templates using LangGraph for workflow orchestration. The system provides API endpoints for template generation, clarification handling, and iterative refinement through natural language feedback.
+Mailwright is an AI-powered backend service for generating responsive MJML email templates using LangGraph for workflow orchestration. The system provides API endpoints for template generation, clarification handling, and iterative refinement through natural language feedback.
 
 **Current Status**: Sprint 1: Core infrastructure, LangGraph workflow, basic MJML generation
 
@@ -43,7 +43,7 @@ Sprint 2 has been successfully completed, delivering all planned features and en
 ### Project Structure
 
 ```
-Xyra-Templates/
+Mailwright-Templates/
 ├── README.md                       # Main project documentation
 ├── requirements.txt                # Python dependencies
 ├── pyproject.toml                  # Project configuration and build settings
@@ -54,7 +54,7 @@ Xyra-Templates/
 ├── .env.example                    # Environment variables template (not tracked)
 ├── .env                            # Local environment variables (not tracked)
 │
-├── xyra/                           # Main application package
+├── mailwright/                           # Main application package
 │   ├── __init__.py                 # Package initialization
 │   ├── main.py                     # FastAPI app entry point
 │   ├── config.py                   # Application settings (env vars, API keys)
@@ -119,7 +119,7 @@ Xyra-Templates/
 │   ├── beefreetester/              # Beefree integration testing
 │   │   └── (HTML/JS files for Beefree testing)
 │   │
-│   └── Xyra API - TemplateGen Tests.postman_collection.json # Postman API tests
+│   └── Mailwright API - TemplateGen Tests.postman_collection.json # Postman API tests
 │
 ├── docs/                           # Documentation
 │   ├── working_context/            # Current sprint documentation
@@ -152,7 +152,7 @@ Xyra-Templates/
 ├── archive/                        # Archived project files
 │   └── (legacy code and documentation)
 │
-├── xyra.egg-info/                  # Package metadata (generated)
+├── mailwright.egg-info/                  # Package metadata (generated)
 │   └── (setuptools metadata files)
 │
 ├── node_modules/                   # Node.js dependencies (for MJML CLI)
@@ -250,7 +250,7 @@ class TemplateVersion(Base):
 
 ```bash
 # Application
-APP_NAME="Xyra Marketing Content Agent"
+APP_NAME="Mailwright - Agentic Marketing Email Platform"
 DEBUG=false
 
 # LLM APIs
@@ -269,8 +269,8 @@ IMAGE_GENERATION_PROVIDER=openai
 IMAGE_GENERATION_OPENAI_DALLE_MODEL=dall-e-3
 
 # Database
-DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/xyra_db
-LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://user:pass@localhost:5432/xyra_db
+DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/mailwright_db
+LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://user:pass@localhost:5432/mailwright_db
 
 # MJML CLI
 MJML_CLI_PATH=mjml
@@ -456,9 +456,9 @@ async def database_operation(db: AsyncSession, data: CreateSchema) -> Model:
 
 ### Logging Strategy
 
-- **Centralized Configuration**: Logging is configured via `xyra/logging_config.py`, initialized in `xyra/main.py`.
+- **Centralized Configuration**: Logging is configured via `mailwright/logging_config.py`, initialized in `mailwright/main.py`.
 - **Standard Format**: Uses a consistent format: `%(asctime)s - %(name)s - %(levelname)s - %(module)s.%(funcName)s:%(lineno)d - %(message)s`.
-- **Log Level Control**: The log level can be set using the `LOG_LEVEL` environment variable or the `LOG_LEVEL` setting in `xyra/config.py` (defaults to `INFO`).
+- **Log Level Control**: The log level can be set using the `LOG_LEVEL` environment variable or the `LOG_LEVEL` setting in `mailwright/config.py` (defaults to `INFO`).
 - **Structured Logging**: Python's `logging` module is used throughout the application.
 - **Output**: Logs are currently directed to the console (StreamHandler).
 - Per-node logging in LangGraph workflows.
@@ -502,4 +502,4 @@ ruff
 - **PostgreSQL**: Database server for persistence
 - **API Keys**: OpenAI and/or Anthropic API access
 
-This cursor.rules file provides comprehensive context for the Xyra Marketing Content Agent project, covering architecture, implementation patterns, current status, and development guidelines. Use this as a reference for understanding the codebase structure, making consistent changes, and maintaining the project's architectural integrity.
+This cursor.rules file provides comprehensive context for the Mailwright - Agentic Marketing Email Platform project, covering architecture, implementation patterns, current status, and development guidelines. Use this as a reference for understanding the codebase structure, making consistent changes, and maintaining the project's architectural integrity.

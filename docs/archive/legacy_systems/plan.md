@@ -1,8 +1,8 @@
-# Xyra Marketing Content Agent - Phase 1 Plan: MJML Email Template Generation
+﻿# Mailwright - Agentic Marketing Email Platform - Phase 1 Plan: MJML Email Template Generation
 
 ## 1. Project Overview & Phase 1 Goals
 
-This document outlines the plan for Phase 1 of the Xyra Marketing Content Agent project. The primary goal is to develop an AI-powered agent capable of generating professional-grade, responsive email templates in MJML format. This phase will also include the capability to generate relevant imagery, allow for iterative refinement through natural language feedback, and import the final HTML (compiled from MJML) into the Beefree WYSWYG editor.
+This document outlines the plan for Phase 1 of the Mailwright - Agentic Marketing Email Platform project. The primary goal is to develop an AI-powered agent capable of generating professional-grade, responsive email templates in MJML format. This phase will also include the capability to generate relevant imagery, allow for iterative refinement through natural language feedback, and import the final HTML (compiled from MJML) into the Beefree WYSWYG editor.
 
 **Key Objectives for Phase 1 (derived from [`instructions.md`](instructions.md:1)):**
 
@@ -397,7 +397,7 @@ This updated plan incorporates the requested feedback loops, versioning, and a d
 
 ## 9. Proposed Project File Structure
 
-This section outlines a proposed file structure for the Xyra Marketing Content Agent project. It aims to organize the codebase logically for the new MJML-based asynchronous system, accommodate the components detailed in this plan, integrate relevant parts of existing files, and isolate legacy or irrelevant files.
+This section outlines a proposed file structure for the Mailwright - Agentic Marketing Email Platform project. It aims to organize the codebase logically for the new MJML-based asynchronous system, accommodate the components detailed in this plan, integrate relevant parts of existing files, and isolate legacy or irrelevant files.
 
 ### 9.1 Guiding Principles
 
@@ -421,7 +421,7 @@ This section outlines a proposed file structure for the Xyra Marketing Content A
 │       └── html_generator_overview.md    # Derived from current generator.md
 ├── archive/              # For truly irrelevant or superseded standalone files
 │   └── [`cuda-test.py`](cuda-test.py:1)      # Example: Irrelevant testing script
-├── xyra/                   # Main application Python package
+├── mailwright/                   # Main application Python package
 │   ├── __init__.py
 │   ├── main.py             # FastAPI app instance, main startup (evolves from templates_api.py)
 │   ├── config.py           # Application settings, environment variable management
@@ -459,7 +459,7 @@ This section outlines a proposed file structure for the Xyra Marketing Content A
 │   ├── unit/                 # Unit tests
 │   ├── integration/          # Integration tests
 │   ├── api/                  # API endpoint tests
-│   ├── [`Xyra API - TemplateGen Tests.postman_collection.json`](tests/Xyra%20API%20-%20TemplateGen%20Tests.postman_collection.json:1)
+│   ├── [`Mailwright API - TemplateGen Tests.postman_collection.json`](tests/Mailwright%20API%20-%20TemplateGen%20Tests.postman_collection.json:1)
 │   └── [`beefreetester/`](tests/beefreetester:1)
 │       ├── [`Blob.js`](tests/beefreetester/Blob.js:1)
 │       ├── [`fileSaver.js`](tests/beefreetester/fileSaver.js:1)
@@ -470,10 +470,10 @@ This section outlines a proposed file structure for the Xyra Marketing Content A
 
 ### 9.3 Integration and Refactoring of Existing Files
 
-*   **`xyra/templates_api.py`**: Logic to be refactored into `xyra/main.py` and `xyra/api/v1/template_routes.py`. The new routes will call the new asynchronous services.
-*   **`xyra/templates/schema.py`**: Relevant Pydantic models (e.g., for Beefree compatibility, parts of `TemplateRequest`) can be adapted and moved to `xyra/schemas/template_schemas.py`. New schemas for MJML flow, async tasks, and API responses will be created here.
-*   **`xyra/templates/store.py`**: The new `xyra/db/template_store.py` will implement the versioning schema defined in `plan.md` (Section 3.7) for MJML templates and their versions. The existing RAG-focused store logic (vector embeddings, similarity search) from `xyra/templates/store.py` would be part of a separate module if/when the RAG system is integrated with the new MJML agent.
-*   **`xyra/templates/content.py` & `xyra/templates/generator.py`**: These implement the legacy RAG and HTML-centric generation. Their functionality is largely superseded by the new `core_services/` for Phase 1. Code might be archived or parts refactored if a RAG system is integrated later with the MJML agent.
+*   **`mailwright/templates_api.py`**: Logic to be refactored into `mailwright/main.py` and `mailwright/api/v1/template_routes.py`. The new routes will call the new asynchronous services.
+*   **`mailwright/templates/schema.py`**: Relevant Pydantic models (e.g., for Beefree compatibility, parts of `TemplateRequest`) can be adapted and moved to `mailwright/schemas/template_schemas.py`. New schemas for MJML flow, async tasks, and API responses will be created here.
+*   **`mailwright/templates/store.py`**: The new `mailwright/db/template_store.py` will implement the versioning schema defined in `plan.md` (Section 3.7) for MJML templates and their versions. The existing RAG-focused store logic (vector embeddings, similarity search) from `mailwright/templates/store.py` would be part of a separate module if/when the RAG system is integrated with the new MJML agent.
+*   **`mailwright/templates/content.py` & `mailwright/templates/generator.py`**: These implement the legacy RAG and HTML-centric generation. Their functionality is largely superseded by the new `core_services/` for Phase 1. Code might be archived or parts refactored if a RAG system is integrated later with the MJML agent.
 *   **[`instructions.md`](instructions.md:1)**: Moved to `docs/instructions.md`.
 *   **[`content.md`](content.md:1)** (current): Describes template indexing. To be moved to `docs/legacy_systems/template_indexing_overview.md`.
 *   **[`generator.md`](generator.md:1)** (current): Describes older HTML generator. To be moved to `docs/legacy_systems/html_generator_overview.md`.

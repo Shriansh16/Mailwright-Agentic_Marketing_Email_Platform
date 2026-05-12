@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import logging
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 
 # --- Configuration ---
 # IMPORTANT: This script assumes a default local PostgreSQL setup.
-# The DATABASE_URL is hardcoded here because this script doesn't load the full Xyra environment.
+# The DATABASE_URL is hardcoded here because this script doesn't load the full mailwright environment.
 # If your database is running elsewhere, please update this URL.
-DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/xyra"
+DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/mailwright"
 TABLE_TO_CLEAR = "rag_templates"
 
 

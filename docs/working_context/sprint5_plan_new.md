@@ -1,4 +1,4 @@
-# Sprint 5 Plan: RAG-Based HTML Generation
+﻿# Sprint 5 Plan: RAG-Based HTML Generation
 
 ## 1. Overview & Core Goal
 
@@ -24,10 +24,10 @@ The work is broken down into the following tasks, designed to build the new syst
 Before any new development, we will remove the artifacts from the initial, more complex RAG implementation to create a clean slate. This is the first and most critical step.
 
 - **Action 1:** Create and apply a new Alembic migration to reverse the changes from revision `3d8eba472621`. This will drop the `rag_templates` table entirely.
-- **Action 2:** Delete the `RAGTemplate` SQLAlchemy model from `xyra/db/models.py`.
-- **Action 3:** Delete the conflicting service file `xyra/core_services/corpus_ingestion_service.py`.
+- **Action 2:** Delete the `RAGTemplate` SQLAlchemy model from `mailwright/db/models.py`.
+- **Action 3:** Delete the conflicting service file `mailwright/core_services/corpus_ingestion_service.py`.
 - **Action 4:** Run the full test suite (`pytest -v`) to confirm that the removal of these components has not broken any existing, unrelated functionality.
-- **Action 5:** Delete the `RAGTemplateBase`, `RAGTemplateCreate`, and `RAGTemplate` Pydantic models from `xyra/schemas/template_schemas.py`.
+- **Action 5:** Delete the `RAGTemplateBase`, `RAGTemplateCreate`, and `RAGTemplate` Pydantic models from `mailwright/schemas/template_schemas.py`.
 
 ### Task 1: Database Schema for RAG Corpus
 
@@ -70,7 +70,7 @@ A one-time script is needed to populate the `rag_templates` table. This script w
 
 To enable the new workflow, we need to modify the primary template creation endpoint.
 
-- **Action:** Modify `xyra/schemas/template_schemas.py`.
+- **Action:** Modify `mailwright/schemas/template_schemas.py`.
 - **Schema Changes:**
     - `TemplateCreationRequest`:
         - The existing `user_brief: UserBriefSchema` field will be made `Optional`.
@@ -85,18 +85,18 @@ This is the core logic, integrating the RAG pipeline into our existing state mac
 
 - **Action 1: Update Graph State**
     - **Status:** ✅ Complete
-    - Modify `GraphState` in `xyra/graphs/state.py` to track the new workflow's data.
+    - Modify `GraphState` in `mailwright/graphs/state.py` to track the new workflow's data.
     - **New Fields:** `rag_flow: bool`, `plain_text_brief: Optional[str]`, `brief_fingerprint: Optional[str]`, `retrieved_template_html: Optional[str]`, `final_html_content: Optional[str]`.
 
 - **Action 2: Create RAG Core Service**
-    - Create a new service file: `xyra/core_services/rag_template_service.py`.
+    - Create a new service file: `mailwright/core_services/rag_template_service.py`.
     - This service will encapsulate the key RAG logic:
         - `generate_fingerprint_for_brief(brief: str) -> str`
         - `find_best_matching_template(embedding: list[float]) -> str` (returns processed HTML)
         - `populate_template_with_brief(template_html: str, brief: str) -> str` (returns final HTML)
 
 - **Action 3: Implement New Graph Nodes**
-    - In `xyra/graphs/template_generation_graph.py`, add new node functions that utilize the `rag_template_service`.
+    - In `mailwright/graphs/template_generation_graph.py`, add new node functions that utilize the `rag_template_service`.
     - **New Nodes:**
         - `LG_RAG_GenerateBriefFingerprint`
         - `LG_RAG_FindMatchingTemplate`
@@ -153,7 +153,7 @@ This sprint was a success, delivering the full end-to-end RAG-based HTML generat
 3.  **End-to-End Validation:**
     - A manual `curl` test successfully triggered the RAG workflow.
     - We diagnosed and fixed several critical bugs that were not initially anticipated:
-        - **Configuration Error:** Added the `PROMPT_GENERATION_MODEL` to the central `xyra/config.py` settings.
+        - **Configuration Error:** Added the `PROMPT_GENERATION_MODEL` to the central `mailwright/config.py` settings.
         - **Unsupported Parameter:** Corrected the LLM calls to remove the `temperature` parameter, which was unsupported by the target model.
         - **Asyncio Client Bug:** Refactored the `RAGTemplateService` to use the correct `AsyncOpenAI` client, resolving a `TypeError`.
         - **Resource Management Stall:** Debugged and fixed a stall in the diagnostic script by refactoring how the `AsyncOpenAI` client and `SQLAlchemy` sessions were managed, preventing event loop conflicts.

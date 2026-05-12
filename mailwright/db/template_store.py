@@ -1,12 +1,12 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+﻿from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import Optional, List
 from sqlalchemy import desc, update
 from sqlalchemy.orm import sessionmaker
 from fastapi import Request
 
-from xyra.db.models import TemplateVersion
-from xyra.schemas.template_schemas import (
+from mailwright.db.models import TemplateVersion
+from mailwright.schemas.template_schemas import (
     TemplateVersionCreate,
 )
 

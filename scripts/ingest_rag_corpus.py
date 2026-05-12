@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import os
 import json
 import logging
@@ -12,9 +12,9 @@ from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from xyra.config import settings
-from xyra.db.models import RAGTemplate
-from xyra.logging_config import setup_logging
+from mailwright.config import settings
+from mailwright.db.models import RAGTemplate
+from mailwright.logging_config import setup_logging
 
 # --- Basic Setup ---
 setup_logging()

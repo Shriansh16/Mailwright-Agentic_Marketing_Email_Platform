@@ -1,4 +1,4 @@
-# Xyra — Complete Module & Script Reference
+﻿# Mailwright — Complete Module & Script Reference
 
 > **Purpose of this document:** A file-by-file breakdown of every module and script in the project. For each file you will find: what it does, what it contains, how it connects to the rest of the system, and what to change/touch when adding a new feature.
 
@@ -7,28 +7,28 @@
 ## Table of Contents
 
 1. [Application Entry & Routing](#1-application-entry--routing)
-   - `xyra/main.py`
-   - `xyra/api/v1/router.py`
-   - `xyra/api/v1/template_routes.py`
+   - `mailwright/main.py`
+   - `mailwright/api/v1/router.py`
+   - `mailwright/api/v1/template_routes.py`
 2. [Configuration](#2-configuration)
-   - `xyra/config.py`
-   - `xyra/logging_config.py`
+   - `mailwright/config.py`
+   - `mailwright/logging_config.py`
 3. [Schemas (Data Contracts)](#3-schemas-data-contracts)
-   - `xyra/schemas/template_schemas.py`
+   - `mailwright/schemas/template_schemas.py`
 4. [LangGraph — The Workflow Engine](#4-langgraph--the-workflow-engine)
-   - `xyra/graphs/state.py`
-   - `xyra/graphs/checkpointer.py`
-   - `xyra/graphs/template_generation_graph.py`
+   - `mailwright/graphs/state.py`
+   - `mailwright/graphs/checkpointer.py`
+   - `mailwright/graphs/template_generation_graph.py`
 5. [Core Services](#5-core-services)
-   - `xyra/core_services/llm_factory.py`
-   - `xyra/core_services/brief_analyzer_service.py`
-   - `xyra/core_services/mjml_service.py`
-   - `xyra/core_services/image_generator_service.py`
-   - `xyra/core_services/feedback_engine_service.py`
-   - `xyra/core_services/rag_template_service.py`
+   - `mailwright/core_services/llm_factory.py`
+   - `mailwright/core_services/brief_analyzer_service.py`
+   - `mailwright/core_services/mjml_service.py`
+   - `mailwright/core_services/image_generator_service.py`
+   - `mailwright/core_services/feedback_engine_service.py`
+   - `mailwright/core_services/rag_template_service.py`
 6. [Database Layer](#6-database-layer)
-   - `xyra/db/models.py`
-   - `xyra/db/template_store.py`
+   - `mailwright/db/models.py`
+   - `mailwright/db/template_store.py`
 7. [Scripts — Operational Utilities](#7-scripts--operational-utilities)
    - `scripts/ingest_rag_corpus.py`
    - `scripts/clear_rag_db.py`
@@ -44,7 +44,7 @@
 
 ## 1. Application Entry & Routing
 
-### `xyra/main.py`
+### `mailwright/main.py`
 
 **What it is:** The single entry point for the entire FastAPI application.
 
@@ -60,7 +60,7 @@
 
 **How to run it:**
 ```bash
-uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn mailwright.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **When to edit this file:**
@@ -73,7 +73,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-### `xyra/api/v1/router.py`
+### `mailwright/api/v1/router.py`
 
 **What it is:** The API v1 router — the switchboard that assembles all v1 endpoints.
 
@@ -94,7 +94,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-### `xyra/api/v1/template_routes.py`
+### `mailwright/api/v1/template_routes.py`
 
 **What it is:** The core HTTP API layer. All user-facing endpoints live here.
 
@@ -126,7 +126,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 ## 2. Configuration
 
-### `xyra/config.py`
+### `mailwright/config.py`
 
 **What it is:** The single source of truth for all runtime configuration. **Read this before anything else.**
 
@@ -139,7 +139,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 | Field | Default | Purpose |
 |-------|---------|---------|
-| `APP_NAME` | `"Xyra Marketing Content Agent"` | Shown in Swagger UI |
+| `APP_NAME` | `"Mailwright - Agentic Marketing Email Platform"` | Shown in Swagger UI |
 | `DEBUG` | `False` | Enables SQLAlchemy SQL echo |
 | `LOG_LEVEL` | `"INFO"` | Controls logging verbosity |
 | `OPENAI_API_KEY` | `None` | Required for GPT models and DALL-E |
@@ -176,7 +176,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-### `xyra/logging_config.py`
+### `mailwright/logging_config.py`
 
 **What it is:** Centralised logging setup — called once at startup.
 
@@ -187,7 +187,7 @@ uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
 
 **Log format:**
 ```
-2026-04-29 18:00:00 - xyra.api.v1.template_routes - INFO - template_routes.create_template_generation_task:48 - Starting...
+2026-04-29 18:00:00 - mailwright.api.v1.template_routes - INFO - template_routes.create_template_generation_task:48 - Starting...
 ```
 
 **When to edit this file:**
@@ -206,7 +206,7 @@ logger.info("My message")
 
 ## 3. Schemas (Data Contracts)
 
-### `xyra/schemas/template_schemas.py`
+### `mailwright/schemas/template_schemas.py`
 
 **What it is:** All Pydantic models that define the shape of API request and response bodies.
 
@@ -238,7 +238,7 @@ logger.info("My message")
 
 ## 4. LangGraph — The Workflow Engine
 
-### `xyra/graphs/state.py`
+### `mailwright/graphs/state.py`
 
 **What it is:** The single shared memory object that flows between all graph nodes.
 
@@ -266,7 +266,7 @@ Defines `GraphState` — a Pydantic model. Every LangGraph node receives a `Grap
 
 ---
 
-### `xyra/graphs/checkpointer.py`
+### `mailwright/graphs/checkpointer.py`
 
 **What it is:** The factory that provides the persistence layer for LangGraph state.
 
@@ -288,7 +288,7 @@ Without the checkpointer, every API call would start the graph from scratch and 
 
 ---
 
-### `xyra/graphs/template_generation_graph.py`
+### `mailwright/graphs/template_generation_graph.py`
 
 **What it is:** The heart of the application. Defines every node, every edge, and every routing decision in the LangGraph workflow.
 
@@ -344,7 +344,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ## 5. Core Services
 
-### `xyra/core_services/llm_factory.py`
+### `mailwright/core_services/llm_factory.py`
 
 **What it is:** A single function factory that hides the difference between OpenAI and Anthropic clients.
 
@@ -365,7 +365,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ---
 
-### `xyra/core_services/brief_analyzer_service.py`
+### `mailwright/core_services/brief_analyzer_service.py`
 
 **What it is:** The service that decides whether a user's email brief is clear enough to proceed.
 
@@ -393,7 +393,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ---
 
-### `xyra/core_services/mjml_service.py`
+### `mailwright/core_services/mjml_service.py`
 
 **What it is:** A class (`MJMLService`) that owns two LangGraph nodes for MJML generation and compilation.
 
@@ -425,7 +425,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ---
 
-### `xyra/core_services/image_generator_service.py`
+### `mailwright/core_services/image_generator_service.py`
 
 **What it is:** A class (`ImageGeneratorService`) that wraps the OpenAI DALL-E image generation API.
 
@@ -449,7 +449,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ---
 
-### `xyra/core_services/feedback_engine_service.py`
+### `mailwright/core_services/feedback_engine_service.py`
 
 **What it is:** A class (`FeedbackEngineService`) that takes existing MJML + user feedback and produces revised MJML.
 
@@ -473,7 +473,7 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 ---
 
-### `xyra/core_services/rag_template_service.py`
+### `mailwright/core_services/rag_template_service.py`
 
 **What it is:** The most complex service — handles the entire RAG workflow from fingerprinting to content injection.
 
@@ -481,17 +481,17 @@ Builds a `StateGraph(GraphState)`, adds all nodes, adds all edges (fixed and con
 
 **`_extract_editable_content(soup) → dict` (module-level helper)**
 - Walks the BeautifulSoup tree to find all editable text nodes and CSS colour values
-- Tags each element with a temporary `data-xyra-temp-id` attribute for later injection
+- Tags each element with a temporary `data-Mailwright-temp-id` attribute for later injection
 - Returns a `content_map` dict: `{"text_elements": [...], "style_elements": [...]}`
-- Text elements: `{"id": "xyra-text-0", "tag": "p", "current_text": "..."}`
-- Style elements (from `<style>` blocks): `{"id": "xyra-style-0", "selector": ".btn", "property": "background-color", "current_value": "#123456"}`
-- Style elements (inline): `{"id": "xyra-style-inline-0", "selector": "inline-td-0", "property": "color", "current_value": "..."}`
+- Text elements: `{"id": "Mailwright-text-0", "tag": "p", "current_text": "..."}`
+- Style elements (from `<style>` blocks): `{"id": "Mailwright-style-0", "selector": ".btn", "property": "background-color", "current_value": "#123456"}`
+- Style elements (inline): `{"id": "Mailwright-style-inline-0", "selector": "inline-td-0", "property": "color", "current_value": "..."}`
 
 **`_inject_content(soup, updated_content_map) → str` (module-level helper)**
 - Receives the LLM's updated content map (with `new_text` and `new_value` fields added)
-- Finds each element by its `data-xyra-temp-id` attribute and replaces text / updates styles
+- Finds each element by its `data-Mailwright-temp-id` attribute and replaces text / updates styles
 - Handles both `<style>` block updates (regex-based CSS property replacement) and inline style updates
-- Cleans up all temporary `data-xyra-temp-id` attributes before returning final HTML string
+- Cleans up all temporary `data-Mailwright-temp-id` attributes before returning final HTML string
 
 **`RAGTemplateService` class:**
 
@@ -526,7 +526,7 @@ This is more reliable than sending the whole HTML to the LLM because:
 
 ## 6. Database Layer
 
-### `xyra/db/models.py`
+### `mailwright/db/models.py`
 
 **What it is:** SQLAlchemy ORM model definitions + async engine/session factory.
 
@@ -568,7 +568,7 @@ This is more reliable than sending the whole HTML to the LLM because:
 
 ---
 
-### `xyra/db/template_store.py`
+### `mailwright/db/template_store.py`
 
 **What it is:** All database query functions (CRUD operations) for the `template_versions` table.
 
@@ -640,7 +640,7 @@ python scripts/ingest_rag_corpus.py
 
 **Purpose:** Wipe all records from the `rag_templates` table. Use before re-ingesting from scratch.
 
-**Important:** The `DATABASE_URL` is **hardcoded** in this script as `postgresql+asyncpg://postgres:postgres@localhost:5432/xyra`. Edit it before running if your DB is different.
+**Important:** The `DATABASE_URL` is **hardcoded** in this script as `postgresql+asyncpg://postgres:postgres@localhost:5432/Mailwright`. Edit it before running if your DB is different.
 
 **How to run:**
 ```bash
@@ -781,13 +781,13 @@ config.py      ←── imported by almost everything (settings singleton)
 logging_config.py ←── called once in main.py; logger = getLogger(__name__) everywhere else
 ```
 
-**Scripts are standalone — they import from `xyra.*` but are not imported by `xyra.*`:**
+**Scripts are standalone — they import from `mailwright.*` but are not imported by `mailwright.*`:**
 ```
-scripts/ingest_rag_corpus.py → xyra/config.py, xyra/db/models.py, xyra/logging_config.py
+scripts/ingest_rag_corpus.py → mailwright/config.py, mailwright/db/models.py, mailwright/logging_config.py
 scripts/clear_rag_db.py      → standalone (hardcoded DB URL)
-scripts/extract_html.py      → xyra/config.py (via .env)
-scripts/replace_media.py     → xyra/config.py, xyra/core_services/image_generator_service.py
-scripts/test_openai_access.py → xyra/config.py, xyra/logging_config.py
+scripts/extract_html.py      → mailwright/config.py (via .env)
+scripts/replace_media.py     → mailwright/config.py, mailwright/core_services/image_generator_service.py
+scripts/test_openai_access.py → mailwright/config.py, mailwright/logging_config.py
 ```
 
 ---
@@ -796,27 +796,27 @@ scripts/test_openai_access.py → xyra/config.py, xyra/logging_config.py
 
 ### Add a new LLM task (e.g. "Subject Line Generator")
 
-1. **`xyra/config.py`** — add `SUBJECT_LINE_PROVIDER`, `SUBJECT_LINE_OPENAI_MODEL`, `SUBJECT_LINE_ANTHROPIC_MODEL`
-2. **`xyra/core_services/`** — create `subject_line_service.py` with a class that calls `get_configured_chat_model(...)`
-3. **`xyra/graphs/state.py`** — add `generated_subject_line: Optional[str]` field
-4. **`xyra/graphs/template_generation_graph.py`** — add node function + add it to `create_graph_builder()`
-5. **`xyra/schemas/template_schemas.py`** — add field to response schema if you want to expose it via API
+1. **`mailwright/config.py`** — add `SUBJECT_LINE_PROVIDER`, `SUBJECT_LINE_OPENAI_MODEL`, `SUBJECT_LINE_ANTHROPIC_MODEL`
+2. **`mailwright/core_services/`** — create `subject_line_service.py` with a class that calls `get_configured_chat_model(...)`
+3. **`mailwright/graphs/state.py`** — add `generated_subject_line: Optional[str]` field
+4. **`mailwright/graphs/template_generation_graph.py`** — add node function + add it to `create_graph_builder()`
+5. **`mailwright/schemas/template_schemas.py`** — add field to response schema if you want to expose it via API
 
 ---
 
 ### Add a new API endpoint (e.g. `GET /templates/{id}/export`)
 
-1. **`xyra/api/v1/template_routes.py`** — add the route handler function
-2. **`xyra/schemas/template_schemas.py`** — add request/response schemas if needed
-3. **`xyra/db/template_store.py`** — add a new DB query function if the endpoint reads from DB
+1. **`mailwright/api/v1/template_routes.py`** — add the route handler function
+2. **`mailwright/schemas/template_schemas.py`** — add request/response schemas if needed
+3. **`mailwright/db/template_store.py`** — add a new DB query function if the endpoint reads from DB
 
 ---
 
 ### Add a new LLM provider (e.g. Google Gemini)
 
 1. **`requirements.txt`** — add `langchain-google-genai`
-2. **`xyra/config.py`** — add `GOOGLE_API_KEY` and per-task `*_GOOGLE_MODEL` settings
-3. **`xyra/core_services/llm_factory.py`** — add `elif provider == "google":` branch
+2. **`mailwright/config.py`** — add `GOOGLE_API_KEY` and per-task `*_GOOGLE_MODEL` settings
+3. **`mailwright/core_services/llm_factory.py`** — add `elif provider == "google":` branch
 4. No other files need to change
 
 ---
@@ -824,18 +824,18 @@ scripts/test_openai_access.py → xyra/config.py, xyra/logging_config.py
 ### Add a new image generation provider (e.g. Stability AI)
 
 1. **`requirements.txt`** — add the SDK
-2. **`xyra/config.py`** — add API key and model settings
-3. **`xyra/core_services/image_generator_service.py`** — add `elif provider == "stability":` branch in `__init__` and `generate_image`
+2. **`mailwright/config.py`** — add API key and model settings
+3. **`mailwright/core_services/image_generator_service.py`** — add `elif provider == "stability":` branch in `__init__` and `generate_image`
 
 ---
 
 ### Add a new database column to template_versions
 
-1. **`xyra/db/models.py`** — add the `Column(...)` definition
+1. **`mailwright/db/models.py`** — add the `Column(...)` definition
 2. **Terminal:** `alembic revision --autogenerate -m "add column xyz"` — creates the migration file
 3. **Terminal:** `alembic upgrade head` — applies it
-4. **`xyra/schemas/template_schemas.py`** — add the field to `TemplateVersionBase` if you want it exposed via API
-5. **`xyra/db/template_store.py`** — update `create_template_version` if the new column needs to be set explicitly
+4. **`mailwright/schemas/template_schemas.py`** — add the field to `TemplateVersionBase` if you want it exposed via API
+5. **`mailwright/db/template_store.py`** — update `create_template_version` if the new column needs to be set explicitly
 
 ---
 

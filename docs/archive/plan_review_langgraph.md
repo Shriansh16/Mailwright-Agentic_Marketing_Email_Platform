@@ -1,4 +1,4 @@
-# Review of Xyra Marketing Content Agent - Phase 1 Plan (LangGraph Architecture)
+﻿# Review of Mailwright - Agentic Marketing Email Platform - Phase 1 Plan (LangGraph Architecture)
 
 This document summarizes the review of the `plan_langgraph.md` document, focusing on its efficiency, elegance, and areas for further consideration before sprint planning.
 

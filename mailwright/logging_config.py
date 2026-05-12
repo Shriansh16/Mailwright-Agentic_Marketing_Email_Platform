@@ -1,6 +1,6 @@
-import logging
+﻿import logging
 import os
-from xyra.config import settings  # To potentially get LOG_LEVEL if defined in settings
+from mailwright.config import settings  # To potentially get LOG_LEVEL if defined in settings
 
 DEFAULT_LOG_LEVEL = "INFO"  # Default to INFO if not set in environment or settings
 
@@ -32,8 +32,8 @@ def setup_logging():
 if __name__ == "__main__":
     # Example of how to use it:
     setup_logging()
-    logging.getLogger("xyra.test_logger").debug("This is a debug message.")
-    logging.getLogger("xyra.test_logger").info("This is an info message.")
-    logging.getLogger("xyra.test_logger").warning("This is a warning message.")
-    logging.getLogger("xyra.test_logger").error("This is an error message.")
-    logging.getLogger("xyra.test_logger").critical("This is a critical message.")
+    logging.getLogger("mailwright.test_logger").debug("This is a debug message.")
+    logging.getLogger("mailwright.test_logger").info("This is an info message.")
+    logging.getLogger("mailwright.test_logger").warning("This is a warning message.")
+    logging.getLogger("mailwright.test_logger").error("This is an error message.")
+    logging.getLogger("mailwright.test_logger").critical("This is a critical message.")

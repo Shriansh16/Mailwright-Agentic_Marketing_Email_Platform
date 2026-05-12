@@ -1,9 +1,9 @@
-import pytest
+﻿import pytest
 from unittest.mock import AsyncMock, patch
 
-from xyra.graphs.state import GraphState
-from xyra.graphs.template_generation_graph import image_generation_node
-# from xyra.core_services.image_generator_service import ImageGeneratorService # For type hinting if needed
+from mailwright.graphs.state import GraphState
+from mailwright.graphs.template_generation_graph import image_generation_node
+# from mailwright.core_services.image_generator_service import ImageGeneratorService # For type hinting if needed
 
 
 @pytest.mark.asyncio
@@ -15,7 +15,7 @@ async def test_image_generation_node_single_prompt_success():
     initial_state = GraphState(image_prompts=[initial_prompt])
 
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         mock_generate_image_call.return_value = expected_url
@@ -51,7 +51,7 @@ async def test_image_generation_node_multiple_prompts_success():
         return None
 
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         mock_generate_image_call.side_effect = mock_generate_side_effect
@@ -72,7 +72,7 @@ async def test_image_generation_node_no_prompts(no_prompts_value):
     """Test image_generation_node when no image_prompts are provided (None or empty list)."""
     initial_state = GraphState(image_prompts=no_prompts_value)
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         result_state_update = await image_generation_node(initial_state)
@@ -111,7 +111,7 @@ async def test_image_generation_node_partial_failure():
         return None
 
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         mock_generate_image_call.side_effect = mock_generate_side_effect
@@ -139,7 +139,7 @@ async def test_image_generation_node_total_failure():
     initial_state = GraphState(image_prompts=prompts)
 
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         mock_generate_image_call.return_value = None
@@ -164,7 +164,7 @@ async def test_image_generation_node_service_exception():
     initial_state = GraphState(image_prompts=[initial_prompt])
 
     with patch(
-        "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+        "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
         new_callable=AsyncMock,
     ) as mock_generate_image_call:
         mock_generate_image_call.side_effect = Exception(exception_message)

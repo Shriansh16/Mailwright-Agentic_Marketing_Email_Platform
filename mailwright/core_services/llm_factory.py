@@ -1,8 +1,8 @@
-from typing import Any
+﻿from typing import Any
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
-from xyra.config import settings
+from mailwright.config import settings
 
 
 def get_configured_chat_model(

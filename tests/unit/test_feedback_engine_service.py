@@ -1,9 +1,9 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from unittest.mock import patch, AsyncMock
 
-from xyra.config import Settings
-from xyra.core_services.feedback_engine_service import (
+from mailwright.config import Settings
+from mailwright.core_services.feedback_engine_service import (
     FeedbackEngineService,
     FeedbackEngineServiceError,
 )
@@ -25,10 +25,10 @@ def mock_settings() -> Settings:
 @pytest_asyncio.fixture
 async def feedback_service(mock_settings: Settings):
     with (
-        patch("xyra.core_services.feedback_engine_service.settings", mock_settings),
-        patch("xyra.core_services.llm_factory.settings", mock_settings, create=True),
+        patch("mailwright.core_services.feedback_engine_service.settings", mock_settings),
+        patch("mailwright.core_services.llm_factory.settings", mock_settings, create=True),
         patch(
-            "xyra.core_services.feedback_engine_service.get_configured_chat_model"
+            "mailwright.core_services.feedback_engine_service.get_configured_chat_model"
         ) as mock_get_llm_factory_call,
     ):
         mock_llm_instance = AsyncMock(spec=BaseChatModel)
@@ -128,10 +128,10 @@ async def test_revise_mjml_llm_returns_empty_content(feedback_service):
 def test_feedback_service_initialization_fails(mock_settings: Settings):
     with (
         patch(
-            "xyra.core_services.feedback_engine_service.get_configured_chat_model",
+            "mailwright.core_services.feedback_engine_service.get_configured_chat_model",
             side_effect=Exception("Config Error"),
         ) as mock_get_llm,
-        patch("xyra.core_services.feedback_engine_service.settings", mock_settings),
+        patch("mailwright.core_services.feedback_engine_service.settings", mock_settings),
     ):
         with pytest.raises(
             FeedbackEngineServiceError,

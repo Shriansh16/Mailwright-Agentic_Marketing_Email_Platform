@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import tempfile
 import os
 from typing import Dict, Any, Optional
@@ -6,9 +6,9 @@ from typing import Dict, Any, Optional
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.language_models.chat_models import BaseChatModel
 
-from xyra.graphs.state import GraphState
-from xyra.core_services.llm_factory import get_configured_chat_model  # Updated import
-from xyra.config import settings
+from mailwright.graphs.state import GraphState
+from mailwright.core_services.llm_factory import get_configured_chat_model  # Updated import
+from mailwright.config import settings
 
 # Placeholder for logger, to be replaced with a proper logger
 import logging
@@ -42,7 +42,7 @@ class MJMLService:
     def __init__(self):
         """
         Initializes the MJMLService, configuring the LLM client based on
-        MJML-specific settings in `xyra.config.settings`.
+        MJML-specific settings in `mailwright.config.settings`.
         """
         self.llm_provider = (
             settings.MJML_GENERATION_PROVIDER
@@ -305,11 +305,11 @@ class MJMLService:
 # Example usage (for testing purposes, not part of the node logic itself)
 # if __name__ == "__main__":
 #     import asyncio
-#     from xyra.schemas.template_schemas import UserBriefSchema # Assuming this exists
+#     from mailwright.schemas.template_schemas import UserBriefSchema # Assuming this exists
 #
 #     async def main():
 #         # Mock settings if not running in FastAPI context
-#         from xyra.config import Settings
+#         from mailwright.config import Settings
 #         settings_instance = Settings(llm_provider="openai", openai_api_key="your_key") # or "anthropic"
 #         # This is a bit of a hack for standalone testing; normally settings are loaded globally.
 #         # For real testing, use pytest fixtures to manage settings.
@@ -318,7 +318,7 @@ class MJMLService:
 #
 #         service = MJMLService()
 #         test_brief = UserBriefSchema(
-#             subject="Welcome to Xyra!",
+#             subject="Welcome to mailwright!",
 #             body_copy="Thanks for signing up. We're excited to have you.",
 #             call_to_action_text="Explore Now",
 #             # Add other fields as per your UserBriefSchema

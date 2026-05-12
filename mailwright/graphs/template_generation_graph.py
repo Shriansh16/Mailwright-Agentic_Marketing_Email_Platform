@@ -1,30 +1,30 @@
-import logging  # Added for standardized logging
+﻿import logging  # Added for standardized logging
 import asyncio  # Added for running the test
 
 # import traceback # Removed for Sprint 3 debugging
 from langgraph.graph import StateGraph, START, END  # Removed CompiledGraph
 from .state import GraphState
 from .checkpointer import get_checkpointer_context_manager, SQLITE_CONN_STRING
-from xyra.schemas.template_schemas import UserBriefSchema
-from xyra.core_services.brief_analyzer_service import (
+from mailwright.schemas.template_schemas import UserBriefSchema
+from mailwright.core_services.brief_analyzer_service import (
     analyze_brief_for_clarifications,
     BriefAnalysisResult,
 )
-from xyra.core_services.mjml_service import MJMLService
-from xyra.core_services.image_generator_service import ImageGeneratorService
-from xyra.db.template_store import create_template_version  # Sprint 2: For StoreV0Node
-from xyra.db.models import AsyncSessionLocal  # Sprint 2: For StoreV0Node
-from xyra.schemas.template_schemas import (
+from mailwright.core_services.mjml_service import MJMLService
+from mailwright.core_services.image_generator_service import ImageGeneratorService
+from mailwright.db.template_store import create_template_version  # Sprint 2: For StoreV0Node
+from mailwright.db.models import AsyncSessionLocal  # Sprint 2: For StoreV0Node
+from mailwright.schemas.template_schemas import (
     TemplateVersionCreate,
 )  # Sprint 2: For StoreV0Node
-from xyra.core_services.feedback_engine_service import (
+from mailwright.core_services.feedback_engine_service import (
     FeedbackEngineService,
     FeedbackEngineServiceError,
 )  # Sprint 3: Feedback Engine
-from xyra.config import settings
+from mailwright.config import settings
 
 if settings.RAG_ENABLED:
-    from xyra.core_services.rag_template_service import RAGTemplateService  # Sprint 5: RAG Service
+    from mailwright.core_services.rag_template_service import RAGTemplateService  # Sprint 5: RAG Service
 import uuid  # For generating template_id if needed
 from typing import Dict, Any
 

@@ -1,11 +1,11 @@
-import pytest
+﻿import pytest
 import json
 from unittest.mock import patch, AsyncMock, MagicMock
 
-# Assuming xyra is in PYTHONPATH or installed
-from xyra.core_services.brief_analyzer_service import analyze_brief_for_clarifications
-from xyra.schemas.template_schemas import UserBriefSchema
-from xyra.config import Settings  # To mock settings
+# Assuming mailwright is in PYTHONPATH or installed
+from mailwright.core_services.brief_analyzer_service import analyze_brief_for_clarifications
+from mailwright.schemas.template_schemas import UserBriefSchema
+from mailwright.config import Settings  # To mock settings
 
 # Mock settings values for tests
 MOCK_OPENAI_API_KEY = "fake_openai_key"
@@ -65,8 +65,8 @@ def mock_settings_anthropic_brief_analyzer():
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_status_ok(
     mock_get_llm,
     mock_settings_obj,
@@ -148,8 +148,8 @@ async def test_analyze_brief_status_ok(
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_clarification_needed(
     mock_get_llm,
     mock_settings_obj,
@@ -189,8 +189,8 @@ async def test_analyze_brief_clarification_needed(
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_json_decode_error(
     mock_get_llm,
     mock_settings_obj,
@@ -220,8 +220,8 @@ async def test_analyze_brief_json_decode_error(
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_unexpected_json_format(
     mock_get_llm,
     mock_settings_obj,
@@ -251,8 +251,8 @@ async def test_analyze_brief_unexpected_json_format(
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_llm_call_exception(
     mock_get_llm,
     mock_settings_obj,
@@ -282,8 +282,8 @@ async def test_analyze_brief_llm_call_exception(
 
 
 @pytest.mark.asyncio
-@patch("xyra.core_services.brief_analyzer_service.settings")
-@patch("xyra.core_services.brief_analyzer_service.get_configured_chat_model")
+@patch("mailwright.core_services.brief_analyzer_service.settings")
+@patch("mailwright.core_services.brief_analyzer_service.get_configured_chat_model")
 async def test_analyze_brief_empty_llm_response(
     mock_get_llm,
     mock_settings_obj,

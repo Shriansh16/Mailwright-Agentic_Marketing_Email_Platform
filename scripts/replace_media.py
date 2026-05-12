@@ -1,12 +1,12 @@
-import asyncio
+﻿import asyncio
 import re
 from bs4 import BeautifulSoup
 import os
 import logging
 from openai import OpenAI
-from xyra.core_services.image_generator_service import ImageGeneratorService
-from xyra.logging_config import setup_logging
-from xyra.config import settings
+from mailwright.core_services.image_generator_service import ImageGeneratorService
+from mailwright.logging_config import setup_logging
+from mailwright.config import settings
 
 # Setup logging
 setup_logging()

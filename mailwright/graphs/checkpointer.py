@@ -1,9 +1,9 @@
-import logging
+﻿import logging
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from langgraph.checkpoint.postgres.aio import (
     AsyncPostgresSaver,
 )  # Corrected import path
-from xyra.config import settings
+from mailwright.config import settings
 from pathlib import Path
 
 logger = logging.getLogger(__name__)

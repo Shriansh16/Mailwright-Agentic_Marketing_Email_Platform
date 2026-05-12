@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 import uuid
 from unittest.mock import patch, AsyncMock, MagicMock
 import logging
@@ -8,22 +8,22 @@ from datetime import datetime
 from langgraph.checkpoint.memory import MemorySaver
 
 # For Postgres checkpointer testing
-from xyra.graphs.checkpointer import (
+from mailwright.graphs.checkpointer import (
     get_checkpointer_context_manager as get_actual_checkpointer_cm,
 )
-from xyra.db.template_store import (
+from mailwright.db.template_store import (
     get_template_version,
     create_template_version,
     approve_template_version,
 )
 
 # AsyncSessionLocal will be patched in the test_graph_flow_with_store_v0_node
-# from xyra.db.models import AsyncSessionLocal
+# from mailwright.db.models import AsyncSessionLocal
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from xyra.config import settings
+from mailwright.config import settings
 
-from xyra.graphs.template_generation_graph import (
+from mailwright.graphs.template_generation_graph import (
     create_graph_builder,
     LG_WAIT_FOR_AMENDED_BRIEF_NODE_NAME,
     LG_STORE_V0_NODE_NAME,  # Import for interrupt_before
@@ -34,13 +34,13 @@ from xyra.graphs.template_generation_graph import (
     # mjml_service, # Will be patched directly in template_generation_graph module
     # Imported for @patch.object if needed, or can also be patched in graph module
 )
-from xyra.graphs.state import GraphState
-from xyra.schemas.template_schemas import UserBriefSchema, TemplateVersionCreate
-from xyra.core_services.brief_analyzer_service import BriefAnalysisResult
+from mailwright.graphs.state import GraphState
+from mailwright.schemas.template_schemas import UserBriefSchema, TemplateVersionCreate
+from mailwright.core_services.brief_analyzer_service import BriefAnalysisResult
 import pytest_asyncio
 
 # Import MJMLService if needed for type hinting, but not for patching target here
-# from xyra.core_services.mjml_service import MJMLService
+# from mailwright.core_services.mjml_service import MJMLService
 from sqlalchemy.exc import SQLAlchemyError  # Added for DB error simulation
 
 # Setup logger for this test module
@@ -112,19 +112,19 @@ async def active_postgres_checkpointer():
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )  # Patch method on instance in graph module
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )  # Patching on the instance in graph module
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )  # Patching on the instance in graph module
 async def test_graph_flow_brief_ok(
@@ -230,7 +230,7 @@ async def test_graph_flow_brief_ok(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_graph_flow_clarification_needed(
@@ -280,7 +280,7 @@ async def test_graph_flow_clarification_needed(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_graph_flow_brief_analyzer_error(
@@ -326,19 +326,19 @@ async def test_graph_flow_brief_analyzer_error(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_graph_flow_with_store_v0_node(
@@ -418,12 +418,12 @@ async def test_graph_flow_with_store_v0_node(
     )
 
     # Patch AsyncSessionLocal where it's used by the store_v0_node
-    # (likely in xyra.graphs.template_generation_graph or xyra.db.template_store if imported there)
-    # Assuming store_v0_node in template_generation_graph imports AsyncSessionLocal from xyra.db.models
-    # or has it available in its module scope. The direct import in template_generation_graph is from xyra.db.models
+    # (likely in mailwright.graphs.template_generation_graph or mailwright.db.template_store if imported there)
+    # Assuming store_v0_node in template_generation_graph imports AsyncSessionLocal from mailwright.db.models
+    # or has it available in its module scope. The direct import in template_generation_graph is from mailwright.db.models
     with (
         patch(
-            "xyra.graphs.template_generation_graph.AsyncSessionLocal",
+            "mailwright.graphs.template_generation_graph.AsyncSessionLocal",
             TestScopedAsyncSessionLocal,
         ),
     ):  # Also patch where get_template_version might use it
@@ -484,19 +484,19 @@ async def test_graph_flow_with_store_v0_node(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_graph_resumability_after_clarification_postgres(
@@ -710,11 +710,11 @@ async def test_graph_error_brief_analyzer_invalid_data(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 async def test_graph_error_image_generation_service_exception(
@@ -778,11 +778,11 @@ async def test_graph_error_image_generation_service_exception(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 async def test_graph_error_image_generation_all_prompts_fail(
@@ -837,15 +837,15 @@ async def test_graph_error_image_generation_all_prompts_fail(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(  # Patching the MJML service method directly
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 async def test_graph_error_mjml_generation_service_exception(
@@ -915,23 +915,23 @@ async def test_graph_error_mjml_generation_service_exception(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(  # Patching the DB call within store_v0_node
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )
 async def test_graph_error_store_v0_database_error(
@@ -1017,27 +1017,27 @@ async def test_graph_error_store_v0_database_error(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
+    "mailwright.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )  # To intercept DB calls for V0 and V_Next
 async def test_feedback_loop_v0_to_v_revised(
@@ -1284,27 +1284,27 @@ async def test_feedback_loop_v0_to_v_revised(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
+    "mailwright.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )
 async def test_feedback_loop_two_revisions(
@@ -1517,27 +1517,27 @@ async def test_feedback_loop_two_revisions(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
+    "mailwright.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )
 async def test_feedback_loop_revision_fails_validation(
@@ -1703,27 +1703,27 @@ async def test_feedback_loop_revision_fails_validation(
 # --- Sprint 3: Integration Test for Feedback on Approved Version (Sub-task 6.3) ---
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.image_generator_service.generate_image",
+    "mailwright.graphs.template_generation_graph.image_generator_service.generate_image",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
+    "mailwright.graphs.template_generation_graph.feedback_service.revise_mjml_based_on_feedback",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )
 async def test_feedback_on_approved_version(

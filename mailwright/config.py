@@ -1,10 +1,10 @@
-from pathlib import Path
+﻿from pathlib import Path
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Determine the base directory of the project
-# This assumes config.py is in xyra/config.py, so two .parent calls go up to the project root
+# This assumes config.py is in mailwright/config.py, so two .parent calls go up to the project root
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env file from the project root if it exists
@@ -17,7 +17,7 @@ if dotenv_path.exists():
 
 class Settings(BaseSettings):
     # Application settings
-    APP_NAME: str = "Xyra Marketing Content Agent"
+    APP_NAME: str = "Mailwright - Agentic Marketing Email Platform"
     DEBUG: bool = False  # Default to False for safety
     LOG_LEVEL: str = "INFO"  # Added for centralized log level configuration
 

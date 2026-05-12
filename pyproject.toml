@@ -1,11 +1,11 @@
-[build-system]
+﻿[build-system]
 requires = ["setuptools>=61.0"] # Specify setuptools version
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "xyra"
+name = "mailwright"
 version = "0.1.0" # Example version
-description = "Xyra Marketing Content Agent"
+description = "Mailwright - Agentic Marketing Email Platform"
 readme = "README.md" # Optional, if you have one
 # Add other metadata like authors, license, etc. as needed
 # classifiers = [
@@ -21,11 +21,11 @@ readme = "README.md" # Optional, if you have one
 #    # ... other dependencies from requirements.txt
 # ]
 
-# Explicitly tell setuptools to only include the 'xyra' package
+# Explicitly tell setuptools to only include the 'mailwright' package
 # This avoids auto-discovery issues with 'data' and 'archive' folders.
 [tool.setuptools.packages.find]
 where = ["."]  # Look for packages in the current directory
-include = ["xyra*"] # Include only 'xyra' and its subpackages
+include = ["mailwright*"] # Include only 'mailwright' and its subpackages
 exclude = ["tests*", "archive*", "data*"] # Explicitly exclude others at the root
 namespaces = false
 
@@ -43,8 +43,8 @@ exclude = [
     ".git",
     "build",
     "dist",
-    "xyra/legacy_code", # Exclude legacy_code directory
-    "xyra/templates",   # Exclude templates directory (copy of legacy)
+    "mailwright/legacy_code", # Exclude legacy_code directory
+    "mailwright/templates",   # Exclude templates directory (copy of legacy)
     # Add other common exclusions if desired, like .ruff_cache, .mypy_cache etc.
 ]
 
@@ -72,8 +72,8 @@ exclude = [
 # ]
 
 [tool.ruff.lint.per-file-ignores]
-# "xyra/legacy_code/*" = ["F841"] # No longer needed due to global exclude
-# "xyra/templates/*" = ["F841"]   # No longer needed due to global exclude
+# "mailwright/legacy_code/*" = ["F841"] # No longer needed due to global exclude
+# "mailwright/templates/*" = ["F841"]   # No longer needed due to global exclude
 
 # Example: If you wanted to ignore E402 (module import not at top of file) for __init__.py files
 # "__init__.py" = ["E402"]

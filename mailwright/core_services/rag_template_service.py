@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import json
 import re
 from typing import List, Dict, Any
@@ -9,9 +9,9 @@ from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from xyra.config import settings
-from xyra.core_services.llm_factory import get_configured_chat_model
-from xyra.db.models import RAGTemplate
+from mailwright.config import settings
+from mailwright.core_services.llm_factory import get_configured_chat_model
+from mailwright.db.models import RAGTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +34,10 @@ def _extract_editable_content(soup: BeautifulSoup) -> Dict[str, Any]:
             len(text_node.strip()) > 1):
             
             parent_tag = text_node.parent
-            temp_id = f"xyra-text-{text_element_id_counter}"
+            temp_id = f"mailwright-text-{text_element_id_counter}"
             
             # Add a temporary ID to the parent tag for later injection
-            parent_tag['data-xyra-temp-id'] = temp_id
+            parent_tag['data-mailwright-temp-id'] = temp_id
             
             content_map["text_elements"].append({
                 "id": temp_id,
@@ -64,7 +64,7 @@ def _extract_editable_content(soup: BeautifulSoup) -> Dict[str, Any]:
                 prop = color_match.group(1).strip()
                 value = color_match.group(2).strip()
                 
-                temp_id = f"xyra-style-{style_element_id_counter}"
+                temp_id = f"mailwright-style-{style_element_id_counter}"
                 content_map["style_elements"].append({
                     "id": temp_id,
                     "selector": selectors, # The CSS selector (e.g., '.bee-button')
@@ -81,8 +81,8 @@ def _extract_editable_content(soup: BeautifulSoup) -> Dict[str, Any]:
             prop = color_match.group(1).strip()
             value = color_match.group(2).strip()
             
-            temp_id = f"xyra-style-inline-{style_element_id_counter}"
-            tag['data-xyra-temp-id-inline'] = temp_id
+            temp_id = f"mailwright-style-inline-{style_element_id_counter}"
+            tag['data-mailwright-temp-id-inline'] = temp_id
             
             content_map["style_elements"].append({
                 "id": temp_id,
@@ -103,7 +103,7 @@ def _inject_content(soup: BeautifulSoup, updated_content_map: Dict[str, Any]) ->
     # --- Inject Text ---
     if "text_elements" in updated_content_map:
         for element in updated_content_map["text_elements"]:
-            tag_to_update = soup.find(attrs={"data-xyra-temp-id": element["id"]})
+            tag_to_update = soup.find(attrs={"data-mailwright-temp-id": element["id"]})
             if tag_to_update and "new_text" in element and tag_to_update.string and isinstance(tag_to_update.string, NavigableString):
                 tag_to_update.string.replace_with(element["new_text"])
 
@@ -117,7 +117,7 @@ def _inject_content(soup: BeautifulSoup, updated_content_map: Dict[str, Any]) ->
             modified_style_content = original_style_content
             
             for style_id, element in style_updates.items():
-                if not style_id.startswith("xyra-style-inline-"):
+                if not style_id.startswith("mailwright-style-inline-"):
                     selector = re.escape(element['selector'])
                     prop = re.escape(element['property'])
                     old_val = re.escape(element['current_value'])
@@ -134,8 +134,8 @@ def _inject_content(soup: BeautifulSoup, updated_content_map: Dict[str, Any]) ->
 
         # Part 2: Update inline styles
         for element_id, element in style_updates.items():
-             if element_id.startswith("xyra-style-inline-"):
-                tag_to_update = soup.find(attrs={"data-xyra-temp-id-inline": element_id})
+             if element_id.startswith("mailwright-style-inline-"):
+                tag_to_update = soup.find(attrs={"data-mailwright-temp-id-inline": element_id})
                 if tag_to_update:
                     style_str = tag_to_update.get("style", "")
                     style_dict = {k.strip(): v.strip() for k, v in (item.split(':', 1) for item in style_str.split(';') if ':' in item)}
@@ -145,10 +145,10 @@ def _inject_content(soup: BeautifulSoup, updated_content_map: Dict[str, Any]) ->
 
 
     # --- Cleanup Temporary IDs ---
-    for tag in soup.find_all(attrs={"data-xyra-temp-id": True}):
-        del tag["data-xyra-temp-id"]
-    for tag in soup.find_all(attrs={"data-xyra-temp-id-inline": True}):
-        del tag["data-xyra-temp-id-inline"]
+    for tag in soup.find_all(attrs={"data-mailwright-temp-id": True}):
+        del tag["data-mailwright-temp-id"]
+    for tag in soup.find_all(attrs={"data-mailwright-temp-id-inline": True}):
+        del tag["data-mailwright-temp-id-inline"]
         
     return str(soup)
 

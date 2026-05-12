@@ -1,11 +1,11 @@
-import logging  # Added for standardized logging
+﻿import logging  # Added for standardized logging
 import uuid  # For generating unique IDs
 from typing import Annotated, List  # Added List
 
 from fastapi import APIRouter, status, HTTPException, Depends  # Added Depends
 from fastapi.responses import JSONResponse, HTMLResponse  # Added HTMLResponse
 
-from xyra.schemas.template_schemas import (
+from mailwright.schemas.template_schemas import (
     TemplateCreationRequest,
     TemplateCreationResponseSchema,
     TemplateStatusSchema,
@@ -18,13 +18,13 @@ from xyra.schemas.template_schemas import (
 )
 
 # Ensure all necessary node names are available if used in interrupt_after
-from xyra.graphs.template_generation_graph import (
+from mailwright.graphs.template_generation_graph import (
     create_graph_builder,
     LG_WAIT_FOR_AMENDED_BRIEF_NODE_NAME,
 )
-from xyra.graphs.checkpointer import get_checkpointer_context_manager  # Added
-from xyra.graphs.state import GraphState  # Added
-from xyra.db.template_store import (
+from mailwright.graphs.checkpointer import get_checkpointer_context_manager  # Added
+from mailwright.graphs.state import GraphState  # Added
+from mailwright.db.template_store import (
     get_template_version,
     get_db_session,
     get_all_template_versions_for_template_id,

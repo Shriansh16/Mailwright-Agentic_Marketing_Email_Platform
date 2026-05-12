@@ -1,11 +1,11 @@
-import logging
+﻿import logging
 import json
 from typing import Optional, List
 from pydantic import BaseModel  # Added missing import
 
-from xyra.config import settings
-from xyra.schemas.template_schemas import UserBriefSchema
-from xyra.core_services.llm_factory import get_configured_chat_model
+from mailwright.config import settings
+from mailwright.schemas.template_schemas import UserBriefSchema
+from mailwright.core_services.llm_factory import get_configured_chat_model
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -199,7 +199,7 @@ if __name__ == "__main__":
     # For local testing, ensure at least one provider's key is set in .env
     # if you expect a live API call.
     try:
-        from xyra.logging_config import setup_logging
+        from mailwright.logging_config import setup_logging
 
         setup_logging()
         asyncio.run(test_service())

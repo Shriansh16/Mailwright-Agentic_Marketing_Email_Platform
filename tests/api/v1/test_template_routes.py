@@ -1,4 +1,4 @@
-import uuid
+﻿import uuid
 import pytest
 import pytest_asyncio  # Added for async fixtures
 from unittest.mock import patch, AsyncMock, MagicMock, ANY  # Added ANY
@@ -10,17 +10,17 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import sessionmaker
 import asyncio  # For asyncio.sleep
 
-from xyra.main import app  # Import your FastAPI application
-from xyra.schemas.template_schemas import (
+from mailwright.main import app  # Import your FastAPI application
+from mailwright.schemas.template_schemas import (
     UserBriefSchema,
     TemplateCreationRequest,
     AmendedBriefRequest,  # Ensured present
     TemplateVersionCreate,  # Added
 )
-from xyra.core_services.brief_analyzer_service import (
+from mailwright.core_services.brief_analyzer_service import (
     BriefAnalysisResult,
 )  # For mock return value
-from xyra.db.template_store import (
+from mailwright.db.template_store import (
     create_template_version,
     get_template_version,
     approve_template_version,
@@ -64,9 +64,9 @@ def sample_template_creation_request() -> TemplateCreationRequest:
 
 @pytest.mark.asyncio
 # Patches are applied from bottom up (or right to left if on one line)
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_post_templates_and_get_status_clarification_needed(
@@ -126,21 +126,21 @@ class MockMemorySaverContextManager:
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )  # Added mock
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )  # Added mock to complete the workflow
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )  # Mock database operation
 async def test_post_templates_and_get_status_brief_ok(
@@ -172,7 +172,7 @@ async def test_post_templates_and_get_status_brief_ok(
     }
 
     # Mock database storage to succeed
-    from xyra.db.models import TemplateVersion
+    from mailwright.db.models import TemplateVersion
     from datetime import datetime
 
     mock_stored_version = TemplateVersion(
@@ -216,9 +216,9 @@ async def test_post_templates_and_get_status_brief_ok(
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 async def test_post_templates_and_get_status_analyzer_error(
@@ -260,7 +260,7 @@ async def test_post_templates_and_get_status_analyzer_error(
     assert data_get["clarification_questions"] is None
 
 
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 def test_get_status_not_found(
     # REMOVED: mock_get_cm: MockMemorySaverContextManager,
     client: TestClient,
@@ -271,21 +271,21 @@ def test_get_status_not_found(
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )  # Added mock
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )  # Added mock to complete the workflow
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )  # Mock database operation
 async def test_put_amended_brief_clarification_to_ok(
@@ -328,7 +328,7 @@ async def test_put_amended_brief_clarification_to_ok(
     }
 
     # Mock database storage to succeed
-    from xyra.db.models import TemplateVersion
+    from mailwright.db.models import TemplateVersion
     from datetime import datetime
 
     mock_stored_version = TemplateVersion(
@@ -406,21 +406,21 @@ async def test_put_amended_brief_clarification_to_ok(
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.create_template_version",
+    "mailwright.graphs.template_generation_graph.create_template_version",
     new_callable=AsyncMock,
 )  # Mock database operation
 async def test_full_flow_mjml_generation_and_validation_success(
@@ -459,7 +459,7 @@ async def test_full_flow_mjml_generation_and_validation_success(
     }
 
     # Mock database storage to succeed
-    from xyra.db.models import TemplateVersion
+    from mailwright.db.models import TemplateVersion
     from datetime import datetime
 
     mock_stored_version = TemplateVersion(
@@ -524,17 +524,17 @@ async def test_full_flow_mjml_generation_and_validation_success(
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 async def test_flow_mjml_generation_ok_validation_fails(
@@ -606,17 +606,17 @@ async def test_flow_mjml_generation_ok_validation_fails(
 
 
 @pytest.mark.asyncio
-# REMOVED: @patch("xyra.api.v1.template_routes.get_checkpointer_context_manager", ... )
+# REMOVED: @patch("mailwright.api.v1.template_routes.get_checkpointer_context_manager", ... )
 @patch(
-    "xyra.graphs.template_generation_graph.analyze_brief_for_clarifications",
+    "mailwright.graphs.template_generation_graph.analyze_brief_for_clarifications",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.generate_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.generate_mjml_node",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
+    "mailwright.graphs.template_generation_graph.mjml_service.validate_and_compile_mjml_node",
     new_callable=AsyncMock,
 )
 async def test_flow_mjml_generation_fails(
@@ -829,7 +829,7 @@ def test_list_versions_invalid_template_id_format(client: TestClient):
 
 
 @pytest.mark.asyncio
-@patch("xyra.api.v1.template_routes.create_graph_builder")
+@patch("mailwright.api.v1.template_routes.create_graph_builder")
 async def test_submit_feedback_success(
     mock_create_graph_builder: AsyncMock,  # Mock for create_graph_builder
     client: TestClient,
@@ -990,7 +990,7 @@ async def test_approve_version_success(
         ),
     )
 
-    with patch("xyra.api.v1.template_routes.logger.info") as mock_logger_info:
+    with patch("mailwright.api.v1.template_routes.logger.info") as mock_logger_info:
         response = client.post(
             f"/api/v1/templates/{template_id}/versions/{version_id_to_approve}/approve"
         )
@@ -1079,7 +1079,7 @@ async def test_approve_version_not_found(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.api.v1.template_routes.approve_template_version"
+    "mailwright.api.v1.template_routes.approve_template_version"
 )  # Mock at the point of import for the routes module
 async def test_approve_version_db_error(
     mock_db_approve_func: AsyncMock,
@@ -1194,7 +1194,7 @@ async def test_get_status_when_version_is_approved(
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.api.v1.template_routes.get_checkpointer_context_manager"
+    "mailwright.api.v1.template_routes.get_checkpointer_context_manager"
 )  # Mock checkpointer
 async def test_get_status_no_approved_version_falls_back_to_graph_state(
     mock_get_checkpointer_cm: AsyncMock,
@@ -1217,7 +1217,7 @@ async def test_get_status_no_approved_version_falls_back_to_graph_state(
 
     # Re-patch create_graph_builder for this specific test's context
     with patch(
-        "xyra.api.v1.template_routes.create_graph_builder"
+        "mailwright.api.v1.template_routes.create_graph_builder"
     ) as mock_create_builder:
         mock_builder_instance = MagicMock()
         mock_builder_instance.compile.return_value = mock_graph
@@ -1239,21 +1239,21 @@ async def test_get_status_no_approved_version_falls_back_to_graph_state(
 
 
 @pytest.mark.asyncio
-@patch("xyra.api.v1.template_routes.create_graph_builder")
+@patch("mailwright.api.v1.template_routes.create_graph_builder")
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.generate_fingerprint_for_brief",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.generate_fingerprint_for_brief",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.generate_embedding",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.generate_embedding",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.find_best_matching_template",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.find_best_matching_template",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.populate_template_with_brief",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.populate_template_with_brief",
     new_callable=AsyncMock,
 )
 async def test_rag_flow_with_placeholders_true(
@@ -1307,21 +1307,21 @@ async def test_rag_flow_with_placeholders_true(
 
 
 @pytest.mark.asyncio
-@patch("xyra.api.v1.template_routes.create_graph_builder")
+@patch("mailwright.api.v1.template_routes.create_graph_builder")
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.generate_fingerprint_for_brief",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.generate_fingerprint_for_brief",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.generate_embedding",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.generate_embedding",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.find_best_matching_template",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.find_best_matching_template",
     new_callable=AsyncMock,
 )
 @patch(
-    "xyra.graphs.template_generation_graph.RAGTemplateService.populate_template_with_brief",
+    "mailwright.graphs.template_generation_graph.RAGTemplateService.populate_template_with_brief",
     new_callable=AsyncMock,
 )
 async def test_rag_flow_with_placeholders_false(

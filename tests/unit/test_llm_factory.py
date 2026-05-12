@@ -1,12 +1,12 @@
-import pytest
+﻿import pytest
 from unittest.mock import patch
 
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 
-# Assuming xyra is in PYTHONPATH or installed
-from xyra.core_services.llm_factory import get_configured_chat_model
-from xyra.config import Settings  # To mock settings
+# Assuming mailwright is in PYTHONPATH or installed
+from mailwright.core_services.llm_factory import get_configured_chat_model
+from mailwright.config import Settings  # To mock settings
 
 # Mock settings values for tests
 MOCK_OPENAI_API_KEY = "fake_openai_key"
@@ -55,7 +55,7 @@ def mock_settings_no_api_keys():
     return settings
 
 
-@patch("xyra.core_services.llm_factory.settings")
+@patch("mailwright.core_services.llm_factory.settings")
 def test_get_configured_chat_model_openai(
     mock_settings_obj, mock_settings_openai_configured
 ):
@@ -84,7 +84,7 @@ def test_get_configured_chat_model_openai(
     assert llm.model_kwargs.get("custom_arg") == "test_val"
 
 
-@patch("xyra.core_services.llm_factory.settings")
+@patch("mailwright.core_services.llm_factory.settings")
 def test_get_configured_chat_model_anthropic(
     mock_settings_obj, mock_settings_anthropic_configured
 ):
@@ -107,7 +107,7 @@ def test_get_configured_chat_model_anthropic(
     )  # Use get_secret_value()
 
 
-@patch("xyra.core_services.llm_factory.settings")
+@patch("mailwright.core_services.llm_factory.settings")
 def test_get_configured_chat_model_unsupported_provider(
     mock_settings_obj, mock_settings_openai_configured
 ):
@@ -125,7 +125,7 @@ def test_get_configured_chat_model_unsupported_provider(
         )
 
 
-@patch("xyra.core_services.llm_factory.settings")
+@patch("mailwright.core_services.llm_factory.settings")
 def test_get_configured_chat_model_openai_missing_key(
     mock_settings_obj, mock_settings_no_api_keys
 ):
@@ -140,7 +140,7 @@ def test_get_configured_chat_model_openai_missing_key(
         )
 
 
-@patch("xyra.core_services.llm_factory.settings")
+@patch("mailwright.core_services.llm_factory.settings")
 def test_get_configured_chat_model_anthropic_missing_key(
     mock_settings_obj, mock_settings_no_api_keys
 ):

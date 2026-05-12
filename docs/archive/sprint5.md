@@ -1,4 +1,4 @@
-# Sprint 5: RAG-Based Template Generation
+﻿# Sprint 5: RAG-Based Template Generation
 
 **Overall Goal:** Implement a new "retrieve-and-modify" workflow that leverages a corpus of existing HTML templates to generate marketing emails. This will be a parallel workflow to the existing from-scratch MJML generation system. **This new workflow will generate HTML directly, bypassing MJML entirely.**
 
@@ -18,7 +18,7 @@
 **Tasks:**
 
 1.  **Database Setup & Migration:**
-    *   **1.1. Create `RAGTemplate` Model:** [DONE] First, define the new `RAGTemplate` model in `xyra/db/models.py` with:
+    *   **1.1. Create `RAGTemplate` Model:** [DONE] First, define the new `RAGTemplate` model in `mailwright/db/models.py` with:
         *   `template_id` (String, Primary Key) - matches filename without .json extension
         *   `layout_vector` (Vector(1536)) - for structural/layout similarity
         *   `content_vector` (Vector(1536)) - for content/semantic similarity  
@@ -34,10 +34,10 @@
     *   **1.4. Apply Migration:** [DONE] Run `alembic upgrade head` to apply changes
 
 2.  **Configuration:**
-    *   **2.1. Update `xyra/config.py`:** [DONE] Add a new setting: `EMBEDDING_MODEL_NAME: str = "text-embedding-3-small"`.
+    *   **2.1. Update `mailwright/config.py`:** [DONE] Add a new setting: `EMBEDDING_MODEL_NAME: str = "text-embedding-3-small"`.
 
 3.  **Corpus Pre-processing & Ingestion Script:**
-    *   **3.1. Create Ingestion Service:** [DONE] Develop `xyra/core_services/corpus_ingestion_service.py` with:
+    *   **3.1. Create Ingestion Service:** [DONE] Develop `mailwright/core_services/corpus_ingestion_service.py` with:
         *   [DONE] `CorpusIngestionService` class with dependency injection for database and OpenAI client
         *   [DONE] Method to generate structural fingerprint from `json_data` (analyze layout structure)
         *   [DONE] Method to create placeholder JSON (replace text/images with `{{placeholder_name}}`)
@@ -75,14 +75,14 @@
 **Tasks:**
 
 1.  **Template Retrieval Service:**
-    *   **1.1. Create `TemplateRetrieverService`:** Develop `xyra/core_services/template_retriever_service.py`.
+    *   **1.1. Create `TemplateRetrieverService`:** Develop `mailwright/core_services/template_retriever_service.py`.
     *   **1.2. Implement Hybrid Search:** The service will contain the logic to take a user brief, embed it, and perform a hybrid search against the `rag_templates` table using `pgvector`. It will filter on metadata and then perform vector similarity search on the appropriate vector (`layout_vector` or `content_vector`).
 
 2.  **New API Endpoints & Schemas:**
-    *   **2.1. Define Schemas:** In `xyra/schemas/template_schemas.py`, create new Pydantic models:
+    *   **2.1. Define Schemas:** In `mailwright/schemas/template_schemas.py`, create new Pydantic models:
         *   `LayoutRetrievalResponse`: A list of candidate templates (id, description, thumbnail).
         *   `LayoutSelectionRequest`: The ID of the template the user selected.
-    *   **2.2. Create New Router:** Create a new file `xyra/api/v1/layout_routes.py`.
+    *   **2.2. Create New Router:** Create a new file `mailwright/api/v1/layout_routes.py`.
     *   **2.3. `POST /api/v1/layouts/retrieve` Endpoint:** This endpoint will take a `UserBriefSchema`, use the `TemplateRetrieverService` to find top matching layouts, and return them. This does *not* start a graph.
 
 3.  **New LangGraph Workflow (RAG Branch):**
@@ -195,30 +195,30 @@
 ## Important Implementation Notes:
 
 ### Database Connection Patterns:
-*   Follow existing patterns in `xyra/db/template_store.py` for async database operations
-*   Use `AsyncSessionLocal` from `xyra/db/models.py` for database sessions
-*   Import `settings` from `xyra/config.py` for configuration values
+*   Follow existing patterns in `mailwright/db/template_store.py` for async database operations
+*   Use `AsyncSessionLocal` from `mailwright/db/models.py` for database sessions
+*   Import `settings` from `mailwright/config.py` for configuration values
 
 ### Service Architecture:
-*   Follow existing service patterns (see `xyra/core_services/brief_analyzer_service.py`)
+*   Follow existing service patterns (see `mailwright/core_services/brief_analyzer_service.py`)
 *   Use dependency injection for database sessions and external clients
-*   Implement proper error handling and logging using `xyra/logging_config.py`
+*   Implement proper error handling and logging using `mailwright/logging_config.py`
 
 ### LangGraph Integration:
-*   Study existing graph structure in `xyra/graphs/template_generation_graph.py`
-*   Use existing `GraphState` class in `xyra/graphs/state.py` as reference
+*   Study existing graph structure in `mailwright/graphs/template_generation_graph.py`
+*   Use existing `GraphState` class in `mailwright/graphs/state.py` as reference
 *   Follow existing node naming conventions: `LG_NodeName_NODE_NAME`
 
 ### API Patterns:
-*   Follow existing router structure in `xyra/api/v1/template_routes.py`
-*   Use existing schema patterns in `xyra/schemas/template_schemas.py`
+*   Follow existing router structure in `mailwright/api/v1/template_routes.py`
+*   Use existing schema patterns in `mailwright/schemas/template_schemas.py`
 *   Maintain consistent error handling and response formats
 
 ### File Locations Reference:
-*   **Models:** `xyra/db/models.py`
-*   **Services:** `xyra/core_services/`
-*   **API Routes:** `xyra/api/v1/`
-*   **Schemas:** `xyra/schemas/`
-*   **Config:** `xyra/config.py`
+*   **Models:** `mailwright/db/models.py`
+*   **Services:** `mailwright/core_services/`
+*   **API Routes:** `mailwright/api/v1/`
+*   **Schemas:** `mailwright/schemas/`
+*   **Config:** `mailwright/config.py`
 *   **Scripts:** `scripts/`
 *   **Tests:** `tests/` (unit, integration, api subdirectories) 

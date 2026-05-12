@@ -1,4 +1,4 @@
-import os
+﻿import os
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
@@ -210,7 +210,7 @@ class TemplateStore:
         import json
         from pathlib import Path
 
-        from xyra.templates.content import Content
+        from mailwright.templates.content import Content
 
         # Create Content analyzer without circular dependency
         content_analyzer = Content(self)

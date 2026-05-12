@@ -1,4 +1,4 @@
-# Sprint 1: Core Infrastructure & Initial Generation Path
+﻿# Sprint 1: Core Infrastructure & Initial Generation Path
 
 **Overall Goal**
 
@@ -14,17 +14,17 @@ graph TD
     
     B --> C{2. FastAPI Application Shell};
     C --> C1[2.1 Implement main.py with FastAPI instance];
-    C --> C2[2.2 Basic API Router Setup (xyra/api/v1/router.py)];
+    C --> C2[2.2 Basic API Router Setup (mailwright/api/v1/router.py)];
     C --> C3[2.3 Implement POST /templates Endpoint];
     C --> C4[2.4 Implement GET /templates/{template_id}/status Endpoint (Initial)];
     
     C --> D{3. LangGraph Core Setup};
-    D --> D1[3.1 Define Initial LangGraph State Schema (xyra/graphs/state.py)];
+    D --> D1[3.1 Define Initial LangGraph State Schema (mailwright/graphs/state.py)];
     D --> D2[3.2 Decide & Implement Basic LangGraph Checkpointer (e.g., SqliteSaver/InMemorySaver)];
     D --> D3[3.3 Define Initial template_generation_graph.py];
 
     D --> E{4. Brief Analysis & Clarification Flow};
-    E --> E1[4.1 Implement Brief Analyzer Node (xyra/core_services/brief_analyzer_service.py)];
+    E --> E1[4.1 Implement Brief Analyzer Node (mailwright/core_services/brief_analyzer_service.py)];
     E1 --> E1a[4.1.1 Integrate LLM for Brief Analysis & Question Generation];
     E1 --> E1b[4.1.2 Define Clarification Prompt];
     E --> E2[4.2 Implement LangGraph Flow: Start -> BriefAnalyzer -> ClarificationDecision];
@@ -32,13 +32,13 @@ graph TD
     E --> E4[4.4 Implement PUT /templates/{template_id}/brief Endpoint];
 
     E --> F{5. Initial MJML Generation (No Images)};
-    F --> F1[5.1 Implement MJML Generation Node (xyra/core_services/mjml_service.py - initial)];
+    F --> F1[5.1 Implement MJML Generation Node (mailwright/core_services/mjml_service.py - initial)];
     F1 --> F1a[5.1.1 Integrate LLM for MJML Generation (from clarified brief)];
     F1 --> F1b[5.1.2 Develop Initial MJML Generation Prompt];
     F --> F2[5.2 Implement LangGraph Flow: ClarificationDecision (No) -> MJMLGen];
 
     F --> G{6. Basic MJML Validation & Compilation};
-    G --> G1[6.1 Implement MJML Validator & HTML Compiler Node (xyra/core_services/mjml_service.py - initial)];
+    G --> G1[6.1 Implement MJML Validator & HTML Compiler Node (mailwright/core_services/mjml_service.py - initial)];
     G1 --> G1a[6.1.1 Integrate mjml CLI (subprocess) for Validation & Compilation];
     G --> G2[6.2 Implement LangGraph Flow: MJMLGen -> MJMLValidateCompile];
     G --> G3[6.3 Basic Error Handling for Invalid MJML (Log, Update Graph State)];
@@ -74,16 +74,16 @@ graph TD
 
    1. Implement linting (e.g. Flake8 or Ruff).
    2. Configure the pipeline to run initial placeholder tests.
-4. **Create ********************************************`xyra/config.py`******************************************** for application settings**
+4. **Create ********************************************`mailwright/config.py`******************************************** for application settings**
 
    1. Implement a strategy for secure management of secrets (API keys, database credentials).
    2. *Update*: Enhanced `config.py` to support flexible LLM provider selection (OpenAI, Anthropic).
 
 ### 2. FastAPI Application Shell
 
-1. \*\*Implement \*\***`xyra/main.py`** to initialize the FastAPI application instance.
-2. **Set up basic API routing** in `xyra/api/v1/router.py` and include it in the main FastAPI app.
-3. **Implement ********************************************`POST /api/v1/templates`******************************************** endpoint** (`xyra/api/v1/template_routes.py`).
+1. \*\*Implement \*\***`mailwright/main.py`** to initialize the FastAPI application instance.
+2. **Set up basic API routing** in `mailwright/api/v1/router.py` and include it in the main FastAPI app.
+3. **Implement ********************************************`POST /api/v1/templates`******************************************** endpoint** (`mailwright/api/v1/template_routes.py`).
 
    1. Define request schema (`UserBriefSchema`).
    2. Initiate a LangGraph execution.
@@ -95,16 +95,16 @@ graph TD
 
 ### 3. LangGraph Core Setup
 
-1. **Define the initial LangGraph state schema** in `xyra/graphs/state.py`.
+1. **Define the initial LangGraph state schema** in `mailwright/graphs/state.py`.
 2. **Decide on and implement a checkpointer**
 
    1. Decision: `langgraph.checkpoint.aiosqlite.AsyncSqliteSaver` for async compatibility.
    2. Implement the chosen checkpointer.
-3. **Define the initial graph structure** in `xyra/graphs/template_generation_graph.py`.
+3. **Define the initial graph structure** in `mailwright/graphs/template_generation_graph.py`.
 
 ### 4. Brief Analysis & Clarification Flow
 
-1. **Implement the Brief Analyzer node** (`xyra/core_services/brief_analyzer_service.py`).
+1. **Implement the Brief Analyzer node** (`mailwright/core_services/brief_analyzer_service.py`).
 
    1. Integrate an LLM call for brief analysis & question generation.
    2. Develop and refine the clarification prompt.
@@ -119,7 +119,7 @@ graph TD
 
 ### 5. Initial MJML Generation (No Images)
 
-1. **Implement the MJML Generation node** (`xyra/core_services/mjml_service.py`).
+1. **Implement the MJML Generation node** (`mailwright/core_services/mjml_service.py`).
 
    1. Integrate an LLM call to generate MJML from the clarified brief.
    2. Develop and refine the MJML generation prompt.
@@ -128,7 +128,7 @@ graph TD
 
 ### 6. Basic MJML Validation & Compilation
 
-1. **Implement the MJML Validator & HTML Compiler node** (`xyra/core_services/mjml_service.py`).
+1. **Implement the MJML Validator & HTML Compiler node** (`mailwright/core_services/mjml_service.py`).
 
    1. Integrate the `mjml` CLI via `subprocess` for validation & compilation.
    2. Update graph state with compiled HTML and validation status.
@@ -137,7 +137,7 @@ graph TD
 
 ### 7. Unit Tests
 
-1. Write unit tests for new services (`xyra/core_services`).
+1. Write unit tests for new services (`mailwright/core_services`).
 2. Write unit tests for critical API endpoints (`POST /templates`, `GET /status`, `PUT /brief`).
 
 ---

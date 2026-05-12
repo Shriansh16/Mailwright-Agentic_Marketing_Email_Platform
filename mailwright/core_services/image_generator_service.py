@@ -1,11 +1,11 @@
-import asyncio
+﻿import asyncio
 import base64
 import io
 
 from openai import OpenAI, APIError, RateLimitError
-from xyra.config import settings
+from mailwright.config import settings
 import logging
-from xyra.logging_config import setup_logging
+from mailwright.logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -176,7 +176,7 @@ class ImageGeneratorService:
 
 
 # ---------------------------------------------------------------------------
-# Manual smoke test  (python -m xyra.core_services.image_generator_service)
+# Manual smoke test  (python -m mailwright.core_services.image_generator_service)
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     setup_logging()

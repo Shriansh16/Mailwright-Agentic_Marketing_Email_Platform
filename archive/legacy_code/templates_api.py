@@ -1,11 +1,11 @@
-import argparse
+﻿import argparse
 
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from xyra.templates.generator import create_template
-from xyra.templates.schema import TemplateRequest
+from mailwright.templates.generator import create_template
+from mailwright.templates.schema import TemplateRequest
 
 
 # Define an envelope model that wraps the TemplateRequest along with clientId
@@ -18,7 +18,7 @@ class TemplateGenerationEnvelope(BaseModel):
 app = FastAPI()
 
 
-@app.post("/xyra/generate")
+@app.post("/mailwright/generate")
 async def generate_template(envelope: TemplateGenerationEnvelope):
     # Extract the clientId (can be used for logging or auditing)
     client_id = envelope.clientId  # noqa: F841
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     uvicorn.run(
-        "xyra.templates_api:app",
+        "mailwright.templates_api:app",
         host="0.0.0.0",
         port=8000,
         reload=args.dev,

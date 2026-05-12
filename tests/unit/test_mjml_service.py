@@ -1,13 +1,13 @@
-import pytest
+﻿import pytest
 from unittest.mock import AsyncMock, patch
 
 from langchain_core.messages import AIMessage  # Added
-from xyra.graphs.state import GraphState
-from xyra.core_services.mjml_service import MJMLService
-from xyra.schemas.template_schemas import (
+from mailwright.graphs.state import GraphState
+from mailwright.core_services.mjml_service import MJMLService
+from mailwright.schemas.template_schemas import (
     UserBriefSchema,
 )  # Assuming this is the schema for brief_data
-from xyra.config import Settings
+from mailwright.config import Settings
 
 
 # Minimal settings for testing
@@ -26,8 +26,8 @@ def test_settings():
 @pytest.fixture
 def mjml_service(test_settings):
     with (
-        patch("xyra.core_services.mjml_service.settings", test_settings),
-        patch("xyra.core_services.llm_factory.settings", test_settings),
+        patch("mailwright.core_services.mjml_service.settings", test_settings),
+        patch("mailwright.core_services.llm_factory.settings", test_settings),
     ):  # Also patch settings for llm_factory
         # MJMLService now takes no arguments for __init__
         service = MJMLService()

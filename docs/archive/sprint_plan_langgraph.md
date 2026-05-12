@@ -1,6 +1,6 @@
-# Xyra Marketing Content Agent - Phase 1: 4-Sprint Plan (LangGraph Architecture)
+﻿# Mailwright - Agentic Marketing Email Platform - Phase 1: 4-Sprint Plan (LangGraph Architecture)
 
-This document breaks down the Phase 1 development of the Xyra Marketing Content Agent, as detailed in [`docs/plan_langgraph.md`](docs/plan_langgraph.md) and incorporating feedback from [`docs/plan_review_langgraph.md`](docs/plan_review_langgraph.md), into four manageable sprints. Each sprint will have a primary goal and key deliverables.
+This document breaks down the Phase 1 development of the Mailwright - Agentic Marketing Email Platform, as detailed in [`docs/plan_langgraph.md`](docs/plan_langgraph.md) and incorporating feedback from [`docs/plan_review_langgraph.md`](docs/plan_review_langgraph.md), into four manageable sprints. Each sprint will have a primary goal and key deliverables.
 
 ## Sprint 1: Core Infrastructure & Initial Generation Path `[COMPLETED]`
 
@@ -15,27 +15,27 @@ This document breaks down the Phase 1 development of the Xyra Marketing Content 
     *   Setup `config.py` for application settings and secure secret management strategy.
 2.  **FastAPI Application Shell:**
     *   Implement `main.py` with FastAPI app instance ([`docs/plan_langgraph.md:446`](docs/plan_langgraph.md:446)).
-    *   Basic API router setup (`xyra/api/v1/router.py`).
+    *   Basic API router setup (`mailwright/api/v1/router.py`).
     *   Implement `POST /templates` endpoint to initiate LangGraph execution ([`docs/plan_langgraph.md:254-267`](docs/plan_langgraph.md:254-267)).
     *   Implement `GET /templates/{template_id}/status` endpoint (initial version for polling LangGraph state) ([`docs/plan_langgraph.md:284-310`](docs/plan_langgraph.md:284-310)).
 3.  **LangGraph Core Setup:**
-    *   Define initial LangGraph state schema (`xyra/graphs/state.py`) ([`docs/plan_langgraph.md:458`](docs/plan_langgraph.md:458)).
+    *   Define initial LangGraph state schema (`mailwright/graphs/state.py`) ([`docs/plan_langgraph.md:458`](docs/plan_langgraph.md:458)).
     *   Implement basic LangGraph checkpointer using `langgraph.checkpoint.aiosqlite.AsyncSqliteSaver` for initial development (due to its async compatibility and file-based persistence). The decision on a production checkpointer will be revisited for later phases (see [`docs/plan_review_langgraph.md`](docs/plan_review_langgraph.md) Point 2).
     *   Define the initial `template_generation_graph.py` ([`docs/plan_langgraph.md:457`](docs/plan_langgraph.md:457)).
 4.  **Brief Analysis & Clarification Flow:**
-    *   Implement `Brief Analyzer Node` (`xyra/core_services/brief_analyzer_service.py`) ([`docs/plan_langgraph.md:175-182`](docs/plan_langgraph.md:175-182)).
+    *   Implement `Brief Analyzer Node` (`mailwright/core_services/brief_analyzer_service.py`) ([`docs/plan_langgraph.md:175-182`](docs/plan_langgraph.md:175-182)).
         *   Integrate LLM call for brief analysis and question generation.
         *   Define prompt for clarification.
     *   Implement LangGraph flow: `LG_Start` -> `LG_BriefAnalyzer` -> `LG_ClarificationDecision`.
     *   Implement `LG_WaitForAmendedBrief` node.
     *   Implement `PUT /templates/{template_id}/brief` endpoint to submit amended brief ([`docs/plan_langgraph.md:269-282`](docs/plan_langgraph.md:269-282)).
 5.  **Initial MJML Generation (No Images Yet):**
-    *   Implement `MJML Generation Node` (`xyra/core_services/mjml_service.py` - initial version) ([`docs/plan_langgraph.md:183-190`](docs/plan_langgraph.md:183-190)).
+    *   Implement `MJML Generation Node` (`mailwright/core_services/mjml_service.py` - initial version) ([`docs/plan_langgraph.md:183-190`](docs/plan_langgraph.md:183-190)).
         *   Integrate LLM call for MJML generation from a clarified brief.
         *   Develop initial prompt for MJML generation.
     *   Implement LangGraph flow: `LG_ClarificationDecision` (No) -> `LG_MJMLGen`.
 6.  **Basic MJML Validation & Compilation:**
-    *   Implement `MJML Validator and HTML Compiler Node` (`xyra/core_services/mjml_service.py` - initial version) ([`docs/plan_langgraph.md:197-206`](docs/plan_langgraph.md:197-206)).
+    *   Implement `MJML Validator and HTML Compiler Node` (`mailwright/core_services/mjml_service.py` - initial version) ([`docs/plan_langgraph.md:197-206`](docs/plan_langgraph.md:197-206)).
         *   Integrate `mjml` CLI via subprocess for validation and compilation.
     *   Implement LangGraph flow: `LG_MJMLGen` -> `LG_MJMLValidateCompile`.
     *   Basic error handling for invalid MJML (log error, update graph state).
@@ -53,7 +53,7 @@ This document breaks down the Phase 1 development of the Xyra Marketing Content 
 **Key Deliverables:** `[ALL DELIVERABLES COMPLETED]`
 
 1.  **Image Generation Module:**
-    *   Implement `Image Generation Node` (`xyra/core_services/image_generator_service.py`) ([`docs/plan_langgraph.md:191-195`](docs/plan_langgraph.md:191-195)).
+    *   Implement `Image Generation Node` (`mailwright/core_services/image_generator_service.py`) ([`docs/plan_langgraph.md:191-195`](docs/plan_langgraph.md:191-195)).
         *   Integrate DALL-E 3 (or chosen alternative).
         *   Handle image prompts from the brief.
         *   Manage asset URLs.
@@ -61,8 +61,8 @@ This document breaks down the Phase 1 development of the Xyra Marketing Content 
     *   Update MJML generation prompt to incorporate image placeholders/URLs.
 2.  **Template Versioning & Storage (`TemplateStoreDB`):**
     *   Set up PostgreSQL database.
-    *   Define SQLAlchemy models (`xyra/db/models.py`) for template versions ([`docs/plan_langgraph.md:234-243`](docs/plan_langgraph.md:234-243)).
-    *   Implement database interaction logic (`xyra/db/template_store.py`) ([`docs/plan_langgraph.md:468`](docs/plan_langgraph.md:468)).
+    *   Define SQLAlchemy models (`mailwright/db/models.py`) for template versions ([`docs/plan_langgraph.md:234-243`](docs/plan_langgraph.md:234-243)).
+    *   Implement database interaction logic (`mailwright/db/template_store.py`) ([`docs/plan_langgraph.md:468`](docs/plan_langgraph.md:468)).
     *   Implement `StoreV0Node` in LangGraph to save the first generated version to `TemplateStoreDB` ([`docs/plan_langgraph.md:154`](docs/plan_langgraph.md:154)).
     *   Update `GET /templates/{template_id}/status` to reflect `ready_for_preview` and provide version info ([`docs/plan_langgraph.md:299-308`](docs/plan_langgraph.md:299-308)).
 3.  **HTML Preview Service:**
@@ -115,7 +115,7 @@ This document breaks down the Phase 1 development of the Xyra Marketing Content 
 **Key Deliverables:**
 
 1.  **Beefree HTML Importer API Integration:**
-    *   Implement `BeefreeImportNode` (`xyra/core_services/beefree_service.py`).
+    *   Implement `BeefreeImportNode` (`mailwright/core_services/beefree_service.py`).
     *   Develop Python client for Beefree API.
     *   Retrieve approved HTML from `TemplateStoreDB`.
     *   Handle API responses and errors from Beefree.

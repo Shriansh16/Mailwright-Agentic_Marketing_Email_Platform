@@ -1,4 +1,4 @@
-# Sprint 2: Image Generation, Versioning & Production Persistence
+﻿# Sprint 2: Image Generation, Versioning & Production Persistence
 
 **Overall Project Goal (Recap from [`docs/working_context/plan_langgraph.md`](docs/working_context/plan_langgraph.md))**
 
@@ -19,8 +19,8 @@ graph TD
 
     A --> C{2. Template Versioning & Storage (`TemplateStoreDB` - PostgreSQL)};
     C --> C1[2.1 Setup PostgreSQL Database & Configuration];
-    C --> C2[2.2 Define SQLAlchemy Models (`xyra/db/models.py`)];
-    C --> C3[2.3 Implement DB Interaction Logic (`xyra/db/template_store.py`)];
+    C --> C2[2.2 Define SQLAlchemy Models (`mailwright/db/models.py`)];
+    C --> C3[2.3 Implement DB Interaction Logic (`mailwright/db/template_store.py`)];
     C --> C4[2.4 Implement `StoreV0Node` in LangGraph (Saves to `TemplateStoreDB`)];
     C --> C5[2.5 Update `GET /status` for `ready_for_preview` & Version Info];
 
@@ -61,7 +61,7 @@ graph TD
 The overall project structure is defined in [`docs/working_context/plan_langgraph.md:438-507`](docs/working_context/plan_langgraph.md:438-507). Sprint 2 will primarily involve creating or significantly modifying the following:
 
 ```text
-xyra/
+mailwright/
 ├── __init__.py
 ├── main.py                 # FastAPI app instance
 ├── config.py               # Application settings (updated for DB, new API keys)
@@ -109,36 +109,36 @@ This breakdown is based on the deliverables outlined in [`docs/working_context/s
 *Goal: Integrate AI-driven image generation into the template creation process.*
 **Status: COMPLETED (with temporary test override in `brief_analyzer_node` for `run_graph` testing during development of this task)**
 
-1.  **Implement `Image Generation Node`** in the new file [`xyra/core_services/image_generator_service.py`](xyra/core_services/image_generator_service.py)
+1.  **Implement `Image Generation Node`** in the new file [`mailwright/core_services/image_generator_service.py`](mailwright/core_services/image_generator_service.py)
     *   References: [`docs/working_context/plan_langgraph.md:191-195`](docs/working_context/plan_langgraph.md:191-195)
     1.  **Integrate DALL-E 3** (or the chosen alternative image generation API).
-        *   Ensure secure API key management via [`xyra/config.py`](xyra/config.py).
-    2.  **Handle image prompts** derived from the user's brief (managed in LangGraph state, defined in [`xyra/graphs/state.py`](xyra/graphs/state.py)).
+        *   Ensure secure API key management via [`mailwright/config.py`](mailwright/config.py).
+    2.  **Handle image prompts** derived from the user's brief (managed in LangGraph state, defined in [`mailwright/graphs/state.py`](mailwright/graphs/state.py)).
     3.  **Manage image asset URLs** returned by the generation service. These URLs will be stored and used in the MJML.
     4.  Address strategies for **visual consistency** and **prompt refinement** as highlighted in [`docs/working_context/plan_review_langgraph.md:33-36`](docs/working_context/plan_review_langgraph.md:33-36).
-2.  **Integrate `LG_ImageGen` node into the LangGraph flow** within [`xyra/graphs/template_generation_graph.py`](xyra/graphs/template_generation_graph.py).
+2.  **Integrate `LG_ImageGen` node into the LangGraph flow** within [`mailwright/graphs/template_generation_graph.py`](mailwright/graphs/template_generation_graph.py).
     *   This node should execute *before* the `LG_MJMLGen` node.
     *   The LangGraph state will pass image asset information (e.g., URLs) to the MJML generation step.
 3.  **Update MJML Generation Prompt & Logic.**
-    *   The prompt for `LG_MJMLGen` node (logic within [`xyra/core_services/mjml_service.py`](xyra/core_services/mjml_service.py)) must be updated to instruct the LLM on how to incorporate image placeholders or actual image URLs into the MJML structure.
+    *   The prompt for `LG_MJMLGen` node (logic within [`mailwright/core_services/mjml_service.py`](mailwright/core_services/mjml_service.py)) must be updated to instruct the LLM on how to incorporate image placeholders or actual image URLs into the MJML structure.
 
 ### 2. Template Versioning & Storage (`TemplateStoreDB` - PostgreSQL)
 *Goal: Establish a persistent store for generated template versions, including MJML, HTML, and associated metadata.*
 **Status: IN PROGRESS**
 1.  **Set up PostgreSQL Database.** **Status: COMPLETED**
     *   Install and configure a PostgreSQL server instance.
-    *   Update [`xyra/config.py`](xyra/config.py) with database connection details.
-2.  **Define SQLAlchemy Models** in the new file [`xyra/db/models.py`](xyra/db/models.py). **Status: COMPLETED**
+    *   Update [`mailwright/config.py`](mailwright/config.py) with database connection details.
+2.  **Define SQLAlchemy Models** in the new file [`mailwright/db/models.py`](mailwright/db/models.py). **Status: COMPLETED**
     *   Based on schema in [`docs/working_context/plan_langgraph.md:234-243`](docs/working_context/plan_langgraph.md:234-243) (template_id, version_id, mjml_source, compiled_html, user_brief_snapshot, image_assets, etc.).
     *   Set up Alembic for database migrations.
-3.  **Implement Database Interaction Logic** in the new file [`xyra/db/template_store.py`](xyra/db/template_store.py). **Status: COMPLETED** (Initial async functions for create/get implemented)
+3.  **Implement Database Interaction Logic** in the new file [`mailwright/db/template_store.py`](mailwright/db/template_store.py). **Status: COMPLETED** (Initial async functions for create/get implemented)
     *   Functions for creating, retrieving, and updating template versions.
     *   Ensure asynchronous operations.
-4.  **Implement `StoreV0Node` in LangGraph** within [`xyra/graphs/template_generation_graph.py`](xyra/graphs/template_generation_graph.py). **Status: COMPLETED** (and integration tested)
+4.  **Implement `StoreV0Node` in LangGraph** within [`mailwright/graphs/template_generation_graph.py`](mailwright/graphs/template_generation_graph.py). **Status: COMPLETED** (and integration tested)
     *   This new node will save the first successfully generated version to `TemplateStoreDB`.
     *   References: [`docs/working_context/plan_langgraph.md:154`](docs/working_context/plan_langgraph.md:154).
     *   This node will run after `LG_MJMLValidateCompile` is successful.
-5.  **Update `GET /api/v1/templates/{template_id}/status` Endpoint** in [`xyra/api/v1/template_routes.py`](xyra/api/v1/template_routes.py). **Status: COMPLETED**
+5.  **Update `GET /api/v1/templates/{template_id}/status` Endpoint** in [`mailwright/api/v1/template_routes.py`](mailwright/api/v1/template_routes.py). **Status: COMPLETED**
     *   Indicate `ready_for_preview` status.
     *   Include `current_version_id` and preview URLs.
     *   References: [`docs/working_context/plan_langgraph.md:299-308`](docs/working_context/plan_langgraph.md:299-308).
@@ -146,17 +146,17 @@ This breakdown is based on the deliverables outlined in [`docs/working_context/s
     *   **Endpoint:** `GET /api/v1/templates/{template_id}/versions`.
     *   **Functionality:** Return a list of metadata for all stored versions of a given template_id (e.g., version_id, created_at, change_trigger, is_approved), including dynamically generated `preview_urls` (for HTML and MJML content) for each version.
     *   **Components:**
-        *   Define Pydantic response schemas in `xyra/schemas/template_schemas.py`.
-        *   Add database logic in `xyra/db/template_store.py` to fetch all versions for a template.
-        *   Implement the endpoint logic in `xyra/api/v1/template_routes.py`.
+        *   Define Pydantic response schemas in `mailwright/schemas/template_schemas.py`.
+        *   Add database logic in `mailwright/db/template_store.py` to fetch all versions for a template.
+        *   Implement the endpoint logic in `mailwright/api/v1/template_routes.py`.
 
 ### 3. HTML Preview Service
 *Goal: Allow users to preview the generated HTML and MJML for a specific template version.*
 **Status: COMPLETED**
-1.  **Implement FastAPI endpoint: `GET /api/v1/templates/{template_id}/versions/{version_id}/html`** in [`xyra/api/v1/template_routes.py`](xyra/api/v1/template_routes.py). **Status: COMPLETED**
+1.  **Implement FastAPI endpoint: `GET /api/v1/templates/{template_id}/versions/{version_id}/html`** in [`mailwright/api/v1/template_routes.py`](mailwright/api/v1/template_routes.py). **Status: COMPLETED**
     *   Retrieves compiled HTML for the specified version from `TemplateStoreDB`.
     *   References: [`docs/working_context/plan_langgraph.md:314`](docs/working_context/plan_langgraph.md:314).
-2.  **Implement FastAPI endpoint: `GET /api/v1/templates/{template_id}/versions/{version_id}/mjml`** in [`xyra/api/v1/template_routes.py`](xyra/api/v1/template_routes.py). **Status: COMPLETED**
+2.  **Implement FastAPI endpoint: `GET /api/v1/templates/{template_id}/versions/{version_id}/mjml`** in [`mailwright/api/v1/template_routes.py`](mailwright/api/v1/template_routes.py). **Status: COMPLETED**
     *   Retrieves MJML source for the specified version from `TemplateStoreDB`.
     *   References: [`docs/working_context/plan_langgraph.md:306`](docs/working_context/plan_langgraph.md:306).
 
@@ -166,7 +166,7 @@ This breakdown is based on the deliverables outlined in [`docs/working_context/s
 1.  **Decide on Production Checkpointer:** PostgreSQL or Redis. **Status: DECISION MADE: PostgreSQL**
     *   This decision was deferred to later phases in [`docs/working_context/plan_review_langgraph.md:25-28`](docs/working_context/plan_review_langgraph.md:25-28). Sprint 2 is the time to make and implement this, replacing the Sprint 1 SQLite solution.
 2.  **Implement and Configure Chosen Production Checkpointer.** **Status: COMPLETED** (`checkpointer.py` updated for `AsyncPostgresSaver`, used in API routes)
-    *   Update LangGraph initialization in [`xyra/graphs/template_generation_graph.py`](xyra/graphs/template_generation_graph.py) and/or [`xyra/graphs/checkpointer.py`](xyra/graphs/checkpointer.py).
+    *   Update LangGraph initialization in [`mailwright/graphs/template_generation_graph.py`](mailwright/graphs/template_generation_graph.py) and/or [`mailwright/graphs/checkpointer.py`](mailwright/graphs/checkpointer.py).
     *   References: [`docs/working_context/plan_langgraph.md:469`](docs/working_context/plan_langgraph.md:469).
 3.  **Test Resumability of Graph Executions.** **Status: COMPLETED**
     *   Verify correct resumption from persisted state using the new production checkpointer.
@@ -183,8 +183,8 @@ This breakdown is based on the deliverables outlined in [`docs/working_context/s
     *   Consider points from [`docs/working_context/plan_review_langgraph.md:19-24`](docs/working_context/plan_review_langgraph.md:19-24).
 2.  **Standardize Logging Across Services and LangGraph Nodes.** **Status: COMPLETED**
     *   Implement structured logging with consistent formatting using Python's `logging` module.
-    *   Centralized configuration in `xyra/logging_config.py`.
-    *   Log level controlled by `LOG_LEVEL` environment variable or `xyra/config.py` setting.
+    *   Centralized configuration in `mailwright/logging_config.py`.
+    *   Log level controlled by `LOG_LEVEL` environment variable or `mailwright/config.py` setting.
     *   Removed `print()` statements and ad-hoc `logging.basicConfig()` calls.
     *   Detailed plan and execution steps are documented in `docs/working_context/logging_standardization_plan.md`.
     *   Ensure detailed logs for debugging and tracing.
@@ -225,6 +225,6 @@ This breakdown is based on the deliverables outlined in [`docs/working_context/s
 *   **Image Generation Details:** Focus on visual consistency and prompt derivation, per [`docs/working_context/plan_review_langgraph.md:33-36`](docs/working_context/plan_review_langgraph.md:33-36).
 *   **Database Schema Migrations:** Use Alembic for `TemplateStoreDB` schema changes.
 *   **Security:** Apply best practices for DB access and new API integrations.
-*   **Configuration Management:** Manage new configurations securely via [`xyra/config.py`](xyra/config.py) and `.env` files.
+*   **Configuration Management:** Manage new configurations securely via [`mailwright/config.py`](mailwright/config.py) and `.env` files.
 
 ---

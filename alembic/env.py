@@ -1,4 +1,4 @@
-import os
+﻿import os
 from logging.config import fileConfig
 from pathlib import Path
 
@@ -30,7 +30,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from xyra.db.models import Base  # noqa: E402 # Import Base from your models file
+from mailwright.db.models import Base  # noqa: E402 # Import Base from your models file
 
 target_metadata = Base.metadata  # Point Alembic to your models' metadata
 

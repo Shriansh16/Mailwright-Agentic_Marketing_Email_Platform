@@ -1,11 +1,11 @@
-import pytest
+﻿import pytest
 from unittest.mock import patch, MagicMock
 from openai.types import ImagesResponse
 from openai.types.image import Image
 from datetime import datetime
 
-from xyra.core_services.image_generator_service import ImageGeneratorService
-from xyra.config import settings
+from mailwright.core_services.image_generator_service import ImageGeneratorService
+from mailwright.config import settings
 
 
 # Helper to create a mock ImagesResponse object

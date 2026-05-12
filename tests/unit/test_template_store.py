@@ -1,17 +1,17 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from uuid import uuid4
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from xyra.db.template_store import (
+from mailwright.db.template_store import (
     get_all_template_versions_for_template_id,
     create_template_version,
     approve_template_version,
     get_template_version,
 )
-from xyra.schemas.template_schemas import TemplateVersionCreate
+from mailwright.schemas.template_schemas import TemplateVersionCreate
 
 
 @pytest_asyncio.fixture

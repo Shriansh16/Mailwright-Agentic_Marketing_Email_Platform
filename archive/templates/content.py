@@ -1,4 +1,4 @@
-import json
+﻿import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -13,7 +13,7 @@ from transformers import (
     pipeline,
 )
 
-from xyra.templates.store import TemplateStore
+from mailwright.templates.store import TemplateStore
 
 
 class NLP:

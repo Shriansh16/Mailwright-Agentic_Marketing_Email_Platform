@@ -1,12 +1,12 @@
-# Xyra — Complete Onboarding Guide
+﻿# Mailwright — Complete Onboarding Guide
 
-> **Purpose of this document:** A ground-up walkthrough for anyone new to this project. By the end you should understand what Xyra does, how every piece fits together, how to run it locally, and how to develop and test confidently.
+> **Purpose of this document:** A ground-up walkthrough for anyone new to this project. By the end you should understand what Mailwright does, how every piece fits together, how to run it locally, and how to develop and test confidently.
 
 ---
 
 ## Table of Contents
 
-1. [What Is Xyra?](#1-what-is-xyra)
+1. [What Is Mailwright?](#1-what-is-Mailwright)
 2. [High-Level Architecture](#2-high-level-architecture)
 3. [Tech Stack at a Glance](#3-tech-stack-at-a-glance)
 4. [Repository Structure](#4-repository-structure)
@@ -28,11 +28,11 @@
 
 ---
 
-## 1. What Is Xyra?
+## 1. What Is Mailwright?
 
-**Xyra (Xyra Marketing Content Agent)** is a **FastAPI microservice** that generates production-ready marketing **email templates** using AI.
+**Mailwright (Mailwright - Agentic Marketing Email Platform)** is a **FastAPI microservice** that generates production-ready marketing **email templates** using AI.
 
-A user provides a creative brief — describing what the email should say, its call-to-action, and visual ideas. Xyra then:
+A user provides a creative brief — describing what the email should say, its call-to-action, and visual ideas. Mailwright then:
 
 - Analyses the brief for clarity (asking follow-up questions if it is ambiguous).
 - Optionally generates images via DALL-E.
@@ -42,7 +42,7 @@ A user provides a creative brief — describing what the email should say, its c
 - Allows the user to iterate via a feedback loop.
 - Lets the user approve a final version when satisfied.
 
-Alternatively, Xyra can skip the MJML path entirely and use a **RAG (Retrieval-Augmented Generation)** pipeline: it finds the most structurally similar template from a pre-indexed corpus of ~1,600 real email templates and uses an LLM to fill in the user's content — producing HTML directly and very quickly.
+Alternatively, Mailwright can skip the MJML path entirely and use a **RAG (Retrieval-Augmented Generation)** pipeline: it finds the most structurally similar template from a pre-indexed corpus of ~1,600 real email templates and uses an LLM to fill in the user's content — producing HTML directly and very quickly.
 
 ---
 
@@ -55,9 +55,9 @@ Alternatively, Xyra can skip the MJML path entirely and use a **RAG (Retrieval-A
                                │  HTTP (REST)
                                ▼
 ┌──────────────────────────────────────────────────────────────────────┐
-│                     FastAPI  (xyra/main.py)                           │
+│                     FastAPI  (mailwright/main.py)                           │
 │                     Prefix: /api/v1                                   │
-│                     Routes: xyra/api/v1/template_routes.py            │
+│                     Routes: mailwright/api/v1/template_routes.py            │
 └──────────┬───────────────────────────────────────┬───────────────────┘
            │                                       │
            │ LangGraph graph.ainvoke()             │ SQLAlchemy async
@@ -107,9 +107,9 @@ Alternatively, Xyra can skip the MJML path entirely and use a **RAG (Retrieval-A
 ## 4. Repository Structure
 
 ```
-Xyra_Templates/
+Mailwright-Agentic_Marketing_Email_Platform/
 │
-├── xyra/                          # Main Python package — all application code
+├── mailwright/                          # Main Python package — all application code
 │   ├── main.py                    # FastAPI app creation and lifespan setup
 │   ├── config.py                  # pydantic-settings: all env vars live here
 │   ├── templates_api.py           # ⚠ Legacy / orphan — not used by main.py
@@ -286,14 +286,14 @@ POST /api/v1/templates
 
 ## 6. LangGraph — The Orchestration Engine
 
-LangGraph is the heart of Xyra. Think of it as a **resumable state machine**.
+LangGraph is the heart of mailwright. Think of it as a **resumable state machine**.
 
 ### GraphState — the shared memory
 
 Every node reads from and writes to a single `GraphState` object. It is persisted to PostgreSQL (or SQLite as fallback) after every node execution.
 
 ```python
-# xyra/graphs/state.py (simplified)
+# mailwright/graphs/state.py (simplified)
 class GraphState(BaseModel):
     # Input
     user_brief_data: Optional[Dict]          # MJML workflow input
@@ -413,7 +413,7 @@ alembic current
 
 ## 9. Configuration Reference
 
-All settings live in `xyra/config.py` as a `pydantic-settings` `Settings` class. They are populated from the `.env` file.
+All settings live in `mailwright/config.py` as a `pydantic-settings` `Settings` class. They are populated from the `.env` file.
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
@@ -451,7 +451,7 @@ All settings live in `xyra/config.py` as a `pydantic-settings` `Settings` class.
 
 ```bash
 git clone <repository-url>
-cd Xyra_Templates
+cd Mailwright-Agentic_Marketing_Email_Platform
 
 python -m venv .venv
 # Windows:
@@ -476,12 +476,12 @@ mjml --version   # Should print version number
 ### 4. Create PostgreSQL database
 
 ```bash
-createdb xyra_db
+createdb mailwright_db
 ```
 
 ### 5. Create `.env` file
 
-Create `Xyra_Templates/.env` with:
+Create `Mailwright-Agentic_Marketing_Email_Platform/.env` with:
 
 ```bash
 # LLM Keys — need at least one
@@ -492,8 +492,8 @@ ANTHROPIC_API_KEY=sk-ant-...
 DEFAULT_LLM_PROVIDER=anthropic
 
 # Database
-DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/xyra_db
-LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://postgres:password@localhost:5432/xyra_db
+DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/mailwright_db
+LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://postgres:password@localhost:5432/mailwright_db
 
 # MJML CLI
 MJML_CLI_PATH=mjml
@@ -523,7 +523,7 @@ python scripts/ingest_rag_corpus.py
 
 ```bash
 # Development with auto-reload
-uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn mailwright.main:app --reload --host 0.0.0.0 --port 8000
 
 # Verify health
 curl http://localhost:8000/api/v1/health
@@ -721,7 +721,7 @@ pytest tests/api/ -v
 pytest tests/unit/test_brief_analyzer_service.py -v
 
 # With coverage
-pytest --cov=xyra --cov-report=html
+pytest --cov=Mailwright --cov-report=html
 
 # Re-run only last failures
 pytest --lf
@@ -764,7 +764,7 @@ async def test_brief_analysis_ok():
 async def test_full_workflow_brief_ok(compiled_graph_with_memory_saver):
     graph, _ = compiled_graph_with_memory_saver
     config = {"configurable": {"thread_id": "test-123"}}
-    with patch('xyra.core_services.mjml_service.MJMLService.generate_mjml_node') as mock_gen:
+    with patch('mailwright.core_services.mjml_service.MJMLService.generate_mjml_node') as mock_gen:
         mock_gen.return_value = {"current_mjml": "<mjml>...</mjml>"}
         result = await graph.ainvoke(initial_state, config)
     assert result["last_operation_status"] == "SUCCESS_STORED_V0"
@@ -889,7 +889,7 @@ async def create_something(db: AsyncSession, data: CreateSchema) -> Model:
 ### "No suitable template found in the RAG corpus"
 
 - The RAG corpus hasn't been ingested yet. Run: `python scripts/ingest_rag_corpus.py`
-- Check `rag_templates` table: `psql -d xyra_db -c "SELECT COUNT(*) FROM rag_templates;"`
+- Check `rag_templates` table: `psql -d mailwright_db -c "SELECT COUNT(*) FROM rag_templates;"`
 
 ### "Status is CLARIFICATION_NEEDED but I never see questions"
 
@@ -899,7 +899,7 @@ async def create_something(db: AsyncSession, data: CreateSchema) -> Model:
 ### Inspecting graph state in the database
 
 ```bash
-psql -d xyra_db
+psql -d mailwright_db
 -- LangGraph checkpoints
 SELECT thread_id, checkpoint_id, created_at FROM checkpoints ORDER BY created_at DESC LIMIT 10;
 
@@ -926,21 +926,21 @@ Set `LOG_LEVEL=DEBUG` in `.env` to see all node-level logging.
 
 | File | What to look at when... |
 |------|------------------------|
-| `xyra/config.py` | Adding a new setting or changing a default model |
-| `xyra/main.py` | Changing app startup, adding middleware, new router |
-| `xyra/api/v1/router.py` | Adding a new route group |
-| `xyra/api/v1/template_routes.py` | Changing or adding HTTP endpoints |
-| `xyra/graphs/state.py` | Adding new fields to workflow state |
-| `xyra/graphs/template_generation_graph.py` | Adding/modifying nodes or routing logic |
-| `xyra/graphs/checkpointer.py` | Checkpointer connection issues |
-| `xyra/core_services/brief_analyzer_service.py` | Tweaking brief analysis prompts |
-| `xyra/core_services/mjml_service.py` | MJML generation prompts, CLI interaction |
-| `xyra/core_services/feedback_engine_service.py` | Feedback revision prompts |
-| `xyra/core_services/rag_template_service.py` | RAG similarity search, content population |
-| `xyra/core_services/llm_factory.py` | Adding a new LLM provider |
-| `xyra/db/models.py` | Adding a new database table or column |
-| `xyra/db/template_store.py` | Adding a new database query |
-| `xyra/schemas/template_schemas.py` | Changing API request/response shapes |
+| `mailwright/config.py` | Adding a new setting or changing a default model |
+| `mailwright/main.py` | Changing app startup, adding middleware, new router |
+| `mailwright/api/v1/router.py` | Adding a new route group |
+| `mailwright/api/v1/template_routes.py` | Changing or adding HTTP endpoints |
+| `mailwright/graphs/state.py` | Adding new fields to workflow state |
+| `mailwright/graphs/template_generation_graph.py` | Adding/modifying nodes or routing logic |
+| `mailwright/graphs/checkpointer.py` | Checkpointer connection issues |
+| `mailwright/core_services/brief_analyzer_service.py` | Tweaking brief analysis prompts |
+| `mailwright/core_services/mjml_service.py` | MJML generation prompts, CLI interaction |
+| `mailwright/core_services/feedback_engine_service.py` | Feedback revision prompts |
+| `mailwright/core_services/rag_template_service.py` | RAG similarity search, content population |
+| `mailwright/core_services/llm_factory.py` | Adding a new LLM provider |
+| `mailwright/db/models.py` | Adding a new database table or column |
+| `mailwright/db/template_store.py` | Adding a new database query |
+| `mailwright/schemas/template_schemas.py` | Changing API request/response shapes |
 | `alembic/versions/` | Database migration history |
 | `scripts/ingest_rag_corpus.py` | RAG corpus ingestion pipeline |
 | `tests/integration/test_template_generation_graph.py` | Understanding full workflow behaviour |

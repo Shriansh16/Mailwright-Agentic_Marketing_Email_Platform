@@ -1,4 +1,4 @@
-# Xyra Marketing Content Agent
+﻿# Mailwright - Agentic Marketing Email Platform
 
 ---
 
@@ -32,7 +32,7 @@
 ```bash
 # 1. Clone and navigate
 git clone <repository-url>
-cd Xyra-Templates
+cd Mailwright-Templates
 
 # 2. Create virtual environment
 python -m venv .venv
@@ -56,17 +56,17 @@ mjml --version
 # Create environment file (no .env.example exists, create from scratch)
 touch .env
 
-# Edit .env file with your API keys (based on actual xyra/config.py)
+# Edit .env file with your API keys (based on actual mailwright/config.py)
 # Add the following content to .env:
 ```
 
 ### Required Environment Variables (.env file)
 
-**⚠️ CRITICAL**: Based on `xyra/config.py`, you need **at least one** LLM API key:
+**⚠️ CRITICAL**: Based on `mailwright/config.py`, you need **at least one** LLM API key:
 
 ```bash
 # Application Configuration
-APP_NAME="Xyra Marketing Content Agent"
+APP_NAME="Mailwright - Agentic Marketing Email Platform"
 DEBUG=true  # Set to true for development
 
 # LLM API Keys (you need at least ONE of these)
@@ -94,8 +94,8 @@ IMAGE_GENERATION_PROVIDER=openai
 IMAGE_GENERATION_OPENAI_DALLE_MODEL=dall-e-3
 
 # Database Configuration (PostgreSQL)
-DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/xyra_db
-LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://postgres:password@localhost:5432/xyra_db
+DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/mailwright_db
+LANGGRAPH_CHECKPOINTER_DB_URL=postgresql://postgres:password@localhost:5432/mailwright_db
 
 # MJML CLI Path
 MJML_CLI_PATH=mjml  # Should be 'mjml' if installed globally
@@ -105,7 +105,7 @@ MJML_CLI_PATH=mjml  # Should be 'mjml' if installed globally
 
 ```bash
 # Create PostgreSQL database
-createdb xyra_db
+createdb mailwright_db
 
 # Run database migrations
 alembic upgrade head
@@ -115,7 +115,7 @@ alembic upgrade head
 
 ```bash
 # Run the development server
-uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn mailwright.main:app --reload --host 0.0.0.0 --port 8000
 
 # Test basic functionality
 curl http://localhost:8000/apihealth  # Should return {"status": "healthy"}
@@ -202,7 +202,7 @@ This project supports two distinct template generation workflows that run in par
 ### Directory Structure Explained
 
 ```
-Xyra-Templates/
+Mailwright-Templates/
 ├── .env.example                   # Example environment variables
 ├── .gitignore                     # Specifies intentionally untracked files that Git should ignore
 ├── alembic.ini                    # Configuration file for Alembic database migrations
@@ -260,7 +260,7 @@ Xyra-Templates/
 │
 ├── tests/                         # Test suite
 │   ├── conftest.py                # Pytest configuration and fixtures
-│   ├── Xyra API - TemplateGen Tests.postman_collection.json # Postman collection for API tests
+│   ├── Mailwright API - TemplateGen Tests.postman_collection.json # Postman collection for API tests
 │   ├── api/v1/                    # API endpoint tests (specific to v1)
 │   │   └── test_template_routes.py
 │   ├── beefreetester/             # (Likely related to a specific HTML/email editor testing)
@@ -277,7 +277,7 @@ Xyra-Templates/
 │       └── graphs/
 │           └── test_checkpointer.py
 │
-└── xyra/                          # Main application package
+└── mailwright/                          # Main application package
     ├── __init__.py
     ├── config.py                  # Settings & environment variables
     ├── main.py                    # FastAPI app entry point
@@ -378,7 +378,7 @@ graph TD
 
 ### Key Concepts to Understand
 
-#### 1. Graph State (`xyra/graphs/state.py`)
+#### 1. Graph State (`mailwright/graphs/state.py`)
 
 ```python
 class GraphState(BaseModel):
@@ -403,7 +403,7 @@ class GraphState(BaseModel):
 
 The state is the "memory" of the workflow, passed between nodes and persisted to the database.
 
-#### 2. Checkpointer (`xyra/graphs/checkpointer.py`)
+#### 2. Checkpointer (`mailwright/graphs/checkpointer.py`)
 
 - Saves workflow state to PostgreSQL
 - Enables workflow resumption after interruptions
@@ -497,7 +497,7 @@ ruff check .
 ruff format .
 
 # Type checking with mypy (if configured)
-mypy xyra/
+mypy mailwright/
 ```
 
 #### Ruff Configuration
@@ -508,7 +508,7 @@ Ruff is configured in the [`pyproject.toml`](pyproject.toml:32) file. Key settin
 - **Selected Linters**: Includes standard pycodestyle errors (E), Pyflakes (F), plus `flake8-bugbear` (B), `flake8-comprehensions` (C4), and `flake8-simplify` (SIM) for more thorough checks.
 - **Ignored Rules**: `E501` (line too long) is currently ignored, but aim to adhere to the line length where practical.
 - **Auto-fix**: Ruff can auto-fix many issues (e.g., `ruff check . --fix` or `ruff format .`).
-- **Exclusions**: Certain directories like `.venv`, `build`, `dist`, `xyra/legacy_code`, and `xyra/templates` are excluded from linting.
+- **Exclusions**: Certain directories like `.venv`, `build`, `dist`, `mailwright/legacy_code`, and `mailwright/templates` are excluded from linting.
 
 Refer to the `[tool.ruff]` and `[tool.ruff.lint]` sections in [`pyproject.toml`](pyproject.toml:32) for the complete and up-to-date configuration.
 
@@ -531,7 +531,7 @@ tests/
 
 Pytest is configured in the [`pyproject.toml`](pyproject.toml:81) file. A key setting for this project is:
 
-- **Asyncio Mode**: `asyncio_mode = "auto"` is set. This enables `pytest-asyncio` to automatically handle `async` tests, which is crucial for testing the asynchronous components of Xyra-Templates.
+- **Asyncio Mode**: `asyncio_mode = "auto"` is set. This enables `pytest-asyncio` to automatically handle `async` tests, which is crucial for testing the asynchronous components of Mailwright-Templates.
 
 All test execution commands shown below utilize `pytest`.
 
@@ -545,7 +545,7 @@ pytest
 pytest tests/unit/test_brief_analyzer_service.py -v
 
 # Run with coverage
-pytest --cov=xyra --cov-report=html
+pytest --cov=Mailwright --cov-report=html
 
 # Run only failed tests
 pytest --lf
@@ -610,7 +610,7 @@ async def your_node(state: GraphState, config: dict) -> GraphState:
 
 ```bash
 # Connect to PostgreSQL
-psql -d xyra_db
+psql -d mailwright_db
 
 # Check workflow checkpoints
 SELECT * FROM checkpoints ORDER BY created_at DESC LIMIT 5;
@@ -843,10 +843,10 @@ async def test_complete_workflow(compiled_graph_with_memory_saver):
 
 ```bash
 # Start development server with auto-reload
-uvicorn xyra.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn mailwright.main:app --reload --host 0.0.0.0 --port 8000
 
 # Run with debugger
-python -m debugpy --listen 5678 --wait-for-client -m uvicorn xyra.main:app --reload
+python -m debugpy --listen 5678 --wait-for-client -m uvicorn mailwright.main:app --reload
 
 # Check application health
 curl http://localhost:8000/health
@@ -878,7 +878,7 @@ alembic history --verbose
 
 ```bash
 # Run all tests with coverage
-pytest --cov=xyra --cov-report=html --cov-report=term
+pytest --cov=Mailwright --cov-report=html --cov-report=term
 
 # Run specific test patterns
 pytest -k "test_brief" -v
@@ -906,7 +906,7 @@ mjml --version
 which mjml
 
 # Check PostgreSQL connection
-psql -d xyra_db -c "SELECT version();"
+psql -d mailwright_db -c "SELECT version();"
 
 # Check environment variables
 env | grep -E "(OPENAI|ANTHROPIC|DATABASE)"
@@ -927,7 +927,7 @@ git bisect bad HEAD
 git bisect good <known-good-commit>
 
 # Check blame for specific lines
-git blame xyra/api/v1/template_routes.py
+git blame mailwright/api/v1/template_routes.py
 
 # Revert specific commit
 git revert <commit-hash>
@@ -944,10 +944,10 @@ ruff check . --fix
 ruff format .
 
 # Type checking (if mypy configured)
-mypy xyra/
+mypy mailwright/
 
 # Security check
-bandit -r xyra/
+bandit -r mailwright/
 ```
 
 ## 📚 Docs Reading Order
@@ -956,8 +956,8 @@ bandit -r xyra/
 2. **`docs/working_context/sprint_3_plan_tasks.md`** - Detailed plan for the current Sprint 3.
 3. **`docs/working_context/sprint_2_plan_tasks.md`** - Detailed plan and outcomes of the completed Sprint 2.
 4. **`docs/working_context/sprint_2_test_debugging_notes.md`** - Notes on issues encountered and resolved during Sprint 2 testing.
-5. **`xyra/graphs/state.py`** - Understand the core data model
-6. **`xyra/graphs/template_generation_graph.py`** - Core workflow
+5. **`mailwright/graphs/state.py`** - Understand the core data model
+6. **`mailwright/graphs/template_generation_graph.py`** - Core workflow
 7. **`tests/integration/test_template_generation_graph.py`** - How everything works together
-8. **`xyra/api/v1/template_routes.py`** - API interface
+8. **`mailwright/api/v1/template_routes.py`** - API interface
 9. **`docs/archive/plan_langgraph.md`** - Deep architectural understanding

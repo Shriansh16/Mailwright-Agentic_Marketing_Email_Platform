@@ -1,4 +1,4 @@
-# Project Breakdown: Xyra Marketing Content Agent - Phase 1
+﻿# Project Breakdown: Mailwright - Agentic Marketing Email Platform - Phase 1
 
 We'll organize the work into logical sprints, each focusing on delivering a key set of functionalities.
 
@@ -13,14 +13,14 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
 
 1.  **Epic: Project Setup & FastAPI Core**
     *   Task: Initialize FastAPI project based on the "Proposed Project File Structure" in [`plan.md`](plan.md:1) (Section 9).
-    *   Task: Implement basic application configuration (`xyra/config.py`).
-    *   Task: Set up `xyra/main.py` with FastAPI app instance.
-    *   Task: Define initial Pydantic schemas for API requests/responses and common statuses (`xyra/schemas/`).
+    *   Task: Implement basic application configuration (`mailwright/config.py`).
+    *   Task: Set up `mailwright/main.py` with FastAPI app instance.
+    *   Task: Define initial Pydantic schemas for API requests/responses and common statuses (`mailwright/schemas/`).
     *   Task: Implement basic logging setup.
 
 2.  **Epic: Asynchronous Task Management Setup**
     *   Task: Choose and configure an asynchronous task queue (e.g., Celery with a broker like Redis/RabbitMQ, or FastAPI's built-in BackgroundTasks for simpler initial setup, to be decided based on scalability needs).
-    *   Task: Define basic structure for task definitions (`xyra/tasks/`).
+    *   Task: Define basic structure for task definitions (`mailwright/tasks/`).
 
 3.  **Epic: Initial API Endpoints (Generation & Status)**
     *   Task: Implement `POST /templates` endpoint (as per [`plan.md`](plan.md:1) Section 3.9.1):
@@ -32,8 +32,8 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
         *   Implement initial status states (e.g., `pending_brief_analysis`).
 
 4.  **Epic: Template Versioning & Storage (Database Setup)**
-    *   Task: Define database models (`xyra/db/models.py`) for the `TemplateStore` schema outlined in [`plan.md`](plan.md:1) (Section 3.7: `template_id`, `version_id`, `mjml_source`, `compiled_html`, etc.).
-    *   Task: Set up database connection and basic CRUD operations for `TemplateStore` (`xyra/db/template_store.py`).
+    *   Task: Define database models (`mailwright/db/models.py`) for the `TemplateStore` schema outlined in [`plan.md`](plan.md:1) (Section 3.7: `template_id`, `version_id`, `mjml_source`, `compiled_html`, etc.).
+    *   Task: Set up database connection and basic CRUD operations for `TemplateStore` (`mailwright/db/template_store.py`).
     *   Task: Implement database migrations (if using a tool like Alembic).
 
 ---
@@ -46,7 +46,7 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
 **Epics & Tasks:**
 
 1.  **Epic: Brief Analyzer Service**
-    *   Task: Implement `Brief Analyzer` service (`xyra/core_services/brief_analyzer_service.py`).
+    *   Task: Implement `Brief Analyzer` service (`mailwright/core_services/brief_analyzer_service.py`).
     *   Task: Develop prompt for LLM to analyze brief and ask clarification questions (as per [`plan.md`](plan.md:1) Section 3.1).
     *   Task: Integrate LLM call within an asynchronous task.
     *   Task: Update `POST /templates` to trigger the `Brief Analyzer` async task.
@@ -54,18 +54,18 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
     *   Task: Update status polling to reflect `clarification_needed` or `pending_initial_generation`.
 
 2.  **Epic: Image Generation Service**
-    *   Task: Implement `Image Generation` service (`xyra/core_services/image_generator_service.py`).
+    *   Task: Implement `Image Generation` service (`mailwright/core_services/image_generator_service.py`).
     *   Task: Integrate with DALL-E 3 (or chosen alternative) API via an asynchronous task.
     *   Task: Handle image prompt input and manage generated image asset URLs/storage.
 
 3.  **Epic: MJML Generation Service (Initial Version)**
-    *   Task: Implement `MJML Generation` service (`xyra/core_services/mjml_service.py`) for initial generation.
+    *   Task: Implement `MJML Generation` service (`mailwright/core_services/mjml_service.py`) for initial generation.
     *   Task: Develop prompt for LLM to generate MJML from a clarified brief and image URLs (as per [`plan.md`](plan.md:1) Section 3.2).
     *   Task: Integrate LLM call within an asynchronous task.
     *   Task: Coordinate with `Image Generation` service if image prompts are part of the brief.
 
 4.  **Epic: MJML Validation & Compilation Service**
-    *   Task: Implement `MJML Validator and HTML Compiler` service (can be part of `xyra/core_services/mjml_service.py` or `xyra/utils/mjml_cli_utils.py`).
+    *   Task: Implement `MJML Validator and HTML Compiler` service (can be part of `mailwright/core_services/mjml_service.py` or `mailwright/utils/mjml_cli_utils.py`).
     *   Task: Integrate `mjml` CLI for validation and compilation to HTML (with inlined CSS) via a subprocess call within an asynchronous task.
     *   Task: Handle validation errors and update task status.
 
@@ -88,7 +88,7 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
     *   Task: Implement `GET /templates/{template_id}/versions/{version_id}` endpoint to serve version details (MJML, assets, etc.).
 
 2.  **Epic: Feedback Engine Service**
-    *   Task: Implement `Feedback Engine` service (`xyra/core_services/feedback_engine_service.py`).
+    *   Task: Implement `Feedback Engine` service (`mailwright/core_services/feedback_engine_service.py`).
     *   Task: Develop prompt for LLM to translate natural language feedback into structured change instructions (as per [`plan.md`](plan.md:1) Section 3.6).
     *   Task: Integrate LLM call within an asynchronous task.
     *   Task: Implement `POST /templates/{template_id}/feedback` endpoint (as per [`plan.md`](plan.md:1) Section 3.9.5).
@@ -117,7 +117,7 @@ We'll organize the work into logical sprints, each focusing on delivering a key 
     *   Task: Update the `is_approved` flag in `Template Versioning and Storage` for the approved version.
 
 2.  **Epic: Beefree Importer Service**
-    *   Task: Implement `Beefree Importer` service (`xyra/core_services/beefree_service.py`).
+    *   Task: Implement `Beefree Importer` service (`mailwright/core_services/beefree_service.py`).
     *   Task: Develop a Python client for the Beefree HTML Importer API.
     *   Task: Integrate API call within an asynchronous task, triggered upon template approval.
     *   Task: Handle API responses and update task status (e.g., `pending_beefree_import`, `import_to_beefree_complete`, `error_beefree_import`).

@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pytest
 import pytest_asyncio
 import logging  # Added for standardized logging
@@ -11,11 +11,11 @@ from alembic import command as alembic_command
 # Attempt to set up logging if not already configured by app import
 if not logging.getLogger().hasHandlers():
     try:
-        from xyra.logging_config import setup_logging
+        from mailwright.logging_config import setup_logging
 
         setup_logging()
     except ImportError:
-        # This might happen if tests are run in an environment where xyra package is not discoverable
+        # This might happen if tests are run in an environment where mailwright package is not discoverable
         # in the standard way, or if logging_config itself has issues.
         logging.basicConfig(
             level=logging.WARNING,
@@ -28,13 +28,13 @@ if not logging.getLogger().hasHandlers():
 logger = logging.getLogger(__name__)  # Added for standardized logging
 
 # Define the existing test database name and connection details
-# The user 'xyra_admin' must have permissions to connect to TEST_DB_NAME
+# The user 'mailwright_admin' must have permissions to connect to TEST_DB_NAME
 # and perform DML operations (SELECT, INSERT, UPDATE, DELETE) on its tables.
 TEST_DATABASE_URL_BASE = os.getenv(
     "TEST_DATABASE_URL_BASE",
-    "postgresql+asyncpg://xyra_admin:experiture@localhost:5432",
+    "postgresql+asyncpg://mailwright_admin:experiture@localhost:5432",
 )
-TEST_DB_NAME = os.getenv("TEST_DB_NAME", "xyra_db")  # Changed to use existing xyra_db
+TEST_DB_NAME = os.getenv("TEST_DB_NAME", "mailwright_db")  # Changed to use existing mailwright_db
 
 # URL for the application to use (SQLAlchemy and LangGraph checkpointer) - async version
 APPLICATION_TEST_DB_URL_SQLALCHEMY_ASYNC = f"{TEST_DATABASE_URL_BASE}/{TEST_DB_NAME}"

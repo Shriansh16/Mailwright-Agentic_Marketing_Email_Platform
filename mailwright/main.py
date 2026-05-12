@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import create_async_engine
-from xyra.api.v1.router import router as api_v1_router
-from xyra.config import settings
-from xyra.logging_config import setup_logging
+from mailwright.api.v1.router import router as api_v1_router
+from mailwright.config import settings
+from mailwright.logging_config import setup_logging
 
 # Call logging setup early, after all imports but before app instantiation
 setup_logging()
@@ -32,7 +32,7 @@ app = FastAPI(
     lifespan=lifespan,
     # You can add other FastAPI parameters like version, description, etc.
     # version="0.1.0",
-    # description="Xyra Marketing Content Agent API",
+    # description="Mailwright - Agentic Marketing Email Platform API",
 )
 
 # Placeholder for including API routers
@@ -58,6 +58,6 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
 
-    # This is for direct execution, e.g., python xyra/main.py
-    # For production, you'd typically use: uvicorn xyra.main:app --reload (for dev)
+    # This is for direct execution, e.g., python mailwright/main.py
+    # For production, you'd typically use: uvicorn mailwright.main:app --reload (for dev)
     uvicorn.run(app, host="0.0.0.0", port=8000)

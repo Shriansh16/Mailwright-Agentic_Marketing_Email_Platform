@@ -1,8 +1,8 @@
-import logging
+﻿import logging
 import asyncio
 
-from xyra.config import settings
-from xyra.core_services.llm_factory import get_configured_chat_model
+from mailwright.config import settings
+from mailwright.core_services.llm_factory import get_configured_chat_model
 from langchain_core.language_models.chat_models import BaseChatModel
 
 logger = logging.getLogger(__name__)
@@ -121,7 +121,7 @@ Revised MJML:
 # Example Usage (for testing or direct invocation if needed, usually called by a graph node)
 async def main_test():
     # Ensure settings are loaded if running standalone; requires .env or environment variables
-    # from xyra.config import settings # Already imported
+    # from mailwright.config import settings # Already imported
 
     logging.basicConfig(level=logging.DEBUG)  # Enable debug logging for this test
 

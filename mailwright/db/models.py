@@ -1,4 +1,4 @@
-import logging  # Added for standardized logging
+﻿import logging  # Added for standardized logging
 from sqlalchemy import Column, Text, Boolean, DateTime, Integer
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -9,7 +9,7 @@ from sqlalchemy.orm import (
 from sqlalchemy.sql import func  # For server-side default timestamp
 from pgvector.sqlalchemy import Vector
 
-from xyra.config import settings  # To get DATABASE_URL
+from mailwright.config import settings  # To get DATABASE_URL
 
 logger = logging.getLogger(__name__)  # Added for standardized logging
 

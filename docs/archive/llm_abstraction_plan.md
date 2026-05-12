@@ -1,6 +1,6 @@
-# Plan: Flexible LLM Provider Abstraction and Testing
+﻿# Plan: Flexible LLM Provider Abstraction and Testing
 
-This document outlines the plan for enabling flexible switching between LLM providers (e.g., OpenAI, Anthropic) within the Xyra Marketing Content Agent, leveraging LangChain's native model I/O capabilities. It also includes the associated testing strategy.
+This document outlines the plan for enabling flexible switching between LLM providers (e.g., OpenAI, Anthropic) within the Mailwright - Agentic Marketing Email Platform, leveraging LangChain's native model I/O capabilities. It also includes the associated testing strategy.
 
 ## 1. Revised Plan: Enabling Flexible Model Switching using LangChain's Model I/O
 
@@ -8,26 +8,26 @@ This document outlines the plan for enabling flexible switching between LLM prov
 
 Instead of creating a custom LLM service interface, the plan is to utilize LangChain's built-in model provider classes (e.g., `langchain_openai.ChatOpenAI`, `langchain_anthropic.ChatAnthropic`). These classes conform to a common `BaseChatModel` interface, providing the necessary abstraction.
 
-**1.2. Configuration Enhancements (`xyra/config.py`)**
+**1.2. Configuration Enhancements (`mailwright/config.py`)**
 
-The application configuration (`xyra/config.py`) will be expanded to manage provider and model choices for different tasks:
+The application configuration (`mailwright/config.py`) will be expanded to manage provider and model choices for different tasks:
 *   **API Keys:** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`.
 *   **Default Provider (Optional):** `DEFAULT_LLM_PROVIDER` (e.g., "openai").
 *   **Task-Specific Model Configuration:**
     *   Example: `BRIEF_ANALYZER_PROVIDER`, `BRIEF_ANALYZER_OPENAI_MODEL`, `BRIEF_ANALYZER_ANTHROPIC_MODEL`.
     *   Similar settings for MJML generation, feedback engine, etc.
 
-**1.3. LLM Instance Factory/Selector (`xyra/core_services/llm_factory.py`)**
+**1.3. LLM Instance Factory/Selector (`mailwright/core_services/llm_factory.py`)**
 
 A utility function, `get_configured_chat_model`, will be created to instantiate the appropriate LangChain model based on configuration.
 
 ```python
-# Suggested content for xyra/core_services/llm_factory.py
+# Suggested content for mailwright/core_services/llm_factory.py
 from typing import Optional, Dict, Any
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
-from xyra.config import settings # Assuming your Pydantic settings instance
+from mailwright.config import settings # Assuming your Pydantic settings instance
 
 def get_configured_chat_model(
     task_provider_config: str,
@@ -52,14 +52,14 @@ def get_configured_chat_model(
         raise ValueError(f"Unsupported LLM provider: {provider}")
 ```
 
-**1.4. Refactor Core Services (e.g., `xyra/core_services/brief_analyzer_service.py`)**
+**1.4. Refactor Core Services (e.g., `mailwright/core_services/brief_analyzer_service.py`)**
 
 Core services interacting with LLMs will:
 *   Use the `get_configured_chat_model` factory.
 *   Invoke methods on the returned `BaseChatModel` instance (e.g., `await llm.ainvoke(prompt_messages)`).
 *   Handle prompt construction and parsing of LLM responses, adapting for potential provider differences (e.g., ensuring JSON output).
 
-**1.5. LangGraph Node Adjustments (`xyra/graphs/template_generation_graph.py`)**
+**1.5. LangGraph Node Adjustments (`mailwright/graphs/template_generation_graph.py`)**
 
 LangGraph nodes will use the refactored core services. The LLM selection logic will be abstracted within the services.
 
@@ -118,10 +118,10 @@ This combined plan and testing strategy aims to ensure a robust, flexible, and m
 
 The following components of this plan have been implemented and unit tested:
 
-*   **Section 1.2: Configuration Enhancements (`xyra/config.py`)**: Completed. Settings for multiple LLM providers and task-specific model choices have been added.
-*   **Section 1.3: LLM Instance Factory/Selector (`xyra/core_services/llm_factory.py`)**: Completed. The `get_configured_chat_model` function has been created.
+*   **Section 1.2: Configuration Enhancements (`mailwright/config.py`)**: Completed. Settings for multiple LLM providers and task-specific model choices have been added.
+*   **Section 1.3: LLM Instance Factory/Selector (`mailwright/core_services/llm_factory.py`)**: Completed. The `get_configured_chat_model` function has been created.
 *   **Section 1.4: Refactor Core Services**:
-    *   `xyra/core_services/brief_analyzer_service.py`: Completed. Refactored to use the LLM factory.
+    *   `mailwright/core_services/brief_analyzer_service.py`: Completed. Refactored to use the LLM factory.
     *   Other services (e.g., for MJML generation, feedback engine) are pending creation/refactoring.
 *   **Section 2.1: Unit Testing**:
     *   Unit tests for `llm_factory.py` created and passing.

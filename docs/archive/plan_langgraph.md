@@ -1,8 +1,8 @@
-# Xyra Marketing Content Agent - Phase 1 Plan: MJML Email Template Generation (LangGraph Architecture)
+﻿# Mailwright - Agentic Marketing Email Platform - Phase 1 Plan: MJML Email Template Generation (LangGraph Architecture)
 
 ## 1. Project Overview & Phase 1 Goals
 
-This document outlines the plan for Phase 1 of the Xyra Marketing Content Agent project, adapted to leverage **LangGraph** for core workflow orchestration. The primary goal remains to develop an AI-powered agent capable of generating professional-grade, responsive email templates in MJML format. This phase will also include the capability to generate relevant imagery, allow for iterative refinement through natural language feedback, and import the final HTML (compiled from MJML) into the Beefree WYSWYG editor.
+This document outlines the plan for Phase 1 of the Mailwright - Agentic Marketing Email Platform project, adapted to leverage **LangGraph** for core workflow orchestration. The primary goal remains to develop an AI-powered agent capable of generating professional-grade, responsive email templates in MJML format. This phase will also include the capability to generate relevant imagery, allow for iterative refinement through natural language feedback, and import the final HTML (compiled from MJML) into the Beefree WYSWYG editor.
 
 The adoption of LangGraph aims to simplify the management of complex, stateful workflows involved in template generation and refinement, reducing the need for custom orchestration code within the API layer.
 
@@ -448,7 +448,7 @@ The workflow is defined by the structure of the LangGraph and its state transiti
 │       └── html_generator_overview.md
 ├── archive/
 │   └── cuda-test.py
-├── xyra/
+├── mailwright/
 │   ├── __init__.py
 │   ├── main.py                 # FastAPI app instance, main startup
 │   ├── config.py               # Application settings
@@ -497,7 +497,7 @@ The workflow is defined by the structure of the LangGraph and its state transiti
 │   ├── api/                    # API layer tests
 │   │   └── v1/
 │   │       └── test_template_routes.py
-│   ├── Xyra API - TemplateGen Tests.postman_collection.json
+│   ├── Mailwright API - TemplateGen Tests.postman_collection.json
 │   └── beefreetester/
 │       ├── Blob.js
 │       ├── fileSaver.js
@@ -506,9 +506,9 @@ The workflow is defined by the structure of the LangGraph and its state transiti
     └── run_dev.sh
 ```
 **Key changes in file structure:**
-*   `xyra/graphs/`: New directory to house LangGraph definitions (`template_generation_graph.py`, `state.py`).
-*   `xyra/core_services/`: Now primarily contains the business logic that will be wrapped into LangGraph nodes.
-*   `xyra/tasks/` (from original plan for Celery/FastAPI tasks) is removed, as LangGraph handles this level of orchestration.
-*   `xyra/db/langgraph_checkpointer.py`: Added as a placeholder if a custom database checkpointer for LangGraph state is implemented.
+*   `mailwright/graphs/`: New directory to house LangGraph definitions (`template_generation_graph.py`, `state.py`).
+*   `mailwright/core_services/`: Now primarily contains the business logic that will be wrapped into LangGraph nodes.
+*   `mailwright/tasks/` (from original plan for Celery/FastAPI tasks) is removed, as LangGraph handles this level of orchestration.
+*   `mailwright/db/langgraph_checkpointer.py`: Added as a placeholder if a custom database checkpointer for LangGraph state is implemented.
 
-This LangGraph-centric plan aims for a more robust, maintainable, and understandable system for the complex workflows involved in the Xyra Marketing Content Agent.
+This LangGraph-centric plan aims for a more robust, maintainable, and understandable system for the complex workflows involved in the Mailwright - Agentic Marketing Email Platform.

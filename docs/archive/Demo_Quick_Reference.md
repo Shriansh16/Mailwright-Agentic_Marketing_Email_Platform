@@ -1,19 +1,19 @@
-# 🎯 Xyra Demo - Quick Reference Card
+﻿# 🎯 Mailwright Demo - Quick Reference Card
 
 ## 🚀 **Quick Start (5 Minutes)**
 
 ### 1️⃣ **Pre-Demo Setup**
 ```bash
-# Start Xyra server
-python -m xyra.main
+# Start Mailwright server
+python -m mailwright.main
 
 # Verify in browser: http://localhost:8000/docs
 ```
 
 ### 2️⃣ **Postman Setup**
-- Import: `Xyra_Demo_Collection.postman_collection.json`
-- Import: `Xyra_Demo_Environment.postman_environment.json`
-- Set Environment: "Xyra Demo Environment"
+- Import: `Mailwright_Demo_Collection.postman_collection.json`
+- Import: `Mailwright_Demo_Environment.postman_environment.json`
+- Set Environment: "Mailwright Demo Environment"
 
 ### 3️⃣ **Demo Execution Order**
 
@@ -51,13 +51,13 @@ python -m xyra.main
 ## 🎭 **Demo Talking Points**
 
 ### **Template Creation**
-> "Watch how Xyra instantly accepts the brief and starts processing with our LangGraph workflow. The 202 response means our AI agents are now working in the background."
+> "Watch how Mailwright instantly accepts the brief and starts processing with our LangGraph workflow. The 202 response means our AI agents are now working in the background."
 
 ### **Status Monitoring**
 > "The status endpoint shows real-time progress. Notice how the template moves through different states as our AI agents complete their work."
 
 ### **Clarification Workflow**
-> "When the brief is vague, Xyra's AI automatically detects this and requests clarification - just like a real marketing professional would."
+> "When the brief is vague, Mailwright's AI automatically detects this and requests clarification - just like a real marketing professional would."
 
 ### **Image Generation**
 > "Behind the scenes, DALL-E is generating custom images based on the brief content and brand requirements."

@@ -1,10 +1,10 @@
-import pytest
+﻿import pytest
 from pathlib import Path
 from unittest.mock import patch
 
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
-from xyra.graphs.checkpointer import get_checkpointer_context_manager
-from xyra.config import Settings  # To mock settings
+from mailwright.graphs.checkpointer import get_checkpointer_context_manager
+from mailwright.config import Settings  # To mock settings
 
 # Define a temporary test database path
 TEST_DB_DIR = Path(__file__).parent.parent.parent / "test_data"  # tests/test_data
@@ -53,7 +53,7 @@ def mock_settings_for_checkpointer():
 
 @pytest.mark.asyncio
 @patch(
-    "xyra.graphs.checkpointer.settings"
+    "mailwright.graphs.checkpointer.settings"
 )  # Keep this patch if settings are used for dir creation path
 async def test_get_checkpointer_context_manager_returns_async_sqlite_saver(
     mock_settings_obj, mock_settings_for_checkpointer
@@ -70,7 +70,7 @@ async def test_get_checkpointer_context_manager_returns_async_sqlite_saver(
     # We need to patch SQLITE_CONN_STRING for this test to ensure the directory logic uses the test path
     # This patch might be redundant if mock_settings_obj.SQLITE_CHECKPOINTER_DB_FILE is correctly used by the SUT
     # but kept for safety if SQLITE_CONN_STRING is directly referenced after settings load.
-    with patch("xyra.graphs.checkpointer.SQLITE_CONN_STRING", str(TEST_DB_FILE)):
+    with patch("mailwright.graphs.checkpointer.SQLITE_CONN_STRING", str(TEST_DB_FILE)):
         checkpointer_cm_obj = get_checkpointer_context_manager()
 
         # The function returns the result of AsyncSqliteSaver.from_conn_string(),
@@ -84,9 +84,9 @@ async def test_get_checkpointer_context_manager_returns_async_sqlite_saver(
     assert TEST_DB_DIR.is_dir()
 
 
-@patch("xyra.graphs.checkpointer.settings")  # Patch settings
+@patch("mailwright.graphs.checkpointer.settings")  # Patch settings
 @patch(
-    "xyra.graphs.checkpointer.SQLITE_CONN_STRING",
+    "mailwright.graphs.checkpointer.SQLITE_CONN_STRING",
     new_callable=lambda: str(TEST_DB_FILE),
 )
 @patch("pathlib.Path.mkdir")
@@ -121,16 +121,16 @@ def test_get_checkpointer_context_manager_creates_directory(
 
 
 # To test the connection string usage more directly, mock AsyncSqliteSaver.from_conn_string.
-@patch("xyra.graphs.checkpointer.settings")  # Patch settings used by the function
+@patch("mailwright.graphs.checkpointer.settings")  # Patch settings used by the function
 @patch("langgraph.checkpoint.sqlite.aio.AsyncSqliteSaver.from_conn_string")
 @patch(
-    "xyra.graphs.checkpointer.SQLITE_CONN_STRING",
+    "mailwright.graphs.checkpointer.SQLITE_CONN_STRING",
     new_callable=lambda: str(TEST_DB_FILE),
 )  # Patch module-level var
 def test_get_checkpointer_context_manager_uses_correct_conn_string(
     mock_sql_conn_string_module_var,  # Renamed for clarity, this patches SQLITE_CONN_STRING directly
     mock_sqlite_saver_from_conn_string,  # This is the mock for AsyncSqliteSaver.from_conn_string
-    mock_settings_in_checkpointer_module,  # This is the mock for xyra.graphs.checkpointer.settings
+    mock_settings_in_checkpointer_module,  # This is the mock for mailwright.graphs.checkpointer.settings
 ):
     # Ensure the function takes the SQLite path by making LANGGRAPH_CHECKPOINTER_DB_URL None
     mock_settings_in_checkpointer_module.LANGGRAPH_CHECKPOINTER_DB_URL = None
