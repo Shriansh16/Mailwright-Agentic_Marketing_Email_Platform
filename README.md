@@ -14,6 +14,7 @@
 8. [Code Patterns & Conventions](#code-patterns--conventions)
 9. [External Dependencies](#external-dependencies)
 10. [Useful Commands & Scripts](#useful-commands--scripts)
+11. [Chat UI Workflow](#chat-ui-workflow-gradio)
 
 ---
 
@@ -184,6 +185,51 @@ User Request → FastAPI → LangGraph Workflow → External Services → Databa
               ↓              ↓                    ↓                    ↓
          API Routes    State Machine       LLMs/DALL-E         PostgreSQL
 ```
+
+### Chat UI Workflow (Gradio)
+
+The Gradio UI (`ui/app.py`) talks to **`POST /api/v1/chat/`**, which runs the **Chat LangGraph** (`mailwright/graphs/chat_graph.py`). Each user message starts at the conversation node; depending on the assistant’s structured decision, the graph may generate a template, apply feedback, approve a version, or reply and end the turn.
+
+**Phases:** `gathering` → (generate) → `review` → `approved`
+
+```mermaid
+flowchart TD
+    A[User in Gradio UI] --> B[POST /api/v1/chat/]
+    B --> C[Chat LangGraph]
+    C --> D[LG_Chat_Conversation<br/>GPT-4o structured decision]
+
+    D -->|action = none| E[Reply only → END]
+    D -->|start_generation| F[LG_Chat_Generate]
+    D -->|submit_feedback| G[LG_Chat_Feedback]
+    D -->|approve| H[LG_Chat_Approve]
+
+    F --> TG[Template Generation LangGraph<br/>legacy MJML path]
+    H --> J[Approve version in PostgreSQL]
+
+    TG --> K[Brief Analyzer]
+    K -->|needs clarification| L[Wait for amended brief]
+    K -->|BRIEF_OK| M[Image Generation]
+    M --> N[MJML Generation]
+    N --> O[MJML Validate + Compile<br/>mjml CLI]
+    O --> P[Store v0 in DB]
+    P --> Q[Back to chat: review phase + preview URL]
+
+    G --> R[Feedback Engine revises MJML]
+    R --> O2[Validate + Compile]
+    O2 --> S[Store v_next in DB]
+    S --> Q
+
+    E --> T[Persist messages + thread<br/>PostgreSQL checkpointer]
+    Q --> T
+    J --> T
+```
+
+**Notes:**
+
+- **Generate** invokes the full template graph from scratch (`rag_flow=false` when RAG is disabled).
+- **Feedback** re-invokes the same template graph with `user_feedback_content`; it runs the feedback engine → validate → store revised version path.
+- **Approve** marks the current version in PostgreSQL without re-running generation.
+- Long chats use **rolling summarization** in `chat_graph.py` to compress older messages before the next LLM call.
 
 ### Core Workflows
 
