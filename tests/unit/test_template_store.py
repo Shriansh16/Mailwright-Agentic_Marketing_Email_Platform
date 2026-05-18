@@ -1,4 +1,8 @@
-﻿import pytest
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import pytest
 import pytest_asyncio
 from uuid import uuid4
 

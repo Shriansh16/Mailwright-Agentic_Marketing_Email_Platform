@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import APIRouter
 
 from . import chat_routes, template_routes

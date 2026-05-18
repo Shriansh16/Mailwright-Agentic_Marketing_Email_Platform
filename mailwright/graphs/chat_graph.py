@@ -1,4 +1,8 @@
-﻿"""
+from dotenv import load_dotenv
+
+load_dotenv()
+
+"""
 Chat Graph — powers the POST /api/v1/chat conversational endpoint.
 
 Lifecycle
@@ -12,6 +16,7 @@ import uuid
 from typing import Any, Dict, List, Literal, Optional
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel
@@ -255,7 +260,9 @@ def _get_llm() -> ChatOpenAI:
 # Node 1 — conversation (gathering + review)
 # ---------------------------------------------------------------------------
 
-async def chat_conversation_node(state: ChatState, config: dict) -> Dict[str, Any]:
+async def chat_conversation_node(
+    state: ChatState, config: RunnableConfig | None = None
+) -> Dict[str, Any]:
     """
     Main LLM node.  Reads message history, decides what to do next, and returns
     state updates (never touches the messages list — that is managed by the route).
@@ -331,7 +338,9 @@ async def chat_conversation_node(state: ChatState, config: dict) -> Dict[str, An
 # ---------------------------------------------------------------------------
 
 def _make_generate_template_node(checkpointer):
-    async def generate_template_node(state: ChatState, config: dict) -> Dict[str, Any]:
+    async def generate_template_node(
+        state: ChatState, config: RunnableConfig | None = None
+    ) -> Dict[str, Any]:
         """
         Runs the existing template-generation LangGraph graph inline.
         Sets clarification_rounds_count=1 so the BriefAnalyzer is lenient —
@@ -410,7 +419,9 @@ def _make_generate_template_node(checkpointer):
 # ---------------------------------------------------------------------------
 
 def _make_submit_feedback_node(checkpointer):
-    async def submit_feedback_node(state: ChatState, config: dict) -> Dict[str, Any]:
+    async def submit_feedback_node(
+        state: ChatState, config: RunnableConfig | None = None
+    ) -> Dict[str, Any]:
         """
         Injects the user's natural-language change request into the existing
         template-generation graph and re-invokes it so the FeedbackEngine node runs.
@@ -501,7 +512,9 @@ def _make_submit_feedback_node(checkpointer):
 # Node 4 — approval
 # ---------------------------------------------------------------------------
 
-async def approve_template_node(state: ChatState, config: dict) -> Dict[str, Any]:
+async def approve_template_node(
+    state: ChatState, config: RunnableConfig | None = None
+) -> Dict[str, Any]:
     """Marks the current version as approved in the database."""
     logger.info(
         f"--- approve_template_node | template={state.template_id} version={state.current_version_id} ---"

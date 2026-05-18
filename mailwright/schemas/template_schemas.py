@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from datetime import datetime  # For created_at field
 from typing import Optional, List, Dict, Any
 

@@ -1,4 +1,8 @@
-﻿from typing import Any
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from typing import Any
 from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic

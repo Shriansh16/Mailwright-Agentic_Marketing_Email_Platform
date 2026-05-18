@@ -1,4 +1,8 @@
-﻿import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import os
 import pytest
 import pytest_asyncio
 import logging  # Added for standardized logging

@@ -1,4 +1,8 @@
-﻿"""
+﻿from dotenv import load_dotenv
+
+load_dotenv()
+
+"""
 mailwright — Email Template Assistant  |  Gradio UI  (Gradio 6.x compatible)
 ────────────────────────────────────────────────────────────────────────
 Run:  python ui/app.py
@@ -165,11 +169,7 @@ footer { display: none !important; }
 #send-btn { min-width: 90px; }
 """
 
-with gr.Blocks(
-    title="mailwright — Email Template Assistant",
-    theme=gr.themes.Soft(primary_hue="blue"),
-    css=_CSS,
-) as demo:
+with gr.Blocks(title="mailwright — Email Template Assistant") as demo:
 
     # hidden state
     s_thread_id   = gr.State(None)
@@ -189,8 +189,7 @@ with gr.Blocks(
             chatbot = gr.Chatbot(
                 label="",
                 height=500,
-                type="messages",          # Gradio 6 messages format
-                show_copy_button=True,
+                buttons=["copy", "copy_all"],
                 render_markdown=True,
             )
 
@@ -279,4 +278,6 @@ if __name__ == "__main__":
         server_port=7860,
         show_error=True,
         share=False,
+        theme=gr.themes.Soft(primary_hue="blue"),
+        css=_CSS,
     )

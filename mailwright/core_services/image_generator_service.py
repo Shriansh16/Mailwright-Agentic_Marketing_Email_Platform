@@ -1,4 +1,8 @@
-﻿import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import asyncio
 import base64
 import io
 
@@ -8,6 +12,26 @@ import logging
 from mailwright.logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
+
+
+def _uses_gpt_image_model(model: str) -> bool:
+    """OpenAI gpt-image-* models use different quality values than DALL-E 3."""
+    return model.startswith("gpt-image")
+
+
+def _normalize_openai_quality(model: str, quality: str) -> str:
+    """Map legacy DALL-E quality names to the correct API values per model family."""
+    q = quality.lower()
+    if _uses_gpt_image_model(model):
+        return {
+            "standard": "auto",
+            "hd": "high",
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "auto": "auto",
+        }.get(q, "auto")
+    return q if q in ("standard", "hd") else "standard"
 
 
 class ImageGeneratorService:
@@ -100,20 +124,41 @@ class ImageGeneratorService:
         self, prompt: str, size: str, quality: str, n: int
     ) -> str | None:
         try:
-            logger.info(f"[OpenAI] Requesting image for prompt: '{prompt}' | model: {self.model}")
+            api_quality = _normalize_openai_quality(self.model, quality)
+            logger.info(
+                f"[OpenAI] Requesting image for prompt: '{prompt}' | "
+                f"model: {self.model} | quality: {api_quality}"
+            )
+            kwargs: dict = {
+                "model": self.model,
+                "prompt": prompt,
+                "quality": api_quality,
+                "n": n,
+            }
+            if not _uses_gpt_image_model(self.model):
+                kwargs["size"] = size  # type: ignore[assignment]
+
             response = await asyncio.to_thread(
                 self.client.images.generate,
-                model=self.model,
-                prompt=prompt,
-                size=size,  # type: ignore[arg-type]
-                quality=quality,
-                n=n,
+                **kwargs,
             )
-            if response.data and response.data[0].url:
-                url = response.data[0].url
-                logger.info(f"[OpenAI] Image generated. URL: {url}")
-                return url
-            logger.error("[OpenAI] Image generation response contained no URL.")
+            if not response.data:
+                logger.error("[OpenAI] Image generation response contained no data.")
+                return None
+
+            item = response.data[0]
+            if item.url:
+                logger.info(f"[OpenAI] Image generated. URL: {item.url}")
+                return item.url
+            if item.b64_json:
+                data_uri = f"data:image/png;base64,{item.b64_json}"
+                logger.info(
+                    f"[OpenAI] Image generated as base64 data URI "
+                    f"({len(item.b64_json):,} chars)."
+                )
+                return data_uri
+
+            logger.error("[OpenAI] Image generation response contained no URL or b64_json.")
             return None
 
         except RateLimitError as e:

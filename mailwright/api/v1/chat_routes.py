@@ -1,4 +1,8 @@
-﻿import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging
 import uuid
 
 from fastapi import APIRouter, HTTPException

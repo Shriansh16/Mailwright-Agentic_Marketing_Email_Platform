@@ -1,7 +1,14 @@
-﻿import asyncio
-import tempfile
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import asyncio
 import os
-from typing import Dict, Any, Optional
+import shutil
+import subprocess
+import tempfile
+from pathlib import Path
+from typing import Dict, Any, Optional, Tuple
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -15,6 +22,90 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Placeholders substituted with real image URLs after LLM generation (avoids sending base64 to the LLM).
+def _image_placeholder(index: int) -> str:
+    return f"__MAILWRIGHT_IMAGE_{index + 1}__"
+
+
+def resolve_mjml_cli(configured: str | None = None) -> str:
+    """Resolve the MJML CLI executable (Windows: mjml.cmd in npm global dir)."""
+    candidates: list[str] = []
+    if configured and configured.strip():
+        candidates.append(configured.strip())
+    candidates.extend(["mjml", "mjml.cmd"])
+
+    for name in candidates:
+        found = shutil.which(name)
+        if found:
+            return found
+
+    npm_global = Path(os.environ.get("APPDATA", "")) / "npm" / "mjml.cmd"
+    if npm_global.is_file():
+        return str(npm_global)
+
+    raise FileNotFoundError(
+        "MJML CLI not found. Install with: npm install -g mjml "
+        "Then set MJML_CLI_PATH in .env to the full path if needed."
+    )
+
+
+def _format_images_for_mjml_prompt(
+    image_urls: list[str],
+    image_prompts: list[str] | None = None,
+) -> tuple[str, dict[str, str]]:
+    """
+    Build LLM-safe image instructions using placeholders instead of raw URLs/data URIs.
+    Returns (prompt_text, placeholder -> actual_src mapping for post-processing).
+    """
+    if not image_urls:
+        return "No images provided or generated.", {}
+
+    lines: list[str] = []
+    mapping: dict[str, str] = {}
+    prompts = image_prompts or []
+
+    for i, url in enumerate(image_urls):
+        if not url:
+            continue
+        placeholder = _image_placeholder(i)
+        mapping[placeholder] = url
+        desc = prompts[i] if i < len(prompts) else f"Generated marketing image {i + 1}"
+        lines.append(
+            f'- Image {i + 1}: use exactly src="{placeholder}" in <mj-image> '
+            f'(content: {desc})'
+        )
+
+    if not lines:
+        return "No images provided or generated.", {}
+
+    header = (
+        "Use the exact placeholder strings below as mj-image src values. "
+        "Do not invent or replace them with real URLs.\n"
+    )
+    return header + "\n".join(lines), mapping
+
+
+def _inject_image_placeholders(mjml: str, mapping: dict[str, str]) -> str:
+    """Replace placeholder tokens with actual image URLs (including data URIs)."""
+    result = mjml
+    for placeholder, url in mapping.items():
+        result = result.replace(placeholder, url)
+    return result
+
+
+def _run_mjml_cli_sync(mjml_path: str, mjml_cli: str) -> Tuple[int, str, str]:
+    """Run MJML CLI synchronously (Windows-safe; avoids asyncio subprocess limits)."""
+    cmd = [mjml_cli, mjml_path, "--config.validationLevel=strict"]
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    return result.returncode, result.stdout or "", result.stderr or ""
+
+
 MJML_GENERATION_PROMPT_TEMPLATE = """
 You are an expert MJML developer. Your task is to generate a complete, responsive MJML email template based on the following user brief.
 The MJML should be well-structured and valid. Do not include any explanations or conversational text outside of the MJML code block.
@@ -26,7 +117,7 @@ Body: {body}
 Call to Action: {call_to_action}
 {additional_details}
 
-Generated Image URLs (if any, incorporate them appropriately into the MJML, e.g., using <mj-image src="URL" />):
+Generated images (if any — use the exact placeholder src values in <mj-image> tags):
 {image_urls_for_prompt}
 
 Generate the MJML code now.
@@ -81,16 +172,33 @@ class MJMLService:
 
         try:
             subject = brief_to_use.get("subject", "No Subject Provided")
-            body = brief_to_use.get("body", "No Body Content Provided")
-            call_to_action = brief_to_use.get(
-                "call_to_action", "No Call to Action Provided"
+            body = brief_to_use.get("body") or brief_to_use.get(
+                "body_copy", "No Body Content Provided"
             )
+            call_to_action = brief_to_use.get("call_to_action") or " ".join(
+                filter(
+                    None,
+                    [
+                        brief_to_use.get("cta_text"),
+                        brief_to_use.get("cta_url"),
+                    ],
+                )
+            ).strip() or "No Call to Action Provided"
 
             # Consolidate other potential brief fields into additional_details
+            _skip_keys = {
+                "subject",
+                "body",
+                "body_copy",
+                "call_to_action",
+                "cta_text",
+                "cta_url",
+                "image_suggestions",
+            }
             other_details_dict = {
                 k: v
                 for k, v in brief_to_use.items()
-                if k not in ["subject", "body", "call_to_action"] and v
+                if k not in _skip_keys and v
             }
             additional_details_str = ""
             if other_details_dict:
@@ -100,14 +208,18 @@ class MJMLService:
                         f"- {k.replace('_', ' ').capitalize()}: {v}\n"
                     )
 
-            # Prepare image URLs for the prompt
-            image_urls_for_prompt_str = "No images provided or generated."
-            if state.generated_image_urls:
-                image_urls_for_prompt_str = "Available images:\n"
-                for i, url in enumerate(state.generated_image_urls):
-                    image_urls_for_prompt_str += f"- Image {i + 1}: {url}\n"
-
-            logger.info(f"Image URLs for prompt: {state.generated_image_urls}")
+            # Use placeholders in the LLM prompt — never embed base64 data URIs in the request.
+            image_urls_for_prompt_str, image_placeholder_map = (
+                _format_images_for_mjml_prompt(
+                    state.generated_image_urls or [],
+                    state.image_prompts,
+                )
+            )
+            logger.info(
+                "MJML generation: %d image placeholder(s): %s",
+                len(image_placeholder_map),
+                list(image_placeholder_map.keys()),
+            )
 
             prompt = ChatPromptTemplate.from_template(MJML_GENERATION_PROMPT_TEMPLATE)
             chain = prompt | self.llm_client
@@ -135,6 +247,11 @@ class MJMLService:
                     if generated_mjml.strip().endswith("```"):
                         generated_mjml = generated_mjml.rsplit("\n```", 1)[0]
                 generated_mjml = generated_mjml.strip()
+
+            if image_placeholder_map and isinstance(generated_mjml, str):
+                generated_mjml = _inject_image_placeholders(
+                    generated_mjml, image_placeholder_map
+                )
 
             # Basic check to see if it looks like MJML
             if (
@@ -225,20 +342,20 @@ class MJMLService:
             # The output HTML will be sent to stdout.
             # Using --config.validationLevel=strict for explicit strict validation.
             # The mjml CLI path might need to be configurable or ensured it's in PATH.
-            cmd = ["mjml", temp_mjml_file, "--config.validationLevel=strict"]
+            mjml_cli = resolve_mjml_cli(settings.MJML_CLI_PATH)
+            cmd = [mjml_cli, temp_mjml_file, "--config.validationLevel=strict"]
 
             logger.info(
                 f"MJML Validator/Compiler Node: Executing command: {' '.join(cmd)}"
             )
 
-            process = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            returncode, stdout, stderr = await asyncio.to_thread(
+                _run_mjml_cli_sync, temp_mjml_file, mjml_cli
             )
-            stdout, stderr = await process.communicate()
 
-            if process.returncode == 0:
-                compiled_html_output = stdout.decode("utf-8").strip()
-                stderr_output = stderr.decode("utf-8").strip()
+            if returncode == 0:
+                compiled_html_output = stdout.strip()
+                stderr_output = stderr.strip()
 
                 if (
                     "validation error" in stderr_output.lower()
@@ -267,9 +384,9 @@ class MJMLService:
                             f"MJML Validator/Compiler Node: MJML compilation produced warnings: {stderr_output}"
                         )
             else:
-                stderr_output = stderr.decode("utf-8").strip()
+                stderr_output = stderr.strip()
                 logger.error(
-                    f"MJML Validator/Compiler Node: mjml CLI failed with return code {process.returncode}. Stderr: {stderr_output}"
+                    f"MJML Validator/Compiler Node: mjml CLI failed with return code {returncode}. Stderr: {stderr_output}"
                 )
                 update_fields["error_message"] = (
                     f"MJML Compilation Failed: {stderr_output}"

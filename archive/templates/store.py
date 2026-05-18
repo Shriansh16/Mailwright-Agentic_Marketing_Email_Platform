@@ -1,4 +1,8 @@
-﻿import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import os
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np

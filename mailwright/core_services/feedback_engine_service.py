@@ -1,4 +1,8 @@
-﻿import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging
 import asyncio
 
 from mailwright.config import settings

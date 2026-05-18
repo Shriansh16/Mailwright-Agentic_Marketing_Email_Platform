@@ -1,4 +1,8 @@
-﻿import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import asyncio
 import re
 from bs4 import BeautifulSoup
 import os

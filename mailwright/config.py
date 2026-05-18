@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # In production, environment variables should be set directly.
 dotenv_path = BASE_DIR / ".env"
 if dotenv_path.exists():
-    load_dotenv(dotenv_path=dotenv_path)
+    load_dotenv(dotenv_path=dotenv_path, encoding="utf-8-sig", override=True)
 
 
 class Settings(BaseSettings):
@@ -83,7 +83,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=str(dotenv_path) if dotenv_path.exists() else None,
-        env_file_encoding="utf-8",
+        env_file_encoding="utf-8-sig",
         extra="ignore",  # Ignore extra fields from .env not defined in Settings
     )
 

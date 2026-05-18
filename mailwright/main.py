@@ -1,8 +1,16 @@
-﻿from fastapi import FastAPI
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(_PROJECT_ROOT / ".env", encoding="utf-8-sig", override=True)
+
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import create_async_engine
 from mailwright.api.v1.router import router as api_v1_router
 from mailwright.config import settings
+from mailwright.graphs.checkpointer import ensure_checkpointer_schema
 from mailwright.logging_config import setup_logging
 
 # Call logging setup early, after all imports but before app instantiation
@@ -20,6 +28,7 @@ async def lifespan(app: FastAPI):
         pool_pre_ping=True,
     )
     app.state.db_engine = engine
+    await ensure_checkpointer_schema()
     try:
         yield
     finally:

@@ -1,4 +1,8 @@
-﻿import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import asyncio
 import os
 import json
 import logging

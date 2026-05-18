@@ -1,4 +1,8 @@
-﻿import logging  # Added for standardized logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging  # Added for standardized logging
 import uuid  # For generating unique IDs
 from typing import Annotated, List  # Added List
 

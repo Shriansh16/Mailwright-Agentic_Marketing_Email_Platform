@@ -1,4 +1,8 @@
-﻿import uuid
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import uuid
 import pytest
 import pytest_asyncio  # Added for async fixtures
 from unittest.mock import patch, AsyncMock, MagicMock, ANY  # Added ANY

@@ -1,4 +1,8 @@
-﻿import pytest
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import pytest
 from unittest.mock import AsyncMock, patch
 
 from mailwright.graphs.state import GraphState

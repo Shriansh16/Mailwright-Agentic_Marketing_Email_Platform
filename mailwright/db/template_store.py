@@ -1,4 +1,8 @@
-﻿from sqlalchemy.ext.asyncio import AsyncSession
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import Optional, List
 from sqlalchemy import desc, update

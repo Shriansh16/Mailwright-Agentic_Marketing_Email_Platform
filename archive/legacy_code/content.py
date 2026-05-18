@@ -1,4 +1,8 @@
-﻿import json
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple

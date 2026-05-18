@@ -1,4 +1,8 @@
-﻿import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging
 import os
 from mailwright.config import settings  # To potentially get LOG_LEVEL if defined in settings
 

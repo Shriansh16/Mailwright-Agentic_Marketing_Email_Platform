@@ -1,4 +1,8 @@
-﻿import logging  # Added for standardized logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging  # Added for standardized logging
 from sqlalchemy import Column, Text, Boolean, DateTime, Integer
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession

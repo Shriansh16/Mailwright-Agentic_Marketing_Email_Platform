@@ -1,6 +1,10 @@
 """
 A manual test script to verify the output of the CorpusIngestionService.
 """
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 import json
 from pathlib import Path

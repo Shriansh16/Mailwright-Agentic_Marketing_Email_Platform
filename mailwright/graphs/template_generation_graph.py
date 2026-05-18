@@ -1,7 +1,12 @@
-﻿import logging  # Added for standardized logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging  # Added for standardized logging
 import asyncio  # Added for running the test
 
 # import traceback # Removed for Sprint 3 debugging
+from langchain_core.runnables import RunnableConfig
 from langgraph.graph import StateGraph, START, END  # Removed CompiledGraph
 from .state import GraphState
 from .checkpointer import get_checkpointer_context_manager, SQLITE_CONN_STRING
@@ -203,7 +208,7 @@ async def image_generation_node(state: GraphState) -> GraphState:
 
 
 async def store_v0_node(
-    state: GraphState, config: dict
+    state: GraphState, config: RunnableConfig | None = None
 ) -> Dict[str, Any]:  # Return type will effectively be Dict[str, Any]
     """
     Stores the first successfully generated version (v0) of the template
@@ -213,7 +218,9 @@ async def store_v0_node(
     logger.info(f"--- Starting execution of {LG_STORE_V0_NODE_NAME} ---")
     updates_to_state: Dict[str, Any] = {}
 
-    thread_id = config.get("configurable", {}).get("thread_id")
+    thread_id = (
+        config.get("configurable", {}).get("thread_id") if config else None
+    )
     template_id = str(thread_id) if thread_id else str(uuid.uuid4())
     version_id = "v0"
 
@@ -371,7 +378,7 @@ async def feedback_engine_node(state: GraphState) -> GraphState:
 
 # --- Sprint 3: Store Revised Version Node ---
 async def store_v_next_node(
-    state: GraphState, config: dict
+    state: GraphState, config: RunnableConfig | None = None
 ) -> Dict[str, Any]:  # Return type will effectively be Dict[str, Any]
     """
     Stores a successfully revised and validated MJML template as a new version.
@@ -404,7 +411,9 @@ async def store_v_next_node(
         )
         return updates_to_state
 
-    thread_id = config.get("configurable", {}).get("thread_id")
+    thread_id = (
+        config.get("configurable", {}).get("thread_id") if config else None
+    )
     if not thread_id:
         logger.error(
             f"No thread_id (template_id) in config for {LG_STORE_V_NEXT_NODE_NAME}."

@@ -1,4 +1,8 @@
-﻿import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging
 import json
 from typing import Optional, List
 from pydantic import BaseModel  # Added missing import

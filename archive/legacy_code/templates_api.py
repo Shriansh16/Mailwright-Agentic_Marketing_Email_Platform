@@ -1,4 +1,8 @@
-﻿import argparse
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import argparse
 
 import uvicorn
 from fastapi import FastAPI

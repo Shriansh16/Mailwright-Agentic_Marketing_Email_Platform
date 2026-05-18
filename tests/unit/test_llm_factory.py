@@ -1,4 +1,8 @@
-﻿import pytest
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import pytest
 from unittest.mock import patch
 
 from langchain_openai import ChatOpenAI

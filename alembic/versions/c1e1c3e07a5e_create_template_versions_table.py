@@ -5,6 +5,10 @@ Revises:
 Create Date: 2025-05-30 14:48:51.701933
 
 """
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 from typing import Sequence, Union
 

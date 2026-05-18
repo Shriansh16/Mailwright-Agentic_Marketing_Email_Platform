@@ -1,4 +1,4 @@
-﻿[build-system]
+[build-system]
 requires = ["setuptools>=61.0"] # Specify setuptools version
 build-backend = "setuptools.build_meta"
 

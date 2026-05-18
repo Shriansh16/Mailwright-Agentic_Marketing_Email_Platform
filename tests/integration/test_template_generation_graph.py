@@ -1,4 +1,8 @@
-﻿import pytest
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import pytest
 import uuid
 from unittest.mock import patch, AsyncMock, MagicMock
 import logging

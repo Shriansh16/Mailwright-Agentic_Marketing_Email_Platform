@@ -1,4 +1,8 @@
-﻿import logging
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import logging
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from langgraph.checkpoint.postgres.aio import (
     AsyncPostgresSaver,
@@ -49,6 +53,16 @@ def get_checkpointer_context_manager():
         db_path = Path(SQLITE_CONN_STRING)
         db_path.parent.mkdir(parents=True, exist_ok=True)
         return AsyncSqliteSaver.from_conn_string(SQLITE_CONN_STRING)
+
+
+async def ensure_checkpointer_schema() -> None:
+    """
+    Create LangGraph checkpoint tables if they do not exist.
+    AsyncPostgresSaver / AsyncSqliteSaver require setup() before first use.
+    """
+    async with get_checkpointer_context_manager() as checkpointer:
+        await checkpointer.setup()
+    logger.info("LangGraph checkpointer schema is ready.")
 
 
 # We will no longer export a pre-resolved 'checkpointer_instance'
